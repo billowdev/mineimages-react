@@ -1,10 +1,16 @@
-* {
-	
-}
+
 .title {
 	font-size: 50px;
 }
 
-.btn {
-	width: auto;
+.search__form {
+	width: 30rem;
+}
+
+.content__imgage {
+	width: 100%;
+}
+
+.alphabet {
+	font-size: 5rem;
 }
