@@ -1,5 +1,5 @@
 module.exports = (sequelize, DataTypes) => {
-  const OrderDetail = sequelize.define("OrderDetail", {
+  const OrderDetails = sequelize.define("OrderDetails", {
     id: {
       type: DataTypes.UUID,
       primaryKey: true,
@@ -12,22 +12,23 @@ module.exports = (sequelize, DataTypes) => {
     },
 	// status order
     state: {
-      type: DataTypes.ENUM(["complete", "incomeplete"]),
+      type: DataTypes.ENUM(["complete", "incomplete"]),
       allowNull: false,
       defaultValue: "incomplete",
     },
   });
 
-  OrderDetail.associate = (models) => {
+  OrderDetails.associate = (models) => {
 	// Order image by customer
-    OrderDetail.hasMany(models.Orders, {
+    OrderDetails.hasMany(models.Orders, {
       onDelete: "cascade",
     });
 	// Customer
-    OrderDetail.hasOne(models.Users, {
+    OrderDetails.hasOne(models.Users, {
       onDelete: "cascade",
     });
+
   };
 
-  return OrderDetail;
+  return OrderDetails;
 };

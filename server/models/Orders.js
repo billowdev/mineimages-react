@@ -7,10 +7,6 @@ module.exports = (sequelize, DataTypes) => {
   Orders.associate = (models) => {
     Orders.belongsTo(models.Users, { foreignKey: "UserId" });
     Orders.belongsTo(models.Images, { foreignKey: "ImageId" });
-
-    Orders.hasOne(models.OrderDetail, {
-      onDelete: "cascade",
-    });
   };
   return Orders;
 };

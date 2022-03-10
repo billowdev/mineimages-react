@@ -51,6 +51,8 @@ module.exports = (sequelize, DataTypes) => {
       foreignKey: "UserId",
       otherKey: "ImageId",
     });
+
+    Users.belongsTo(models.OrderDetails, { foreignKey: "OrderDetailId" });
   };
 
   return Users;

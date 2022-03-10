@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const { Images } = require("../models");
+const { Images, Categories } = require("../models");
 
 router.get("/", async (req, res) => {
   const listOfImages = await Images.findAll();
@@ -17,6 +17,12 @@ router.get("/byId/:id", async (req, res) => {
 router.post("/", async (req, res) => {
   const post = req.body;
   await Images.create(post);
+  res.json(post);
+});
+
+router.post("/categories", async (req, res) => {
+  const post = req.body;
+  await Categories.create(post);
   res.json(post);
 });
 
