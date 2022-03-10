@@ -5,11 +5,6 @@ module.exports = (sequelize, DataTypes) => {
       primaryKey: true,
       autoIncrement: true,
       allowNull: false,
-    },
-    state: {
-      type: DataTypes.ENUM(["complete", "incomplete"]),
-      allowNull: false,
-      defaultValue: "incomplete",
     }
   });
 

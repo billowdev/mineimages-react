@@ -7,9 +7,9 @@ module.exports = (sequelize, DataTypes) => {
 		defaultValue: DataTypes.UUIDV1,
 	},
 	  state: {
-		type: DataTypes.ENUM(["complete", "incomplete"]),
+		type: DataTypes.ENUM(["complete", "pending", "oncart"]),
 		allowNull: false,
-		defaultValue: "incomplete",
+		defaultValue: "oncart",
 	  }
 	});
   
@@ -20,7 +20,10 @@ module.exports = (sequelize, DataTypes) => {
 		Transactions.hasMany(models.Orders, {
 			onDelete: "cascade"
 		})
+
 	};
+
+	
 	return Transactions;
   };
   

@@ -1,0 +1,18 @@
+{
+    "paymentsusers":[
+    {
+        "provider": "MasterCard",
+        "cardNumber": "52709102833718293",
+        "expiryDate": "01/26",
+        "securityCode":"332"
+    },
+
+    {
+        "provider": "MasterCard",
+        "cardNumber": "52709102833713212",
+        "expiryDate": "05/27",
+        "securityCode":"313"
+    }
+
+    ]
+}

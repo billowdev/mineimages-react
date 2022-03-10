@@ -1,0 +1,26 @@
+{
+    "images":[
+    {
+        "pathOrigin" : "https://images2.alphacoders.com/121/thumbbig-121870.webp",
+        "pathWatermark" : "MineImages",
+        "price": 800,
+        "visible" : "active",
+        "Userid" : ""
+    },
+
+    {
+        "pathOrigin" : "https://images3.alphacoders.com/955/thumb-1920-95535.jpg",
+        "pathWatermark" : "MineImages",
+        "price": 599,
+        "visible" : "inactive",
+        "Userid" : ""
+    },
+    {
+        "pathOrigin" : "https://images2.alphacoders.com/167/thumbbig-167440.webp",
+        "pathWatermark" : "MineImages",
+        "price": 999,
+        "visible" : "active",
+        "Userid" : ""
+    }
+    ]
+}

@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const { Users, Addresses, PaymentUser } = require("../models");
+const { Users, Addresses, PaymentUsers } = require("../models");
 
 router.get("/", async (req, res) => {
   const listOfUsers = await Users.findAll();
@@ -16,32 +16,44 @@ router.post("/", async (req, res) => {
   const post = req.body; // get request
   // await Users.create(post);
 
-  // ---- case insert userdata and address ----
+  const user = await Users.create(post);
+  console.log(user.id);
+  // constuctor for hook field on Address
+  let address = {
+    "addressLine1": "",
+    "city": "",
+    "postalCode": "",
+    "country": "",
+    "UserId":user.id
 
-  const address = await Addresses.create(post[1]); // insert data from request to address model
-  const addressId = address.id; // id after insert data to the address model
-
-  const payment = await PaymentUser.create(post[2]); // insert data from request to payment model
-  const paymentId = payment.id;
-
-  let userData = post[0]; // data user from request
-  userData.AddressId = addressId; // add property AddressId to userData
-  userData.PaymentUserId = paymentId; // add property PaymentUserId to userData
-  await Users.create(userData); // insert data to the user model
+  };
+  // constuctor for hook field on PaymentUsers
+  let payment = {
+    "provider":"",
+    "cardNumber":"",
+    "expiryDate":"",
+    "securityCode":"",
+    "UserId":user.id
+  };
+  // hook field on Address
+  await Addresses.create(address);
+  // hook field on PaymentUsers
+  await PaymentUsers.create(payment);
 
   res.json(post);
 });
 
-router.post("/payment", async (req, res) => {
+router.post("/payment/:id", async (req, res) => {
   const post = req.body;
-  await PaymentUser.create(post);
+  const id = req.params.id;
+  await PaymentUsers.update(post, { where: { UserId: id } });
   res.json(post);
 });
 
 router.post("/address/:id", async (req, res) => {
   const post = req.body;
   const id = req.params.id;
-  await Address.update(post, { where: { id: id } });
+  await Addresses.update(post, { where: { UserId: id } });
   res.json(post);
 });
 

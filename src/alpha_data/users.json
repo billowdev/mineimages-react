@@ -1,0 +1,22 @@
+{
+    "users":[
+    {
+        "username": "awdawd1234",
+        "password": "awdawd1234",
+        "email": "awdawd@example.com",
+        "firstName": "wakanda",
+        "lastName": "forever",
+        "telephone": "0912345678",
+        "permission": "admin"
+    },
+    {
+        "username": "bboy1234",
+        "password": "bboy1234",
+        "email": "bboy@example.com",
+        "firstName": "kitty",
+        "lastName": "cool",
+        "telephone": "09812345678"
+    }
+
+    ]
+}
