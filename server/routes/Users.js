@@ -17,7 +17,7 @@ router.post("/", async (req, res) => {
   // await Users.create(post);
 
   const user = await Users.create(post);
-  console.log(user.id);
+
   // constuctor for hook field on Address
   let address = {
     "addressLine1": "",

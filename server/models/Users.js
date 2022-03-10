@@ -52,11 +52,11 @@ module.exports = (sequelize, DataTypes) => {
     });
     
     // customer and iamges
-    Users.belongsToMany(models.Images, {
-      through: models.Orders,
-      foreignKey: "UserId",
-      otherKey: "ImageId",
-    });
+    // Users.belongsToMany(models.Images, {
+    //   through: models.Orders,
+    //   foreignKey: "UserId",
+    //   otherKey: "ImageId",
+    // });
 
     // user has one payment
     Users.hasOne(models.PaymentUsers, {
