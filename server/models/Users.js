@@ -42,17 +42,27 @@ module.exports = (sequelize, DataTypes) => {
   });
 
   Users.associate = (models) => {
+    // owner images
     Users.hasMany(models.Images, {
       onDelete: "cascade",
     });
-
+    
+    // customer and iamges
     Users.belongsToMany(models.Images, {
       through: models.Orders,
       foreignKey: "UserId",
       otherKey: "ImageId",
     });
 
-    Users.belongsTo(models.OrderDetails, { foreignKey: "OrderDetailId" });
+    // user has one payment
+    Users.hasOne(models.PaymentUsers, {
+      onDelete: "cascade",
+    });
+
+    // user has one Addresses
+    Users.hasOne(models.Addresses, {
+      onDelete: "cascade",
+    });
   };
 
   return Users;

@@ -1,11 +1,11 @@
 const express = require("express");
 const router = express.Router();
-const { Users, Address, PaymentUser } = require("../models");
+const { Users, Addresses, PaymentUser } = require("../models");
 
 router.get("/", async (req, res) => {
   const listOfUsers = await Users.findAll();
- 	 res.json(listOfUsers);
-	// res.send("Hellow world")
+  res.json(listOfUsers);
+  // res.send("Hellow world")
 });
 
 router.post("/", async (req, res) => {
@@ -13,24 +13,24 @@ router.post("/", async (req, res) => {
   // https://stackoverflow.com/questions/16723507/get-last-inserted-id-sequelize
   // https://stackoverflow.com/questions/61028014/inserting-data-in-multiple-tables-using-sequelize
 
-
   const post = req.body; // get request
-  await Users.create(post);
-
-
+  // await Users.create(post);
 
   // ---- case insert userdata and address ----
-  
-  // const address = await Address.create(post[1]); // insert data from request to address model
-  // const addressId = address.id;  // id after insert data to the address model
-  // let userData = post[0]; // data user from request 
-  // userData.AddressId = addressId // add property AddressId to user data
-  // await Users.create(userData) // insert data to the user model
 
-  // await Users.AddressId.create(addressId);
+  const address = await Addresses.create(post[1]); // insert data from request to address model
+  const addressId = address.id; // id after insert data to the address model
+
+  const payment = await PaymentUser.create(post[2]); // insert data from request to payment model
+  const paymentId = payment.id;
+
+  let userData = post[0]; // data user from request
+  userData.AddressId = addressId; // add property AddressId to userData
+  userData.PaymentUserId = paymentId; // add property PaymentUserId to userData
+  await Users.create(userData); // insert data to the user model
+
   res.json(post);
-    
-  });;
+});
 
 router.post("/payment", async (req, res) => {
   const post = req.body;
@@ -38,9 +38,16 @@ router.post("/payment", async (req, res) => {
   res.json(post);
 });
 
-router.post("/address", async (req, res) => {
+router.post("/address/:id", async (req, res) => {
   const post = req.body;
-  await Address.create(post);
+  const id = req.params.id;
+  await Address.update(post, { where: { id: id } });
+  res.json(post);
+});
+
+router.get("/byId/:id", async (req, res) => {
+  const id = req.params.id;
+  const post = await Images.findByPk(id);
   res.json(post);
 });
 

@@ -1,5 +1,5 @@
 module.exports = (sequelize, DataTypes) => {
-  const Address = sequelize.define("Address", {
+  const Addresses = sequelize.define("Addresses", {
     addressLine1: {
       type: DataTypes.STRING(100),
       allowNull: false,
@@ -9,20 +9,21 @@ module.exports = (sequelize, DataTypes) => {
     },
     city: {
       type: DataTypes.STRING(50),
+      allowNull: false,
     },
     postalCode: {
       type: DataTypes.STRING(10),
+      allowNull: false,
     },
     country: {
       type: DataTypes.STRING(50),
+      allowNull: false,
     }
   });
 
-  Address.associate = (models) => {
-    Address.hasMany(models.Users, {
-      onDelete: "cascade",
-    });
-  };
+  Addresses.associate = (models) => {
+		Addresses.belongsTo(models.Users, { foreignKey: "UserId"});
+	};
 
-  return Address;
+  return Addresses;
 };

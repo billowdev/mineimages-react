@@ -1,0 +1,22 @@
+// case insert parallel
+
+[
+	{
+    "username":"somchai",
+    "password":"1234",
+    "email":"somchai@protonmain.com",
+    "firstName":"Somchai",
+    "lastName":"kung",
+    "telephone":"0957829831",
+    "address":1
+},
+{
+    "addressLine1":"-",
+    "addressLine2":"-",
+    "city":"-",
+    "postalCode":"-",
+    "country":"-"
+}
+]
+
+
