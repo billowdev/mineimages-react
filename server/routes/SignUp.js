@@ -10,7 +10,7 @@ const bcrypt = require("bcrypt");
 
 router.post("/", (req, res) => {
   const dataUser = req.body;
-  let address, payment;
+
   bcrypt.hash(dataUser.password, 10).then((hash) => {
     Users.create({
       username: dataUser.username,
@@ -21,26 +21,22 @@ router.post("/", (req, res) => {
       telephone: dataUser.telephone,
     })
       .then((data) => {
-        // constuctor for hook field on Address
-        address = {
+        // hook field on Address
+        Addresses.create({
           addressLine1: "",
           city: "",
           postalCode: "",
           country: "",
           UserId: data.id,
-        };
-        // constuctor for hook field on PaymentUsers
-        payment = {
+        });
+        // hook field on PaymentUsers
+        PaymentUsers.create({
           provider: "",
           cardNumber: "",
           expiryDate: "",
           securityCode: "",
           UserId: data.id,
-        };
-        // hook field on Address
-        Addresses.create(address);
-        // hook field on PaymentUsers
-        PaymentUsers.create(payment);
+        });
 
         res.json("USER REGISTER SUCCESSFULY");
       })
