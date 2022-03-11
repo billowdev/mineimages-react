@@ -1,9 +1,9 @@
 {
     "address":[
         {
-            "addressLine1": "1321 hongnon",
-            "addressLine2": "-",
-            "city": "newyorkcity",
+            "addressLine1": "119 orange",
+            "addressLine2": "apple",
+            "city": "New York",
             "postalCode": "47220",
             "country": "United State"
         },
@@ -13,6 +13,30 @@
             "city": "mueng",
             "postalCode": "47000",
             "country": "Thailand"
+        },
+        {
+            "addressLine1": "109 nayor",
+            "addressLine2": "laomee",
+            "city": "Mukdahan",
+            "postalCode": "47100",
+            "country": "Thailand"
+        },
+        {
+            "addressLine1": "125 kenniji",
+            "addressLine2": "yabai",
+            "city": "Tokyo",
+            "postalCode": "47000",
+            "country": "Japan"
+        },
+        {
+            "addressLine1": "155 sushi",
+            "addressLine2": "Kyo",
+            "city": "Kyoto",
+            "postalCode": "47000",
+            "country": "Japan"
         }
+        
+        
     ]
 }
+

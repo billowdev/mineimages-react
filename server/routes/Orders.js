@@ -11,31 +11,36 @@ router.get("/", async (req, res) => {
 router.post("/", async (req, res) => {
   const post = req.body;
 
-  // How to Create a Node.js Cluster for Speeding Up Your Apps
-  // https://www.sitepoint.com/how-to-create-a-node-js-cluster-for-speeding-up-your-apps/
-
   // --------------- these code below will be crash after else condition -------------------
   // ERR_HTTP_HEADERS_SENT
-  // 10-Mar-2022 : 08:39 
+  // 10-Mar-2022 : 08:39
   // by lacakp
 
-  const transaction = await Transactions.findOne({
+  // solution handle turorial
+  /*
+     How to Create a Node.js Cluster for Speeding Up Your Apps
+    - https://www.sitepoint.com/how-to-create-a-node-js-cluster-for-speeding-up-your-apps/
+    Let It Crash: Best Practices for Handling Node.js Errors on Shutdown
+    - https://blog.heroku.com/best-practices-nodejs-errors
+  */
+
+  const transaction = await Transactions.findAll({
     where: { UserId: post.UserId, state: "oncart" },
   }).then((transaction) => {
-    return transaction.id;
+    return transaction;
   });
 
-  if (transaction) {
-    const order = await Orders.findOne({
+  if (transaction.length != 0) {
+    const order = await Orders.findAll({
       where: { ImageId: post.ImageId, TransactionId: transaction },
     }).then((res) => {
       return res;
     });
 
-    if (!order) {
+    if (order.length != 0) {
       await Orders.create({
         ImageId: post.ImageId,
-        TransactionId: transaction,
+        TransactionId: transaction.id,
       });
     } else {
       res.json("order is exist");
@@ -46,7 +51,6 @@ router.post("/", async (req, res) => {
       ImageId: post.ImageId,
       TransactionId: newTransaction.id,
     });
-   
   }
 
   res.json(post);

@@ -12,8 +12,8 @@ module.exports = (sequelize, DataTypes) => {
   // https://stackoverflow.com/questions/41528676/sequelize-belongstomany-with-custom-join-table-primary-key
 
   Orders.associate = (models) => {
-    // Orders.belongsTo(models.Users, { foreignKey: "UserId" });
-    // Orders.belongsTo(models.Images, { foreignKey: "ImageId" });
+    Orders.belongsTo(models.Images, { foreignKey: "ImageId" });
+    Orders.belongsTo(models.Transactions, { foreignKey: "TransactionId" });
   };
   return Orders;
 };

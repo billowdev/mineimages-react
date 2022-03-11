@@ -51,13 +51,6 @@ module.exports = (sequelize, DataTypes) => {
       onDelete: "cascade",
     });
     
-    // customer and iamges
-    // Users.belongsToMany(models.Images, {
-    //   through: models.Orders,
-    //   foreignKey: "UserId",
-    //   otherKey: "ImageId",
-    // });
-
     // user has one payment
     Users.hasOne(models.PaymentUsers, {
       onDelete: "cascade",

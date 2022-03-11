@@ -9,7 +9,19 @@
 
     {
         "provider": "MasterCard",
-        "cardNumber": "52709102833713212",
+        "cardNumber": "52700177295823714",
+        "expiryDate": "05/27",
+        "securityCode":"313"
+    },
+    {
+        "provider": "Visa",
+        "cardNumber": "4723782015942852",
+        "expiryDate": "05/27",
+        "securityCode":"313"
+    },
+    {
+        "provider": "Visa",
+        "cardNumber": "4723092481952018",
         "expiryDate": "05/27",
         "securityCode":"313"
     }
