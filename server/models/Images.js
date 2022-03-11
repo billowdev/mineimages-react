@@ -47,6 +47,10 @@ module.exports = (sequelize, DataTypes) => {
     Images.hasMany(models.Orders, {
       onDelete: "cascade"
     })
+
+    Images.hasMany(models.Likes, {
+      onDelete: "cascade"
+    }) 
   };
   return Images;
 };

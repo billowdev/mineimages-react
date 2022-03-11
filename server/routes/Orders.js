@@ -80,7 +80,7 @@ router.post("/", validateToken, async (req, res) => {
           res.status(400).json({ error: err });
         })
     );
-
+        
     if (data[0] != null) {
       isOwned = true;
       res.json("this images you have already owned");
