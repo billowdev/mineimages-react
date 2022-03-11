@@ -16,7 +16,7 @@ const Users = require("./routes/Users");
 app.use("/user", Users);
 
 const Orders = require("./routes/Orders");
-app.use("/insert_order", Orders);
+app.use("/order", Orders);
 
 const SignUp = require("./routes/SignUp");
 app.use("/signup", SignUp);

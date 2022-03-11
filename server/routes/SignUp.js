@@ -19,6 +19,7 @@ router.post("/", (req, res) => {
       firstName: dataUser.firstName,
       lastName: dataUser.lastName,
       telephone: dataUser.telephone,
+      status: "user"
     })
       .then((data) => {
         // hook field on Address

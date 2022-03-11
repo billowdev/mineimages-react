@@ -36,11 +36,9 @@ module.exports = (sequelize, DataTypes) => {
   });
 
   Images.associate = (models) => {
-    // Images.belongsToMany(models.Users, {
-    //   through: models.Orders,
-    //   foreignKey: "ImageId",
-    //   otherKey: "UserId",
-    // });
+    Images.belongsTo(models.Users, {
+      foreignKey: "UserId"
+    });
 
     Images.hasMany(models.Categories, {
       onDelete: "cascade"

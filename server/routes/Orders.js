@@ -1,20 +1,31 @@
 const express = require("express");
 const router = express.Router();
 const { Orders, Transactions } = require("../models");
+const { validateToken } = require("../middlewares/AuthMiddleware");
+const { Op } = require("sequelize");
 
-router.get("/", async (req, res) => {
-  const listOfOrders = await Orders.findAll();
-  res.json(listOfOrders);
-  // res.send("Hellow world")
+router.get("/", validateToken, async (req, res) => {
+  // const UserId = req.user.id;
+  // const listTransaction = await Transactions.findAll({
+  //   where: { UserId: UserId },
+  // });
+  // let orders = {};
+  // listTransaction.forEach((transaction) => {
+  //   async () => {
+  //     const foundOrder = await Orders.findAll({
+  //       where: { TransactionId: transaction.id },
+  //     }).then((order) => {
+  //       return order;
+  //     });
+  //     orders.assign(foundOrder);
+  //   };
+  // });
+  // res.json(orders);
 });
 
-router.post("/", async (req, res) => {
-  const post = req.body;
-
-  // --------------- these code below will be crash after else condition -------------------
-  // ERR_HTTP_HEADERS_SENT
-  // 10-Mar-2022 : 08:39
-  // by lacakp
+router.post("/", validateToken, async (req, res) => {
+  const ImageId = req.body.ImageId;
+  const UserId = req.user.id;
 
   // solution handle turorial
   /*
@@ -24,36 +35,74 @@ router.post("/", async (req, res) => {
     - https://blog.heroku.com/best-practices-nodejs-errors
   */
 
-  const transaction = await Transactions.findAll({
-    where: { UserId: post.UserId, state: "oncart" },
-  }).then((transaction) => {
-    return transaction;
+  /* -------------- Order route -------------- 
+  | order condition: 
+  | 1. if that user has already owner of that image (check it by choice 2)
+  | 2. which each transaction user who login state (on "pending" or "complete") -> transaction
+  | 3.   if transaction and target ImageId has already in Orders:
+  | 4.      return false; |# -- end process -- #|
+  | 5. if (user has transaction state "oncart"):
+  | 6.      if (the [target ImageId] and TransactionId["oncart"] is exist):
+  | 7.          return false; |# -- end process -- #|
+  | 8.      Else if that [ImageId and that Transaction] is not exist:
+  | 9.          create order with the target ImageId and That TransactionId which oncart state;
+  | 10.  else (user has not TransactionId["oncart"]):
+  | 11.       then create Transaction.then( create order with target ImageId and this.Transaction.id )
+  | 12. |# -- end process -- #|
+  */
+
+  // ----------------- condition 1 - 4 working ------------------- \\
+  const transactionNotOncart = await Transactions.findAll({
+    where: {
+      [Op.and]: [
+        { UserId: UserId },
+        { [Op.or]: [{ state: "complete" }, { state: "pending" }] },
+      ],
+    },
   });
+  let data = [];
+  transactionNotOncart.forEach(element => {
+    data.push(element)
+  });
+  res.json(data);
 
-  if (transaction.length != 0) {
-    const order = await Orders.findAll({
-      where: { ImageId: post.ImageId, TransactionId: transaction },
-    }).then((res) => {
-      return res;
-    });
+  // ----------------- condition 5 - 12 working ------------------- \\
 
-    if (order.length != 0) {
-      await Orders.create({
-        ImageId: post.ImageId,
-        TransactionId: transaction.id,
-      });
-    } else {
-      res.json("order is exist");
-    }
-  } else {
-    const newTransaction = await Transactions.create({ UserId: post.UserId });
-    await Orders.create({
-      ImageId: post.ImageId,
-      TransactionId: newTransaction.id,
-    });
-  }
+  // const transactionIsExist = await Transactions.findOne({
+  //   where: { UserId: UserId, state: "oncart" },
+  // });
 
-  res.json(post);
+  // if (transactionIsExist) {
+  //   const orderIsExist = await Orders.findOne({
+  //     where: { ImageId: ImageId, TransactionId: transactionIsExist.id },
+  //   });
+
+  //   if (!orderIsExist) {
+  //     Orders.create({
+  //       ImageId: ImageId,
+  //       TransactionId: transactionIsExist.id,
+  //     })
+  //       .then(() => {
+  //         res.json("create order successfully");
+  //       })
+  //       .catch((err) => {
+  //         if (err) {
+  //           res.status(400).json({ error: err });
+  //         }
+  //       });
+  //   } else {
+  //     res.json("You has already buy this image");
+  //   }
+  // } else {
+  //   Transactions.create({ UserId: UserId }).then((transaction) => {
+  //     Orders.create({
+  //       ImageId: ImageId,
+  //       TransactionId: transaction.id,
+  //     }).then(() => {
+  //       res.json("create order successfully");
+  //     });
+  //   });
+  // }
 });
 
 router.post("/transaction", async (req, res) => {
