@@ -5,7 +5,6 @@ const createTokens = (user) => {
     { username: user.username, id: user.id },
     "carlieoscardeltaechotangopapaalphanovemberdeltaalpha"
   );
-
   return accessToken;
 };
 

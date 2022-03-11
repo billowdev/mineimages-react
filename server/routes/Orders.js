@@ -50,8 +50,9 @@ router.post("/", validateToken, async (req, res) => {
   | 11.       then create Transaction.then( create order with target ImageId and this.Transaction.id )
   | 12. |# -- end process -- #|
   */
-
+  let isOwned = false;
   // ----------------- condition 1 - 4 working ------------------- \\
+  // these part waiting for improve coding
   const transactionNotOncart = await Transactions.findAll({
     where: {
       [Op.and]: [
@@ -59,50 +60,76 @@ router.post("/", validateToken, async (req, res) => {
         { [Op.or]: [{ state: "complete" }, { state: "pending" }] },
       ],
     },
+  }).then((data) => {
+    let myList = [];
+    data.forEach((element) => {
+      myList.push(element.id);
+    });
+    return myList;
   });
-  let data = [];
-  transactionNotOncart.forEach(element => {
-    data.push(element)
-  });
-  res.json(data);
+
+  if (transactionNotOncart) {
+    // check transaction that not oncart there are in orders table ?
+    let data = [];
+    data.push(
+      await Orders.findOne({
+        where: { ImageId: ImageId, TransactionId: transactionNotOncart },
+      })
+        .then((result) => result)
+        .catch((err) => {
+          res.status(400).json({ error: err });
+        })
+    );
+
+    if (data[0] != null) {
+      isOwned = true;
+      res.json("this images you have already owned");
+    } else {
+      isOwned = false;
+      res.json("not found transaction on state complete or pending");
+    }
+  }
 
   // ----------------- condition 5 - 12 working ------------------- \\
+  if (!isOwned) {
+    const transactionIsExist = await Transactions.findOne({
+      where: { UserId: UserId, state: "oncart" },
+    });
+    // console.log(`\n\n${transactionIsExist.id}`);
 
-  // const transactionIsExist = await Transactions.findOne({
-  //   where: { UserId: UserId, state: "oncart" },
-  // });
+    if (transactionIsExist) {
+      const orderIsExist = await Orders.findOne({
+        where: { ImageId: ImageId, TransactionId: transactionIsExist.id },
+      });
 
-  // if (transactionIsExist) {
-  //   const orderIsExist = await Orders.findOne({
-  //     where: { ImageId: ImageId, TransactionId: transactionIsExist.id },
-  //   });
-
-  //   if (!orderIsExist) {
-  //     Orders.create({
-  //       ImageId: ImageId,
-  //       TransactionId: transactionIsExist.id,
-  //     })
-  //       .then(() => {
-  //         res.json("create order successfully");
-  //       })
-  //       .catch((err) => {
-  //         if (err) {
-  //           res.status(400).json({ error: err });
-  //         }
-  //       });
-  //   } else {
-  //     res.json("You has already buy this image");
-  //   }
-  // } else {
-  //   Transactions.create({ UserId: UserId }).then((transaction) => {
-  //     Orders.create({
-  //       ImageId: ImageId,
-  //       TransactionId: transaction.id,
-  //     }).then(() => {
-  //       res.json("create order successfully");
-  //     });
-  //   });
-  // }
+      if (!orderIsExist) {
+        Orders.create({
+          ImageId: ImageId,
+          TransactionId: transactionIsExist.id,
+        })
+          .then(() => {
+            res.json("create order successfully");
+          })
+          .catch((err) => {
+            if (err) {
+              res.status(400).json({ error: err });
+            }
+          });
+      } else {
+        res.json("You has already buy this image");
+      }
+    } else {
+      // console.log("\n this is false state \n");
+      Transactions.create({ UserId: UserId }).then((transaction) => {
+        Orders.create({
+          ImageId: ImageId,
+          TransactionId: transaction.id,
+        }).then(() => {
+          res.json("create order successfully");
+        });
+      });
+    }
+  }
 });
 
 router.post("/transaction", async (req, res) => {

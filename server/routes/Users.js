@@ -102,8 +102,16 @@ router.post("/image/:imgId", validateToken, async (req, res) => {
       pathOrigin:imageReq.pathOrigin,
       price:imageReq.price,
       visible:imageReq.visible,
-      remove:imageReq.remove,
-      UserId:UserId
+      remove:imageReq.remove
+    }
+    await Images.update(data, {where:{UserId:UserId, id:ImageId}}).then(()=>{
+      res.json("update successfully")
+    })
+  } else {
+    const data = {
+      pathOrigin:imageReq.pathOrigin,
+      price:imageReq.price,
+      remove:imageReq.remove
     }
     await Images.update(data, {where:{UserId:UserId, id:ImageId}}).then(()=>{
       res.json("update successfully")
