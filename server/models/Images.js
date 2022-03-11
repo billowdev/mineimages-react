@@ -21,13 +21,18 @@ module.exports = (sequelize, DataTypes) => {
     visible: {
       type: DataTypes.ENUM(["public", "private"]),
       allowNull: false,
-      defaultValue: "public",
+      defaultValue: "private",
     },
     status: {
       type: DataTypes.ENUM(["active", "inactive"]),
       allowNull: false,
-      defaultValue: "active",
+      defaultValue: "inactive",
     },
+    remove: {
+      type: DataTypes.ENUM(["YES","NO"]),
+      allowNull: false,
+      defaultValue: "NO"
+    }
   });
 
   Images.associate = (models) => {
