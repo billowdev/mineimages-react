@@ -1,0 +1,45 @@
+{
+    "users": [
+        {
+            "username": "akira",
+            "password": "akira1234",
+            "email": "akira@example.com",
+            "firstName": "Akira",
+            "lastName": "Satoshi",
+            "telephone": "0987654321",
+            "permission": "admin"
+        },
+        {
+            "username": "akio",
+            "password": "akio1234",
+            "email": "akio@example.com",
+            "firstName": "Akio",
+            "lastName": "Osaki",
+            "telephone": "0987654322"
+        },
+        {
+            "username": "satoshi",
+            "password": "satoshi1234",
+            "email": "satoshi@example.com",
+            "firstName": "satoshi",
+            "lastName": "nagamoto",
+            "telephone": "0987654323"
+        },
+        {
+            "username": "masato",
+            "password": "masato21234",
+            "email": "masato@example.com",
+            "firstName": "Masato",
+            "lastName": "nakamura",
+            "telephone": "0987654324"
+        },
+        {
+            "username": "lacta",
+            "password": "lacta21234",
+            "email": "lacta@example.com",
+            "firstName": "lac",
+            "lastName": "ta",
+            "telephone": "0987654325"
+        }
+    ]
+}

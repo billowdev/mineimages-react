@@ -117,7 +117,7 @@ ImagesComponent.defaultProps = {
             // thumbnailWidth: 271,
             // thumbnailHeight: 320,
             tags: [{value: "Nature", title: "Nature | Flowers"}],
-            caption: "Orange Macro (Tom Eversley - isorepublic.com)"
+            caption: "Hello",
         },
         {
             src: require("../../assets/images/img2.jpg"),

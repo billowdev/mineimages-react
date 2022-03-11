@@ -1,0 +1,16 @@
+{
+    "categories":[
+    {
+        "id": "001",
+        "name": "Girl",
+        "desc": "About Girl",
+        "imageid": ""
+    },
+    {
+        "id": "002",
+        "name": "Woman",
+        "desc": "About Woman",
+        "imageid": ""
+    }
+]
+}

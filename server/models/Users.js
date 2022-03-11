@@ -17,11 +17,15 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING(150),
       allowNull: false,
     },
-    name: {
-      type: DataTypes.STRING(100),
+    firstName: {
+      type: DataTypes.STRING(60),
       allowNull: false,
     },
-    phone: {
+    lastName: {
+      type: DataTypes.STRING(60),
+      allowNull: false,
+    },
+    telephone: {
       type: DataTypes.STRING(10),
       allowNull: false,
     },
@@ -38,14 +42,23 @@ module.exports = (sequelize, DataTypes) => {
   });
 
   Users.associate = (models) => {
+    // owner images
     Users.hasMany(models.Images, {
       onDelete: "cascade",
     });
+    
+    Users.hasMany(models.Transactions, {
+      onDelete: "cascade",
+    });
+    
+    // user has one payment
+    Users.hasOne(models.PaymentUsers, {
+      onDelete: "cascade",
+    });
 
-    Users.belongsToMany(models.Images, {
-      through: models.Orders,
-      foreignKey: "UserId",
-      otherKey: "ImageId",
+    // user has one Addresses
+    Users.hasOne(models.Addresses, {
+      onDelete: "cascade",
     });
   };
 
