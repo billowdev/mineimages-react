@@ -1,18 +1,12 @@
 {
     "orders":[
         {
-            "createdAt": "",
-            "updatedAt": "",
-            "imageid": "",
-            "userid": "",
-            "OrderDetailid": ""
+            "imageid": ""
         },
         {
-            "createdAt": "",
-            "updatedAt": "",
-            "imageid": "",
-            "userid": "",
-            "OrderDetailid": ""
+
+            "imageid": ""
+
         }
     ]
 }

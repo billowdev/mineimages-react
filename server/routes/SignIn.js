@@ -15,19 +15,27 @@ router.post("/", async (req, res) => {
   if (!user) res.status(400).json({ error: "user doesn't Exist" });
 
   const dbPassword = user.password;
-  bcrypt.compare(password, dbPassword).then((math) => {
-    if (!math) {
-      res.status(400).json({ error: "wrong username & password combination!" });
-    } else {
-      const accessToken = createTokens(user);
 
-      res.cookie("access-token", accessToken, {
-        maxAge: 60 * 60 * 24 * 30 * 1000,
-        httpOnly: true,
-      });
-      res.json("LOGGED IN SUCCESSFULY");
-    }
-  });
+  bcrypt
+    .compare(password, dbPassword)
+    .then((math) => {
+      if (!math) {
+        res
+          .status(400)
+          .json({ error: "wrong username & password combination!" });
+      } else {
+        const accessToken = createTokens(user);
+
+        res.cookie("access-token", accessToken, {
+          maxAge: 60 * 60 * 24 * 30 * 1000,
+          httpOnly: true,
+        });
+        res.json("LOGGED IN SUCCESSFULY");
+      }
+    })
+    .catch((err) => {
+      res.status(400).json({ error: err });
+    });
 });
 
 module.exports = router;
