@@ -27,7 +27,6 @@ module.exports = (sequelize, DataTypes) => {
     },
     telephone: {
       type: DataTypes.STRING(10),
-      allowNull: false,
     },
     permission: {
       type: DataTypes.ENUM(["admin", "user"]),
@@ -48,6 +47,10 @@ module.exports = (sequelize, DataTypes) => {
     });
     
     Users.hasMany(models.Transactions, {
+      onDelete: "cascade",
+    });
+
+    Users.hasMany(models.Likes, {
       onDelete: "cascade",
     });
     

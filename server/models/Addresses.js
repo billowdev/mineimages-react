@@ -18,12 +18,15 @@ module.exports = (sequelize, DataTypes) => {
     country: {
       type: DataTypes.STRING(50),
       allowNull: false,
-    }
+    },
   });
 
   Addresses.associate = (models) => {
-		Addresses.belongsTo(models.Users, { foreignKey: "UserId"});
-	};
+    Addresses.belongsTo(models.Users, {
+      foreignKey: "UserId",
+      onDelete: "cascade",
+    });
+  };
 
   return Addresses;
 };

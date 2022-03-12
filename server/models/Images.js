@@ -21,21 +21,24 @@ module.exports = (sequelize, DataTypes) => {
     visible: {
       type: DataTypes.ENUM(["public", "private"]),
       allowNull: false,
-      defaultValue: "public",
+      defaultValue: "private",
     },
     status: {
       type: DataTypes.ENUM(["active", "inactive"]),
       allowNull: false,
-      defaultValue: "active",
+      defaultValue: "inactive",
     },
+    remove: {
+      type: DataTypes.ENUM(["YES","NO"]),
+      allowNull: false,
+      defaultValue: "NO"
+    }
   });
 
   Images.associate = (models) => {
-    // Images.belongsToMany(models.Users, {
-    //   through: models.Orders,
-    //   foreignKey: "ImageId",
-    //   otherKey: "UserId",
-    // });
+    Images.belongsTo(models.Users, {
+      foreignKey: "UserId"
+    });
 
     Images.hasMany(models.Categories, {
       onDelete: "cascade"
@@ -44,6 +47,10 @@ module.exports = (sequelize, DataTypes) => {
     Images.hasMany(models.Orders, {
       onDelete: "cascade"
     })
+
+    Images.hasMany(models.Likes, {
+      onDelete: "cascade"
+    }) 
   };
   return Images;
 };
