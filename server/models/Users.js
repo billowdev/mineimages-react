@@ -27,7 +27,6 @@ module.exports = (sequelize, DataTypes) => {
     },
     telephone: {
       type: DataTypes.STRING(10),
-      allowNull: false,
     },
     permission: {
       type: DataTypes.ENUM(["admin", "user"]),

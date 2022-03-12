@@ -1,5 +1,6 @@
 import "./App.css";
 import SignIn from "./pages/SignIn";
+import SignUp from "./pages/SignUp";
 import Home from "./pages/Home";
 import { useState, useEffect } from "react";
 import { BrowserRouter as Router, Route, Routes, Link } from "react-router-dom";
@@ -15,6 +16,11 @@ function App() {
     }
   }, []);
 
+  const logout = () => {
+    Cookies.remove("access-token");
+    setAuthState(false);
+  };
+
   return (
     <div className="App">
       <AuthContext.Provider value={{ authState, setAuthState }}>
@@ -22,7 +28,9 @@ function App() {
           {/* ============================ Navbar Section ==============================  */}
           <Navbar bg="light" expand="lg">
             <Container fluid>
-              <Navbar.Brand href="#">Mineimages</Navbar.Brand>
+              <Link to="/" className="Navbar__brand">
+                <Navbar.Brand>Mineimages</Navbar.Brand>
+              </Link>
               <Navbar.Toggle aria-controls="navbarScroll" />
               <Navbar.Collapse id="navbarScroll">
                 <Nav
@@ -30,8 +38,7 @@ function App() {
                   style={{ maxHeight: "100px" }}
                   navbarScroll
                 >
-                  <Nav.Link href="#action1">Home</Nav.Link>
-                  <Nav.Link href="#action2">New</Nav.Link>
+                  <Nav.Link href="/">New</Nav.Link>
                   <NavDropdown title="Link" id="navbarScrollingDropdown">
                     <NavDropdown.Item href="#action3">Popular</NavDropdown.Item>
                     <NavDropdown.Item href="#action4">
@@ -49,19 +56,18 @@ function App() {
                 {!authState && (
                   <>
                     <Link to="/auth/signin">
-                      <Button variant="outline-success btn btn-SignIn">
-                        Sign In
-                      </Button>
+                      <Button variant="outline-success btn">SignIn</Button>
                     </Link>
+
                     <Link to="/signup">
                       <Button variant="outline-success btn">SignUp</Button>
                     </Link>
                   </>
                 )}
                 {authState && (
-                   <Link to="/logout">
-                   <Button variant="outline-success btn">Logout</Button>
-                 </Link>
+                  <Button variant="outline-success btn" onClick={logout}>
+                    Logout
+                  </Button>
                 )}
               </Navbar.Collapse>
             </Container>
@@ -70,7 +76,7 @@ function App() {
           <Routes>
             <Route path="/" exact element={<Home />} />
             <Route path="/auth/signin" exact element={<SignIn />} />
-            <Route path="/signup" exact element={<SignIn />} />
+            <Route path="/signup" exact element={<SignUp />} />
           </Routes>
         </Router>
       </AuthContext.Provider>
