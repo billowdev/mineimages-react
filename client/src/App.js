@@ -3,12 +3,13 @@ import SignIn from "./pages/SignIn";
 import SignUp from "./pages/SignUp";
 import Home from "./pages/Home";
 import { useState, useEffect } from "react";
-import { BrowserRouter as Router, Route, Routes, Link } from "react-router-dom";
+import { BrowserRouter as Router, Route, Routes, Link, useNavigate, Navigate  } from "react-router-dom";
 import { AuthContext } from "./helpers/AuthContext";
 import { Button, Container, Navbar, Nav, NavDropdown } from "react-bootstrap";
 import Cookies from "js-cookie";
 
 function App() {
+
   const [authState, setAuthState] = useState(false);
   useEffect(() => {
     if (Cookies.get("access-token")) {
@@ -19,6 +20,7 @@ function App() {
   const logout = () => {
     Cookies.remove("access-token");
     setAuthState(false);
+    
   };
 
   return (
@@ -65,9 +67,12 @@ function App() {
                   </>
                 )}
                 {authState && (
-                  <Button variant="outline-success btn" onClick={logout}>
+                  <Link to="/">
+                   <Button variant="outline-success btn" onClick={logout}>
                     Logout
                   </Button>
+                </Link>
+                 
                 )}
               </Navbar.Collapse>
             </Container>
