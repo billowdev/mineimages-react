@@ -6,10 +6,10 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       defaultValue: DataTypes.UUIDV1,
     },
-    state: {
-      type: DataTypes.ENUM(["complete", "pending", "oncart"]),
+    status: {
+      type: DataTypes.ENUM(["complete", "pending"]),
       allowNull: false,
-      defaultValue: "oncart",
+      defaultValue: "pending",
     },
   });
 
@@ -18,7 +18,7 @@ module.exports = (sequelize, DataTypes) => {
       onDelete: "cascade"
     });
 
-    Transactions.belongsTo(models.Users, { foreignKey: "UserId" });
+    
   };
 
   return Transactions;

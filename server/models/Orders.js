@@ -5,7 +5,12 @@ module.exports = (sequelize, DataTypes) => {
       primaryKey: true,
       autoIncrement: true,
       allowNull: false,
-    }
+    },
+    status: {
+      type: DataTypes.ENUM(["oncart", "complete", "transaction"]),
+      allowNull: false,
+      defaultValue: "oncart",
+    },
   });
 
   // this stack help me alot :)
@@ -13,7 +18,9 @@ module.exports = (sequelize, DataTypes) => {
 
   Orders.associate = (models) => {
     Orders.belongsTo(models.Images, { foreignKey: "ImageId" });
-    Orders.belongsTo(models.Transactions, { foreignKey: "TransactionId" });
+    Orders.belongsTo(models.Users, { foreignKey: "UserId" });
+
+    Orders.belongsTo(models.Transactions, { foreignKey: "TransactionId", allowNull:true});
   };
   return Orders;
 };

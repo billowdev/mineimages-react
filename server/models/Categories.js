@@ -7,6 +7,12 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
     },
   });
+
+  Categories.associate = (models) => {
+    Categories.hasMany(models.Images, {
+      onDelete: "cascade"
+    })
+  };
   
 
   return Categories;

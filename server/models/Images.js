@@ -40,10 +40,6 @@ module.exports = (sequelize, DataTypes) => {
       foreignKey: "UserId"
     });
 
-    Images.hasMany(models.Categories, {
-      onDelete: "cascade"
-    })
-    
     Images.hasMany(models.Orders, {
       onDelete: "cascade"
     })
