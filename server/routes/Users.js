@@ -7,9 +7,9 @@ const { raw } = require("express");
 // ----------------- START Admin route START ----------------- \\
 router.get("/lacakp", validateToken, async (req, res) => {
   const id = req.user.id;
-  const data = await Users.findOne({ where: { id: id } });
-  if (!(data.permission === "admin")) {
-    res.json("Permission denied");
+  const permission = req.user.permission
+  if (!(permission === "admin")) {
+    res.status(404).json("404 not found");
   } else {
     const allUser = await Users.findAll();
     res.json(allUser);

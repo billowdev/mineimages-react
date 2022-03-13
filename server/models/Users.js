@@ -53,6 +53,10 @@ module.exports = (sequelize, DataTypes) => {
     Users.hasMany(models.Likes, {
       onDelete: "cascade",
     });
+
+    Users.hasMany(models.Orders, {
+      onDelete: "cascade",
+    });
     
     // user has one payment
     Users.hasOne(models.PaymentUsers, {
@@ -63,6 +67,8 @@ module.exports = (sequelize, DataTypes) => {
     Users.hasOne(models.Addresses, {
       onDelete: "cascade",
     });
+
+
   };
 
   return Users;
