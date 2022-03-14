@@ -1,9 +1,7 @@
 import React, { useState, useContext } from "react";
-import axios from "axios";
 import { AuthContext } from "../helpers/AuthContext";
 import { Link, useNavigate } from "react-router-dom";
-import Cookies from "js-cookie";
-// import { Button, Container, Card, Form, Col,InputGroup, Row} from "react-bootstrap";
+import { Authen } from "../API";
 import {
   Col,
   Row,
@@ -15,30 +13,21 @@ import {
   InputGroup,
 } from "@themesberg/react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faEnvelope,
-  faUnlockAlt,
-} from "@fortawesome/free-solid-svg-icons";
-
+import { faEnvelope, faUnlockAlt } from "@fortawesome/free-solid-svg-icons";
 
 function SignIn() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const { setAuthState } = useContext(AuthContext);
+  
 
   const navigate = useNavigate();
 
   const signin = () => {
-    const data = { username: username, password: password };
-    axios.post("http://localhost:3001/signin", data).then((response) => {
-      if (response.data.error) {
-        alert(response.data.error);
-      } else {
-        Cookies.set("access-token", response.data, { expires: 30 });
-        setAuthState(true);
-        navigate("/");
-      }
-    });
+    const login = Authen(username, password);
+    setAuthState(login);
+    if (login) navigate("/");
+
   };
 
   return (
@@ -111,7 +100,7 @@ function SignIn() {
                 <Button
                   variant="primary"
                   type="submit"
-                  className="w-100"
+                  className="btn btn-success w-100"
                   onClick={signin}
                 >
                   Sign in
