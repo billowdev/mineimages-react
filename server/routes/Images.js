@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const { Images, Categories } = require("../models");
+const { cloudinary } = require("../utils/cloudinary");
 
 router.get("/", async (req, res) => {
   const listOfImages = await Images.findAll();

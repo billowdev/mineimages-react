@@ -4,7 +4,7 @@ import * as Yup from "yup";
 import axios from "axios";
 import { AuthContext } from "../helpers/AuthContext";
 import { Link, useNavigate } from "react-router-dom";
-import { API_URL, Register, Authen } from "../API";
+import { API_URL, Register, Authen } from "../utils/api";
 
 function Registration() {
   const navigate = useNavigate();

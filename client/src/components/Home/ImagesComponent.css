@@ -1,0 +1,13 @@
+.gallery {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, 300px);
+	grid-gap: 2em;
+	justify-content: center;
+  }
+  
+  @media (max-width: 786px){
+	.gallety{
+	  grid-template-columns: 1fr;
+	  justify-items: center;
+	}
+  }
