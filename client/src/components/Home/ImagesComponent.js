@@ -23,7 +23,7 @@ function ImagesComponent() {
   return (
     <div>
       <h1 className="title">Cloudinary Gallery</h1>
-      <div className="gallery">
+      {/* <div className="gallery">
         {imageIds &&
           imageIds.map((imageId, index) => (
             <Image
@@ -35,7 +35,7 @@ function ImagesComponent() {
               crop="scale"
             />
           ))}
-      </div>
+      </div> */}
     </div>
   )
 }

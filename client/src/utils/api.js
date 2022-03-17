@@ -5,7 +5,7 @@ const Cookies = require("js-cookie");
 export const Authen = async (username, password) => {
   const data = { username: username, password: password };
   let status = false;
-  axios.post(`${API_URL}/signin`, data).then((response) => {
+  axios.post(`${API_URL}/auth/signin`, data).then((response) => {
     if (response.data.error) {
       alert(response.data.error);
     } else {
@@ -16,4 +16,12 @@ export const Authen = async (username, password) => {
   return status;
 };
 
-
+export const Activation = (token) => {
+  axios.post(`${API_URL}/auth/email-activate`, token).then((response) => {
+    if (response.data.error) {
+      alert(response.data.error);
+    } else {
+      response.json("Activated")
+    }
+  });
+};

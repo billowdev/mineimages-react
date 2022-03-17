@@ -1,16 +1,27 @@
+import { useState, useEffect } from "react";
+import {
+  BrowserRouter as Router,
+  Route,
+  Routes,
+  Link,
+  useNavigate,
+  Navigate,
+} from "react-router-dom";
+import { AuthContext } from "./helpers/AuthContext";
+import { Button, Container, Navbar, Nav, NavDropdown } from "react-bootstrap";
 import "./App.css";
 import SignIn from "./pages/SignIn";
 import SignUp from "./pages/SignUp";
 import Home from "./pages/Home";
-import { useState, useEffect } from "react";
-import { BrowserRouter as Router, Route, Routes, Link, useNavigate, Navigate  } from "react-router-dom";
-import { AuthContext } from "./helpers/AuthContext";
-import { Button, Container, Navbar, Nav, NavDropdown } from "react-bootstrap";
+import Footer from "./components/Footer";
 import Cookies from "js-cookie";
+import Card from "./pages/Card";
+import Shopping from "./pages/Shopping";
+import Authentication from "./pages/Authentication";
 
 function App() {
-
   const [authState, setAuthState] = useState(false);
+
   useEffect(() => {
     if (Cookies.get("access-token")) {
       setAuthState(true);
@@ -20,7 +31,6 @@ function App() {
   const logout = () => {
     Cookies.remove("access-token");
     setAuthState(false);
-    
   };
 
   return (
@@ -40,9 +50,17 @@ function App() {
                   style={{ maxHeight: "100px" }}
                   navbarScroll
                 >
-                  <Nav.Link href="/">New</Nav.Link>
+                  <Link to="/card">
+                    <Nav.Link href="/">New</Nav.Link>
+                  </Link>
+
                   <NavDropdown title="Link" id="navbarScrollingDropdown">
-                    <NavDropdown.Item href="#action3">Popular</NavDropdown.Item>
+                    <Link to="/shopping">
+                      <NavDropdown.Item href="#action3">
+                        Cart
+                      </NavDropdown.Item>
+                    </Link>
+
                     <NavDropdown.Item href="#action4">
                       Another action
                     </NavDropdown.Item>
@@ -51,9 +69,7 @@ function App() {
                       Something else here
                     </NavDropdown.Item>
                   </NavDropdown>
-                  <Nav.Link href="#" disabled>
-                    Link
-                  </Nav.Link>
+                  <Nav.Link href="#" disabled></Nav.Link>
                 </Nav>
                 {!authState && (
                   <>
@@ -68,20 +84,25 @@ function App() {
                 )}
                 {authState && (
                   <Link to="/">
-                   <Button variant="outline-success btn" onClick={logout}>
-                    Logout
-                  </Button>
-                </Link>
-                 
+                    <Button variant="outline-success btn" onClick={logout}>
+                      Logout
+                    </Button>
+                  </Link>
                 )}
               </Navbar.Collapse>
             </Container>
           </Navbar>
           {/* ============================ Navbar Section ==============================  */}
+
           <Routes>
             <Route path="/" exact element={<Home />} />
             <Route path="/auth/signin" exact element={<SignIn />} />
             <Route path="/signup" exact element={<SignUp />} />
+            <Route path="/checkout/card" exact element={<Card />} />
+            <Route path="/shopping" exact element={<Shopping />} />
+            <Route path="/authentication/activate/:token" exact element={<Authentication />} />
+            
+            
           </Routes>
         </Router>
       </AuthContext.Provider>

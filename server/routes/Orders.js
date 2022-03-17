@@ -9,11 +9,16 @@ router.get("/", validateToken, async (req, res) => {
   const listOrderOncart = await Orders.findAll({
     where: { UserId: UserId, status: "oncart" },
   });
+
   const listOrderComplete = await Orders.findAll({
     where: { UserId: UserId, status: "complete" },
   });
 
-  res.json({ oncart: listOrderOncart, complete: listOrderComplete });
+  const listOrderTransaction = await Orders.findAll({
+    where: { UserId: UserId, status: "transaction" },
+  });
+
+  res.json({ oncart: listOrderOncart, complete: listOrderComplete, transaction:listOrderTransaction });
 });
 
 router.post("/", validateToken, async (req, res) => {
@@ -78,11 +83,11 @@ router.post("/", validateToken, async (req, res) => {
           }
         });
     } else {
-      res.json("this image has already oncart ");
+      res.json("this image has already oncart or image already on transaction ");
     }
   } else {
     res.json({
-      text: "You have already owned this image or image already on transaction",
+      text: "You have already owned this image ",
       item: orderComplete[0],
     });
   }

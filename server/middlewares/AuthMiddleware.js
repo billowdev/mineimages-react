@@ -2,9 +2,10 @@ const { sign, verify } = require("jsonwebtoken");
 
 const createTokens = (user) => {
   const accessToken = sign(
-    { username: user.username, id: user.id, permission:user.permission},
-    "carlieoscardeltaechotangopapaalphanovemberdeltaalpha"
+    { email: user.email, id: user.id, permission:user.permission},
+    process.env.JWT_SECRET
   );
+  console.log(process.env.JWT_SECRET)
   return accessToken;
 };
 
@@ -18,7 +19,7 @@ const validateToken = (req, res, next) => {
   try {
     const validToken = verify(
       accessToken,
-      "carlieoscardeltaechotangopapaalphanovemberdeltaalpha"
+      process.env.JWT_SECRET
     );
 
     if (validToken) {
