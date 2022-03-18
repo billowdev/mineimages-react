@@ -3,7 +3,7 @@ import axios from "axios";
 import Cookies from "js-cookie";
 import { AuthContext } from "../helpers/AuthContext";
 import { Link, useNavigate } from "react-router-dom";
-import Footer from "../components/Footer";
+import Footer from "../components/Footer/Footer";
 import toast from "react-hot-toast";
 
 import {

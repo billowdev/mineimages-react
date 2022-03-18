@@ -72,6 +72,8 @@
 	box-sizing: border-box;
 	padding: 0;
 	margin: 0;
+	
+	
   }
   
   html {
@@ -84,6 +86,7 @@
 	font-size: var(--normal-font-size);
 	background-color: var(--body-color);
 	color: var(--text-color);
+	min-height:  100vh;
   }
   
   h1, h2, h3, h4 {
@@ -204,7 +207,6 @@
     padding: 10px 25px;
     /* color: var(--title-color); */
     /* background-color: var(--main-color-lighter); */
-
   }
   
   .home-text button:hover {
@@ -220,6 +222,23 @@
 
 } */
 
+.App-grid {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	column-gap: 16px;
+	row-gap: 16px;
+	max-width: 800px;
+	justify-content: center;
+	align-items: center;
+	margin-left: auto;
+	margin-right: auto;
+	background-color: var(--body-color);
+}
+
+.ImageItem img {
+	display: block;
+	width: 100%;
+}
 /*==================== CONTACT ME ====================*/
 
 

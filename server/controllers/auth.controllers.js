@@ -130,7 +130,7 @@ exports.signinController = async (req, res) => {
             maxAge: 60 * 60 * 24 * 30 * 1000,
             httpOnly: true,
           });
-          res.json("LOGGED IN SUCCESSFULY");
+          res.json("LOGIN SUCCESS FULY");
         }
       })
       .catch((err) => {
@@ -140,3 +140,4 @@ exports.signinController = async (req, res) => {
     return res.status(400).json({ error: "user doesn't Exist" });
   }
 };
+

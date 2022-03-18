@@ -2,7 +2,7 @@ import React, { useContext } from "react";
 import { Formik, Form, Field, FieldArray, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import axios from "axios";
-import { AuthContext } from "../helpers/AuthContext";
+
 import { Link, useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 
@@ -27,7 +27,7 @@ import {
 function Registration() {
   const API_URL = process.env.REACT_APP_API_URL;
   const navigate = useNavigate();
-  const { setAuthState } = useContext(AuthContext);
+  
   const initialValues = {
     username: "",
     password: "",
