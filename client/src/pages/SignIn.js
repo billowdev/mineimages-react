@@ -4,6 +4,7 @@ import Cookies from "js-cookie";
 import { AuthContext } from "../helpers/AuthContext";
 import { Link, useNavigate } from "react-router-dom";
 import Footer from "../components/Footer";
+import toast from "react-hot-toast";
 
 import {
   Col,
@@ -26,19 +27,36 @@ function SignIn() {
   const API_URL = process.env.REACT_APP_API_URL;
   const navigate = useNavigate();
 
+  const notify = () => toast.error("This didn't work.");
+
   const signin = () => {
+    // let status = false;
     if (email != "" && password != "") {
       const data = { email: email, password: password };
-      axios.post(`${API_URL}/auth/signin`, data).then((response) => {
-        if (response.data.error) {
-          alert(response.data.error);
-        } else {
-          Cookies.set("access-token", response.data, { expires: 30 });
-          setAuthState(true)
-          navigate("/")
-        }
+      const login = axios
+        .post(`${API_URL}/auth/signin`, data)
+        .then((response) => {
+          if (response.data.error) {
+            alert(response.data.error);
+          } else {
+            Cookies.set("access-token", response.data, { expires: 30 });
+            setAuthState(true);
+            navigate("/")
+          }
+        });
+      toast.promise(login, {
+        loading: "Loading...",
+        success: "Sign in sucessfuly",
+        error: "sign in failed",
       });
     }
+    // if (status) {
+    // toast.success("Sign In Successfully!");
+
+    //   navigate("/");
+    // } else {
+
+    // }
   };
 
   return (

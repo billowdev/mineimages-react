@@ -10,6 +10,8 @@ import {
   InputGroup,
 } from "@themesberg/react-bootstrap";
 
+import toast from "react-hot-toast";
+
 function Authentication() {
   const [activated, setActivated] = useState();
   const API_URL = process.env.REACT_APP_API_URL;
@@ -18,13 +20,18 @@ function Authentication() {
   useEffect(() => {
     const data = window.location.pathname.split("/");
     const token = { token: data[3] };
-    axios.post(`${API_URL}/auth/email-activate`, token).then((response) => {
+    const activate = axios.post(`${API_URL}/auth/email-activate`, token).then((response) => {
       if (response.data.error) {
         alert(response.data.error);
         setActivated(false);
       } else {
         setActivated(true);
       }
+    });
+    toast.promise(activate, {
+      loading: "Loading...",
+      success: "Activate account success",
+      error: "link activation has already expriry",
     });
   }, []);
 
@@ -42,8 +49,7 @@ function Authentication() {
                 Welcome to mineimages
               </h1>
               <hr />
-              
-              <Button className="btn-success" href="/">Home</Button>
+              <Button className="btn-success" href="/auth/signin">Sign in</Button>
             </div>
             
           </Row>
@@ -55,13 +61,11 @@ function Authentication() {
               className="shadow-sm  p-3 text-center rounded"
               style={{ marginTop: "10rem" }}
             >
-              <h1 className="text-success">
+              <h1 className="text-warning">
                 Account have been activated <br />
-                Welcome to mineimages
               </h1>
               <hr />
-              
-              <Button className="btn-success" href="/">Home</Button>
+              <Button className="btn-success" href="/auth/signin">Sign in</Button>
             </div>
             
           </Row>

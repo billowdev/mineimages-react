@@ -8,7 +8,14 @@ import {
   Navigate,
 } from "react-router-dom";
 import { AuthContext } from "./helpers/AuthContext";
-import { Button, Container, Navbar, Nav, NavDropdown, Div } from "react-bootstrap";
+import {
+  Button,
+  Container,
+  Navbar,
+  Nav,
+  NavDropdown,
+  Div,
+} from "react-bootstrap";
 import "./App.css";
 import SignIn from "./pages/SignIn";
 import SignUp from "./pages/SignUp";
@@ -18,6 +25,7 @@ import Cookies from "js-cookie";
 import Card from "./pages/Card";
 import Shopping from "./pages/Shopping";
 import Authentication from "./pages/Authentication";
+import toast, { Toaster } from "react-hot-toast";
 
 function App() {
   const [authState, setAuthState] = useState(false);
@@ -31,12 +39,16 @@ function App() {
   const logout = () => {
     Cookies.remove("access-token");
     setAuthState(false);
+    toast.success("Logout");
   };
 
   return (
     <div className="App">
       <AuthContext.Provider value={{ authState, setAuthState }}>
         <Router>
+          <div>
+            <Toaster />
+          </div>
           {/* ============================ Navbar Section ==============================  */}
           <Navbar bg="light" expand="lg">
             <Container fluid>
@@ -50,15 +62,23 @@ function App() {
                   style={{ maxHeight: "100px" }}
                   navbarScroll
                 >
-                  <Link to="/card" className="Nav-link">
-                    <Nav.Link href="/">New</Nav.Link>
-                  </Link>
-                  <Link to="/shopping" className="Nav-link">
-                      <Nav.Link href="#action3">
-                        Cart
-                      </Nav.Link>
-                    </Link>
-{/* 
+                  {authState && (
+                    <>
+                      <Link to="/shopping" className="Nav-link">
+                        <Nav.Link href="#action3">Cart</Nav.Link>
+                      </Link>
+                    </>
+                  )}
+
+                  {authState && (
+                    <>
+                      <Link to="/card" className="Nav-link">
+                        <Nav.Link href="/">New</Nav.Link>
+                      </Link>
+                    </>
+                  )}
+
+                  {/* 
                   <NavDropdown title="Link" id="navbarScrollingDropdown">
                     <Link to="/shopping">
                       <NavDropdown.Item href="#action3">
@@ -76,32 +96,29 @@ function App() {
                   </NavDropdown> */}
 
                   <Nav.Link href="#" disabled></Nav.Link>
-
-
                 </Nav>
-              <Nav >
-                {!authState && (
-                  <>
-                    <Link to="/auth/signin" className="Nav-link">
-                    <Nav.Link href="/">SignIn</Nav.Link>
-                      {/* <Button variant="outline-success btn">SignIn</Button> */}
-                    </Link>
+                <Nav>
+                  {!authState && (
+                    <>
+                      <Link to="/auth/signin" className="Nav-link">
+                        <Nav.Link href="/">SignIn</Nav.Link>
+                        {/* <Button variant="outline-success btn">SignIn</Button> */}
+                      </Link>
 
-                    <Link to="/signup" className="Nav-link">
-                      {/* <Button variant="outline-success btn">SignUp</Button> */}
-                      <Nav.Link href="/">SignUp</Nav.Link>
+                      <Link to="/signup" className="Nav-link">
+                        {/* <Button variant="outline-success btn">SignUp</Button> */}
+                        <Nav.Link href="/">SignUp</Nav.Link>
+                      </Link>
+                    </>
+                  )}
+                  {authState && (
+                    <Link to="/">
+                      <Button variant="outline-success btn" onClick={logout}>
+                        Logout
+                      </Button>
                     </Link>
-                  </>
-                )}
-                {authState && (
-                  <Link to="/">
-                    <Button variant="outline-success btn" onClick={logout}>
-                      Logout
-                    </Button>
-                  </Link>
-                )}
-               </Nav>
-
+                  )}
+                </Nav>
               </Navbar.Collapse>
             </Container>
           </Navbar>
@@ -113,9 +130,11 @@ function App() {
             <Route path="/signup" exact element={<SignUp />} />
             <Route path="/checkout/card" exact element={<Card />} />
             <Route path="/shopping" exact element={<Shopping />} />
-            <Route path="/authentication/activate/:token" exact element={<Authentication />} />
-            
-            
+            <Route
+              path="/authentication/activate/:token"
+              exact
+              element={<Authentication />}
+            />
           </Routes>
         </Router>
       </AuthContext.Provider>
