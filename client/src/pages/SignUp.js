@@ -4,7 +4,6 @@ import * as Yup from "yup";
 import axios from "axios";
 import { AuthContext } from "../helpers/AuthContext";
 import { Link, useNavigate } from "react-router-dom";
-import { API_URL, Authen } from "../utils/api";
 
 import {
   Col,
@@ -17,9 +16,15 @@ import {
 } from "@themesberg/react-bootstrap";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEnvelope, faUnlockAlt, faSignature, faMobile } from "@fortawesome/free-solid-svg-icons";
+import {
+  faEnvelope,
+  faUnlockAlt,
+  faSignature,
+  faMobile,
+} from "@fortawesome/free-solid-svg-icons";
 
 function Registration() {
+  const API_URL = process.env.REACT_APP_API_URL;
   const navigate = useNavigate();
   const { setAuthState } = useContext(AuthContext);
   const initialValues = {
@@ -28,20 +33,22 @@ function Registration() {
     email: "",
     firstName: "",
     lastName: "",
-    telephone:"",
+    telephone: "",
   };
 
   const validationSchema = Yup.object().shape({
-    username: Yup.string().min(5).max(70).required(),
-    password: Yup.string().min(8).max(100).required(),
-    email: Yup.string().min(4).max(150).required(),
-    firstName: Yup.string().max(60).required(),
-    lastName: Yup.string().max(60).required(),
-    telephone: Yup.string(10).max(10).required(),
+    password: Yup.string().min(8).max(100).required(" is required"),
+    passwordConfirmation: Yup.string().oneOf(
+      [Yup.ref("password"), null],
+      "Passwords must match"
+    ),
+    email: Yup.string().min(4).max(150).required(" is required"),
+    firstName: Yup.string().max(60).required(" is required"),
+    lastName: Yup.string().max(60).required(" is required"),
+    telephone: Yup.string(10).max(10).required(" is required"),
   });
 
   const onSubmit = (data) => {
-   
     axios.post(`${API_URL}/auth/signup`, data).then((response) => {
       if (response.data.error) {
         alert(response.data.error);
@@ -71,12 +78,18 @@ function Registration() {
           >
             <Form>
               <div className="form-group">
-                <label>First Name: </label>
+                <label>
+                  First Name:
+                  <ErrorMessage
+                    name="firstName"
+                    component="span"
+                    style={{ color: "red" }}
+                  />
+                </label>
                 <div className="input-group">
                   <div className="input-group-text">
                     <FontAwesomeIcon icon={faSignature} />
                   </div>
-                  <ErrorMessage name="firstName" component="span" />
                   <Field
                     className="form-control"
                     type="text"
@@ -87,13 +100,18 @@ function Registration() {
               </div>
 
               <div className="form-group">
-                <label>Last Name: </label>
-
+                <label>
+                  Last Name:
+                  <ErrorMessage
+                    name="lastName"
+                    component="span"
+                    style={{ color: "red" }}
+                  />
+                </label>
                 <div className="input-group">
                   <div className="input-group-text">
-                  <FontAwesomeIcon icon={faSignature} />
+                    <FontAwesomeIcon icon={faSignature} />
                   </div>
-                  <ErrorMessage name="lastName" component="span" />
                   <Field
                     className="form-control"
                     type="text"
@@ -104,27 +122,41 @@ function Registration() {
               </div>
 
               <div className="form-group">
-                <label>Username: </label>
+                <label>
+                  Email:{" "}
+                  <ErrorMessage
+                    name="email"
+                    component="span"
+                    style={{ color: "red" }}
+                  />
+                </label>
                 <div className="input-group">
                   <div className="input-group-text">
                     <FontAwesomeIcon icon={faEnvelope} />
                   </div>
-                  <ErrorMessage name="username" component="span" />
+
                   <Field
                     className="form-control"
-                    autoComplete="off"
-                    name="username"
-                    placeholder="(Ex. John123...)"
+                    type="email"
+                    name="email"
+                    placeholder="exsample@domain.com"
                   />
                 </div>
               </div>
+
               <div className="form-group">
-                <label>Password: </label>
+                <label>
+                  Password:
+                  <ErrorMessage
+                    name="password"
+                    component="span"
+                    style={{ color: "red" }}
+                  />
+                </label>
                 <div className="input-group">
                   <div className="input-group-text">
                     <FontAwesomeIcon icon={faUnlockAlt} />
                   </div>
-                  <ErrorMessage name="password" component="span" />
                   <Field
                     className="form-control"
                     autoComplete="off"
@@ -136,33 +168,48 @@ function Registration() {
               </div>
 
               <div className="form-group">
-                <label>Email: </label>
+                <label>
+                 Password confirmation:{" "}
+                  <ErrorMessage
+                    name="passwordConfirmation"
+                    component="span"
+                    style={{ color: "red" }}
+                  />
+                </label>
                 <div className="input-group">
                   <div className="input-group-text">
-                    <FontAwesomeIcon icon={faEnvelope} />
+                    <FontAwesomeIcon icon={faUnlockAlt} />
                   </div>
-                  <ErrorMessage name="email" component="span" />
                   <Field
                     className="form-control"
-                    type="email"
-                    name="email"
-                    placeholder="exsample@domain.com"
+                    autoComplete="off"
+                    type="password"
+                    name="passwordConfirmation"
+                    placeholder="Your Password..."
                   />
                 </div>
               </div>
 
               <div className="form-group">
-                <label>Phone Number: </label>
+                <label>
+                  Phone Number:
+                  <ErrorMessage
+                    name="telephone"
+                    component="span"
+                    style={{ color: "red" }}
+                  />
+                </label>
                 <div className="input-group">
                   <div className="input-group-text">
                     <FontAwesomeIcon icon={faMobile} />
                   </div>
-                  <ErrorMessage name="telephone" component="span" />
+
                   <Field
                     className="form-control"
                     type="telephone"
                     name="telephone"
-                    placeholder="0987654321"
+                    placeholder="your phone number Ex: 0912314455"
+                    maxLength="10"
                   />
                 </div>
               </div>

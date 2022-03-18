@@ -1,8 +1,10 @@
 import React, { useState, useContext } from "react";
+import axios from "axios";
+import Cookies from "js-cookie";
 import { AuthContext } from "../helpers/AuthContext";
 import { Link, useNavigate } from "react-router-dom";
 import Footer from "../components/Footer";
-import { Authen } from "../utils/api";
+
 import {
   Col,
   Row,
@@ -21,13 +23,22 @@ function SignIn() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const { setAuthState } = useContext(AuthContext);
-
+  const API_URL = process.env.REACT_APP_API_URL;
   const navigate = useNavigate();
 
   const signin = () => {
-    const login = Authen(email, password);
-    setAuthState(login);
-    if (login) navigate("/");
+    if (email != "" && password != "") {
+      const data = { email: email, password: password };
+      axios.post(`${API_URL}/auth/signin`, data).then((response) => {
+        if (response.data.error) {
+          alert(response.data.error);
+        } else {
+          Cookies.set("access-token", response.data, { expires: 30 });
+          setAuthState(true)
+          navigate("/")
+        }
+      });
+    }
   };
 
   return (
@@ -47,41 +58,44 @@ function SignIn() {
               <Form.Group controlId="formBasicEmail">
                 <Form.Label>Email address</Form.Label>
                 <InputGroup
-                    onChange={(event) => {
-                      setEmail(event.target.value);
-                    }}
-                  >
-                    <InputGroup.Text>
-                      <FontAwesomeIcon icon={faEnvelope} />
-                    </InputGroup.Text>
-                    <Form.Control
-                      autoFocus
-                      required
-                      type="email"
-                      placeholder="email"
-                    />
-                  </InputGroup>
+                  onChange={(event) => {
+                    setEmail(event.target.value);
+                  }}
+                >
+                  <InputGroup.Text>
+                    <FontAwesomeIcon icon={faEnvelope} />
+                  </InputGroup.Text>
+                  <Form.Control
+                    autoFocus
+                    required
+                    type="email"
+                    placeholder="email"
+                  />
+                </InputGroup>
               </Form.Group>
 
               <Form.Group controlId="formBasicPassword">
                 <Form.Label>Password</Form.Label>
                 <InputGroup
-                      onChange={(event) => {
-                        setPassword(event.target.value);
-                      }}
-                    >
-                      <InputGroup.Text>
-                        <FontAwesomeIcon icon={faUnlockAlt} />
-                      </InputGroup.Text>
-                      <Form.Control
-                        required
-                        type="password"
-                        placeholder="Password"
-                      />
-                    </InputGroup>
+                  onChange={(event) => {
+                    setPassword(event.target.value);
+                  }}
+                >
+                  <InputGroup.Text>
+                    <FontAwesomeIcon icon={faUnlockAlt} />
+                  </InputGroup.Text>
+                  <Form.Control
+                    required
+                    type="password"
+                    placeholder="Password"
+                  />
+                </InputGroup>
               </Form.Group>
-
-              <Button variant="btn btn-success btn-block mt-3 w-100" type="button" onClick={signin}>
+              <Button
+                variant="btn btn-success btn-block mt-3 w-100"
+                type="button"
+                onClick={signin}
+              >
                 Login
               </Button>
             </Form>

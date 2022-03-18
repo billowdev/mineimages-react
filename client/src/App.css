@@ -172,7 +172,7 @@
 
 
 /*==================== NAV ====================*/
-.Navbar__brand {
+.Navbar__brand, .Nav-link{
 	text-decoration: none;
 }
 .bgImg {

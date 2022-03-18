@@ -1,11 +1,11 @@
 import React,{ useEffect, useState } from 'react'
 import { Image } from "cloudinary-react";
 import "./ImagesComponent.css"
-import {API_URL} from "../../utils/api"
 
 function ImagesComponent() {
   const [imageIds, setImageIds] = useState();
-
+  const API_URL = process.env.REACT_APP_API_URL;
+  
   const loadImages = async () => {
     try {
       const res = await fetch(`${API_URL}/images/photos`);
