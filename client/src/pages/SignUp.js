@@ -1,137 +1,228 @@
-import React, {useContext} from "react";
-import { Formik, Form, Field, ErrorMessage } from "formik";
+import React, { useContext } from "react";
+import { Formik, Form, Field, FieldArray, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import axios from "axios";
 import { AuthContext } from "../helpers/AuthContext";
 import { Link, useNavigate } from "react-router-dom";
-import Cookies from "js-cookie";
+
+import {
+  Col,
+  Row,
+  Card,
+  Button,
+  FormCheck,
+  Container,
+  InputGroup,
+} from "@themesberg/react-bootstrap";
+
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faEnvelope,
+  faUnlockAlt,
+  faSignature,
+  faMobile,
+} from "@fortawesome/free-solid-svg-icons";
 
 function Registration() {
+  const API_URL = process.env.REACT_APP_API_URL;
   const navigate = useNavigate();
   const { setAuthState } = useContext(AuthContext);
   const initialValues = {
     username: "",
     password: "",
-    email:"",
-	firstName:"",
-	lastName:""
+    email: "",
+    firstName: "",
+    lastName: "",
+    telephone: "",
   };
 
   const validationSchema = Yup.object().shape({
-    username: Yup.string().min(5).max(70).required(),
-    password: Yup.string().min(8).max(100).required(),
-    email: Yup.string().min(4).max(150).required(),
-    firstName: Yup.string().max(60).required(),
-    lastName: Yup.string().max(60).required(),
-    telephone: Yup.string(10).max(10).required(),
+    password: Yup.string().min(8).max(100).required(" is required"),
+    passwordConfirmation: Yup.string().oneOf(
+      [Yup.ref("password"), null],
+      "Passwords must match"
+    ),
+    email: Yup.string().min(4).max(150).required(" is required"),
+    firstName: Yup.string().max(60).required(" is required"),
+    lastName: Yup.string().max(60).required(" is required"),
+    telephone: Yup.string(10).max(10).required(" is required"),
   });
 
   const onSubmit = (data) => {
-    axios.post("http://localhost:3001/signup", data).then((response) => {
-		if (response.data.error) {
-			alert(response.data.error);
-		  } else {
-			axios.post("http://localhost:3001/signin", {username:data.username,password:data.password}).then((response) => {
-				if (response.data.error) {
-				  alert(response.data.error);
-				} else {
-				  Cookies.set("access-token", response.data, { expires: 30 });
-				  setAuthState(true);
-				  navigate("/");
-				}
-			  });
-			
-		  }
+    axios.post(`${API_URL}/auth/signup`, data).then((response) => {
+      if (response.data.error) {
+        alert(response.data.error);
+      } else {
+        navigate("/");
+      }
     });
   };
 
   return (
-    <div className="container">
-      <div className="row mb-5">
-        <div className="col-lg-12 text-center">
-          <h1 className="mt-5">Sign Up</h1>
-        </div>
-      </div>
-      <div className="row">
+    <Container>
+      <h1 className="shadow-sm text-success mt-5 p-3 text-center rounded">
+        Sign Up
+      </h1>
+      <Row className="mt-5">
         <div className="col-lg-12"></div>
         <Formik
           initialValues={initialValues}
           onSubmit={onSubmit}
           validationSchema={validationSchema}
         >
-          <Form>
-		  <div className="form-group">
-              <label>First Name: </label>
-              <ErrorMessage name="firstName" component="span" />
-              <Field
-                className="form-control"
-                type="text"
-                name="firstName"
-                placeholder="Your FirstName..."
-              />
-            </div>
+          <Col
+            lg={5}
+            md={6}
+            sm={12}
+            className="p-5 m-auto shadow-sm rounded-lg"
+          >
+            <Form>
+              <div className="form-group">
+                <label>
+                  First Name:
+                  <ErrorMessage
+                    name="firstName"
+                    component="span"
+                    style={{ color: "red" }}
+                  />
+                </label>
+                <div className="input-group">
+                  <div className="input-group-text">
+                    <FontAwesomeIcon icon={faSignature} />
+                  </div>
+                  <Field
+                    className="form-control"
+                    type="text"
+                    name="firstName"
+                    placeholder="Your FirstName..."
+                  />
+                </div>
+              </div>
 
-			<div className="form-group">
-              <label>Last Name: </label>
-              <ErrorMessage name="lastName" component="span" />
-              <Field
-                className="form-control"
-                type="text"
-                name="lastName"
-                placeholder="Your LastName..."
-              />
-            </div>
+              <div className="form-group">
+                <label>
+                  Last Name:
+                  <ErrorMessage
+                    name="lastName"
+                    component="span"
+                    style={{ color: "red" }}
+                  />
+                </label>
+                <div className="input-group">
+                  <div className="input-group-text">
+                    <FontAwesomeIcon icon={faSignature} />
+                  </div>
+                  <Field
+                    className="form-control"
+                    type="text"
+                    name="lastName"
+                    placeholder="Your LastName..."
+                  />
+                </div>
+              </div>
 
-            <div className="form-group">
-              <label>Username: </label>
-              <ErrorMessage name="username" component="span" />
-              <Field
-                className="form-control"
-                autoComplete="off"
-                name="username"
-                placeholder="(Ex. John123...)"
-              />
-            </div>
-            <div className="form-group">
-              <label>Password: </label>
-              <ErrorMessage name="password" component="span" />
-              <Field
-                className="form-control"
-                autoComplete="off"
-                type="password"
-                name="password"
-                placeholder="Your Password..."
-              />
-            </div>
-			<div className="form-group">
-              <label>Email: </label>
-              <ErrorMessage name="email" component="span" />
-              <Field
-                className="form-control"
-                type="email"
-                name="email"
-                placeholder="exsample@domain.com"
-              />
-            </div>
-			<div className="form-group">
-              <label>Phone Number: </label>
-              <ErrorMessage name="telephone" component="span" />
-              <Field
-                className="form-control"
-                type="telephone"
-                name="telephone"
-                placeholder="exsample@domain.com"
-              />
-            </div>
-            <div className="d-grid mt-4">
-              <button className="btn btn-primary btn-block" type="submit">
-                Register
-              </button>
-            </div>
-          </Form>
+              <div className="form-group">
+                <label>
+                  Email:{" "}
+                  <ErrorMessage
+                    name="email"
+                    component="span"
+                    style={{ color: "red" }}
+                  />
+                </label>
+                <div className="input-group">
+                  <div className="input-group-text">
+                    <FontAwesomeIcon icon={faEnvelope} />
+                  </div>
+
+                  <Field
+                    className="form-control"
+                    type="email"
+                    name="email"
+                    placeholder="exsample@domain.com"
+                  />
+                </div>
+              </div>
+
+              <div className="form-group">
+                <label>
+                  Password:
+                  <ErrorMessage
+                    name="password"
+                    component="span"
+                    style={{ color: "red" }}
+                  />
+                </label>
+                <div className="input-group">
+                  <div className="input-group-text">
+                    <FontAwesomeIcon icon={faUnlockAlt} />
+                  </div>
+                  <Field
+                    className="form-control"
+                    autoComplete="off"
+                    type="password"
+                    name="password"
+                    placeholder="Your Password..."
+                  />
+                </div>
+              </div>
+
+              <div className="form-group">
+                <label>
+                 Password confirmation:{" "}
+                  <ErrorMessage
+                    name="passwordConfirmation"
+                    component="span"
+                    style={{ color: "red" }}
+                  />
+                </label>
+                <div className="input-group">
+                  <div className="input-group-text">
+                    <FontAwesomeIcon icon={faUnlockAlt} />
+                  </div>
+                  <Field
+                    className="form-control"
+                    autoComplete="off"
+                    type="password"
+                    name="passwordConfirmation"
+                    placeholder="Your Password..."
+                  />
+                </div>
+              </div>
+
+              <div className="form-group">
+                <label>
+                  Phone Number:
+                  <ErrorMessage
+                    name="telephone"
+                    component="span"
+                    style={{ color: "red" }}
+                  />
+                </label>
+                <div className="input-group">
+                  <div className="input-group-text">
+                    <FontAwesomeIcon icon={faMobile} />
+                  </div>
+
+                  <Field
+                    className="form-control"
+                    type="telephone"
+                    name="telephone"
+                    placeholder="your phone number Ex: 0912314455"
+                    maxLength="10"
+                  />
+                </div>
+              </div>
+              <div className="d-grid mt-4">
+                <button className="btn btn-success btn-block" type="submit">
+                  Register
+                </button>
+              </div>
+            </Form>
+          </Col>
         </Formik>
-      </div>
-    </div>
+      </Row>
+    </Container>
   );
 }
 

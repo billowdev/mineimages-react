@@ -172,10 +172,12 @@
 
 
 /*==================== NAV ====================*/
-.Navbar__brand {
+.Navbar__brand, .Nav-link{
 	text-decoration: none;
 }
-
+.bgImg {
+	background-image: url("./assets/images/bg.jpg");
+}
 /*==================== HOME ====================*/
 .home-image {
 	background-image: url("./assets/images/bg.jpg");

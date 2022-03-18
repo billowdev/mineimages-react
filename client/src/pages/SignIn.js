@@ -1,64 +1,112 @@
 import React, { useState, useContext } from "react";
 import axios from "axios";
+import Cookies from "js-cookie";
 import { AuthContext } from "../helpers/AuthContext";
 import { Link, useNavigate } from "react-router-dom";
-import Cookies from "js-cookie";
+import Footer from "../components/Footer";
+
+import {
+  Col,
+  Row,
+  Form,
+  Card,
+  Button,
+  FormCheck,
+  Container,
+  InputGroup,
+} from "@themesberg/react-bootstrap";
+
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faEnvelope, faUnlockAlt } from "@fortawesome/free-solid-svg-icons";
 
 function SignIn() {
-  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const { setAuthState } = useContext(AuthContext);
-
+  const API_URL = process.env.REACT_APP_API_URL;
   const navigate = useNavigate();
 
   const signin = () => {
-    const data = { username: username, password: password };
-    axios.post("http://localhost:3001/signin", data).then((response) => {
-      if (response.data.error) {
-        alert(response.data.error);
-      } else {
-        Cookies.set("access-token", response.data, { expires: 30 });
-        setAuthState(true);
-        navigate("/");
-      }
-    });
+    if (email != "" && password != "") {
+      const data = { email: email, password: password };
+      axios.post(`${API_URL}/auth/signin`, data).then((response) => {
+        if (response.data.error) {
+          alert(response.data.error);
+        } else {
+          Cookies.set("access-token", response.data, { expires: 30 });
+          setAuthState(true)
+          navigate("/")
+        }
+      });
+    }
   };
 
   return (
-    <div className="container py-5 h-100">
-        <div className="row mb-5">
-          <div className="col-lg-12 text-center">
-            <h1 className="mt-5">Login Form</h1>
-          </div>
-        </div>
-      <div className="row d-flex align-items-center justify-content-center h-100">
-        <div className="col-md-7 col-lg-5 col-xl-6 mt-5">
+    <>
+      <Container>
+        <h1 className="shadow-sm text-success mt-5 p-3 text-center rounded">
+          Sign in
+        </h1>
+        <Row className="mt-5">
+          <Col
+            lg={5}
+            md={6}
+            sm={12}
+            className="p-5 m-auto shadow-sm rounded-lg"
+          >
+            <Form>
+              <Form.Group controlId="formBasicEmail">
+                <Form.Label>Email address</Form.Label>
+                <InputGroup
+                  onChange={(event) => {
+                    setEmail(event.target.value);
+                  }}
+                >
+                  <InputGroup.Text>
+                    <FontAwesomeIcon icon={faEnvelope} />
+                  </InputGroup.Text>
+                  <Form.Control
+                    autoFocus
+                    required
+                    type="email"
+                    placeholder="email"
+                  />
+                </InputGroup>
+              </Form.Group>
 
-          <div className="form-outline mb-4">
-            <input
-              className="form-control form-control-lg"
-              type="text"
-              onChange={(event) => {
-                setUsername(event.target.value);
-              }}
-            />
-          </div>
-          <div className="form-outline mb-4">
-            <input
-              className="form-control form-control-lg"
-              type="password"
-              onChange={(event) => {
-                setPassword(event.target.value);
-              }}
-            />
-          </div>
-          <button className="btn btn-primary" onClick={signin}> SignIn </button>
-
-
-          
-        </div>
-      </div>
-    </div>
+              <Form.Group controlId="formBasicPassword">
+                <Form.Label>Password</Form.Label>
+                <InputGroup
+                  onChange={(event) => {
+                    setPassword(event.target.value);
+                  }}
+                >
+                  <InputGroup.Text>
+                    <FontAwesomeIcon icon={faUnlockAlt} />
+                  </InputGroup.Text>
+                  <Form.Control
+                    required
+                    type="password"
+                    placeholder="Password"
+                  />
+                </InputGroup>
+              </Form.Group>
+              <Button
+                variant="btn btn-success btn-block mt-3 w-100"
+                type="button"
+                onClick={signin}
+              >
+                Login
+              </Button>
+            </Form>
+          </Col>
+        </Row>
+        {/* <h6 className="mt-5 p-5 text-center text-secondary ">
+          Copyright © 2021 Masud Rana. All Rights Reserved.
+        </h6> */}
+      </Container>
+      {/* <Footer /> */}
+    </>
   );
 }
 

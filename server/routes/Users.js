@@ -7,9 +7,9 @@ const { raw } = require("express");
 // ----------------- START Admin route START ----------------- \\
 router.get("/lacakp", validateToken, async (req, res) => {
   const id = req.user.id;
-  const permission = req.user.permission
+  const permission = req.user.permission;
   if (!(permission === "admin")) {
-    res.status(404).json("404 not found");
+    res.status(404).json({ success: false, message: "Page Not Founded" });
   } else {
     const allUser = await Users.findAll();
     res.json(allUser);
@@ -84,8 +84,8 @@ router.post("/image", validateToken, async (req, res) => {
     res.status(400).json({ error: "Image has already exist" });
   } else {
     imageReq.UserId = req.user.id;
-    Images.create(imageReq).then(()=> {
-      res.json("Add image successfuly")
+    Images.create(imageReq).then(() => {
+      res.json("Add image successfuly");
     });
   }
 });
@@ -93,40 +93,43 @@ router.post("/image", validateToken, async (req, res) => {
 // ----------------- POST TO Update Image ----------------- \\
 router.post("/image/:imgId", validateToken, async (req, res) => {
   const imageReq = req.body;
-  const ImageId = req.params.imgId
+  const ImageId = req.params.imgId;
   const UserId = req.user.id;
-  const imageData = await Images.findOne({where:{id:ImageId, UserId:UserId}})
+  const imageData = await Images.findOne({
+    where: { id: ImageId, UserId: UserId },
+  });
   // if active it can update to remove or other properties
-  if (imageData.status == "active"){
+  if (imageData.status == "active") {
     const data = {
-      pathOrigin:imageReq.pathOrigin,
-      price:imageReq.price,
-      visible:imageReq.visible,
-      remove:imageReq.remove
-    }
-    await Images.update(data, {where:{UserId:UserId, id:ImageId}}).then(()=>{
-      res.json("update successfully")
-    })
+      pathOrigin: imageReq.pathOrigin,
+      price: imageReq.price,
+      visible: imageReq.visible,
+      remove: imageReq.remove,
+    };
+    await Images.update(data, { where: { UserId: UserId, id: ImageId } }).then(
+      () => {
+        res.json("update successfully");
+      }
+    );
   } else {
     const data = {
-      pathOrigin:imageReq.pathOrigin,
-      price:imageReq.price,
-      remove:imageReq.remove
-    }
-    await Images.update(data, {where:{UserId:UserId, id:ImageId}}).then(()=>{
-      res.json("update successfully")
-    })
+      pathOrigin: imageReq.pathOrigin,
+      price: imageReq.price,
+      remove: imageReq.remove,
+    };
+    await Images.update(data, { where: { UserId: UserId, id: ImageId } }).then(
+      () => {
+        res.json("update successfully");
+      }
+    );
   }
-  
 });
-
 
 // ----------------- GET OWN IMAGES DATA ----------------- \\
 router.get("/images", validateToken, async (req, res) => {
- const UserId = req.user.id;
- const allImages = await Images.findAll({where:{UserId:UserId}})
- res.json(allImages);
+  const UserId = req.user.id;
+  const allImages = await Images.findAll({ where: { UserId: UserId } });
+  res.json(allImages);
 });
-
 
 module.exports = router;

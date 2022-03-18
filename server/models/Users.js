@@ -5,10 +5,6 @@ module.exports = (sequelize, DataTypes) => {
       primaryKey: true,
       defaultValue: DataTypes.UUIDV4,
     },
-    username: {
-      type: DataTypes.STRING(70),
-      allowNull: false,
-    },
     password: {
       type: DataTypes.STRING(100),
       allowNull: false,
@@ -53,6 +49,7 @@ module.exports = (sequelize, DataTypes) => {
     Users.hasMany(models.Likes, {
       onDelete: "cascade",
     });
+
 
     Users.hasMany(models.Orders, {
       onDelete: "cascade",
