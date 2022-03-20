@@ -37,7 +37,7 @@ router.get("/", validateToken, async (req, res) => {
         firstName: dataUser.firstName,
         lastName: dataUser.lastName,
         telephone: dataUser.telephone,
-        avartart: dataUser.avartar,
+        avartar: dataUser.avartar,
         about: dataUser.about,
         permission: dataUser.permission,
         status: dataUser.status,
@@ -60,7 +60,7 @@ router.get("/", validateToken, async (req, res) => {
       },
     ],
   };
-  res.json(data);
+  res.status(200).send(data);
 });
 
 // ----------------- POST TO update payment route  ----------------- \\

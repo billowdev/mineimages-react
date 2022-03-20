@@ -66,7 +66,7 @@ function Registration() {
   };
 
   return (
-    <Container>
+    <Container className="sign-up">
       
       <h1 className="shadow-sm text-success mt-5 p-3 text-center rounded">
         Sign Up

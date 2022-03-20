@@ -1,12 +1,11 @@
 import React from "react";
 import "../App.css";
-
 import ImagesComponent from "../components/Home/ImagesComponent";
 import { Button, Form, FormControl } from "react-bootstrap";
 
 function Home() {
   return (
-    <div>
+    <div className="home-body">
       <div className="MainComponent">
       <div className="hero-image">
         <img src={require("../assets/images/bg.jpg")}></img>
