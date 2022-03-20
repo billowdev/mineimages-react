@@ -1,35 +1,53 @@
 const { sign, verify } = require("jsonwebtoken");
 
 const createTokens = (user) => {
+  const { id, firstName, lastName, email, permission } = user;
   const accessToken = sign(
-    { id: user.id, firstName: user.firstName, lastName:user.lastName ,email: user.email, permission:user.permission},
+    { id, firstName, lastName, email, permission },
     process.env.JWT_SECRET
   );
-  console.log(process.env.JWT_SECRET)
   return accessToken;
 };
 
+// const validateToken = (req, res, next) => {
+//   const accessToken = req.cookies["access-token"];
+//   console.log(accessToken)
+//   if (!accessToken) {
+//     return res
+//       .status(403)
+//       .send({ sucess: false, error: "user not authenticated !" });
+//   }
+
+//   try {
+//     const validToken = verify(accessToken, process.env.JWT_SECRET);
+
+//     if (validToken) {
+//       req.user = validToken;
+//       req.user.authenticated = true;
+//       req.user.accessToken = accessToken;
+//       return next();
+//     }
+//   } catch (err) {
+//     return res
+//       .status(401)
+//       .send({ sucess: false, error: `Invalid Token - ${err}` });
+//   }
+// };
+
 const validateToken = (req, res, next) => {
-  const accessToken = req.cookies["access-token"];
+	
+	const token = req.body.token || req.query.token || req.headers['x-access-token'];
+	if (!token) {
+		return res.status(403).send(" A token is required for authentication");
+	}
 
-  if (!accessToken) {
-    return res.status(400).json({ error: "user not authenticated !" });
-  }
-
-  try {
-    const validToken = verify(
-      accessToken,
-      process.env.JWT_SECRET
-    );
-
-    if (validToken) {
-      req.user = validToken;
-      req.authenticated = true;
-      return next();
-    }
-  } catch (err) {
-    return res.status(400).json({ error: err });
-  }
-};
+	try {
+		const decoded = verify(token, process.env.JWT_SECRET);
+		req.user = decoded;
+	} catch (err) {
+		return res.status(401).send(`Invalid Token ${token} ${err}`);
+	}
+	return next();
+}
 
 module.exports = { createTokens, validateToken };

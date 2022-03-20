@@ -81,7 +81,7 @@ router.post("/image", validateToken, async (req, res) => {
   });
 
   if (isExist) {
-    res.status(400).json({ error: "Image has already exist" });
+    res.status(500).json({ error: "Image has already exist" });
   } else {
     imageReq.UserId = req.user.id;
     Images.create(imageReq).then(() => {
@@ -119,7 +119,7 @@ router.post("/image/:imgId", validateToken, async (req, res) => {
     };
     await Images.update(data, { where: { UserId: UserId, id: ImageId } }).then(
       () => {
-        res.json("update successfully");
+        res.status(201).send("update successfully");
       }
     );
   }
@@ -131,5 +131,11 @@ router.get("/images", validateToken, async (req, res) => {
   const allImages = await Images.findAll({ where: { UserId: UserId } });
   res.json(allImages);
 });
+
+
+router.post('/welcome', validateToken, (req, res) =>{
+	res.status(200).json("welcome");
+})
+
 
 module.exports = router;

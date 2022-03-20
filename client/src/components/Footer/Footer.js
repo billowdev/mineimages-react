@@ -3,48 +3,48 @@ import React from "react";
 function Footer() {
   return (
     <div>
-      <footer class="bg-dark text-center text-white footer mt-auto py-3" >
-        <div class="container p-4 pb-0">
-          <section class="mb-4">
-            <a
-              class="btn btn-outline-light btn-floating m-1"
+      <footer className="bg-dark text-center text-white footer mt-auto py-3" >
+        <div className="container p-4 pb-0">
+          <section className="mb-4">
+            {/* <a
+              className="btn btn-outline-light btn-floating m-1"
               href="#!"
               role="button"
             >
-              <i class="bi bi-facebook"></i>
+              <i className="bi bi-facebook"></i>
             </a>
 
             <a
-              class="btn btn-outline-light btn-floating m-1"
+              className="btn btn-outline-light btn-floating m-1"
               href="#!"
               role="button"
             >
-              <i class="bi bi-youtube"></i>
+              <i className="bi bi-youtube"></i>
             </a>
 
             <a
-              class="btn btn-outline-light btn-floating m-1"
+              className="btn btn-outline-light btn-floating m-1"
               href="#!"
               role="button"
             >
-              <i class="bi bi-github"></i>
+              <i className="bi bi-github"></i>
             </a>
 
             <a
-              class="btn btn-outline-light btn-floating m-1"
+              className="btn btn-outline-light btn-floating m-1"
               href="#!"
               role="button"
             >
-              <i class="bi bi-question-square-fill"></i>
-            </a>
+              <i className="bi bi-question-square-fill"></i>
+            </a> */}
           </section>
         </div>
 
-        <div class="text-center p-3">
+        <div className="text-center p-3">
           © 2021 Copyright :
-          <a class="text-white" href="https://google.com/">
+          {/* <a className="text-white" href="https://google.com/">
             MineImage.com
-          </a>
+          </a> */}
         </div>
       </footer>
     </div>

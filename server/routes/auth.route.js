@@ -7,8 +7,9 @@ const { validateToken } = require("../middlewares/AuthMiddleware");
 
 router.post("/signup", signupController);
 router.post("/signin", signinController);
-router.post("/authenticated", validateToken, (req,res) =>{
+router.get("/authenticated", validateToken, (req,res) =>{
 	res.json(req.user)
 });
+
 router.post("/email-activate", activateAccount)
 module.exports = router;

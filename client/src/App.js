@@ -30,14 +30,29 @@ import Card from "./pages/Card";
 import Shopping from "./pages/Shopping";
 import Authentication from "./pages/Authentication";
 import toast, { Toaster } from "react-hot-toast";
+import axios from "axios";
+
 
 function App() {
+  const API_URL = process.env.REACT_APP_API_URL;
   const [authState, setAuthState] = useState(false);
+  const [permissionState, setPermissionState] = useState("");
 
-  useEffect(() => {
+  if (authState == false){
     if (Cookies.get("access-token")) {
       setAuthState(true);
     }
+  }
+
+  useEffect(() => {
+    let response = [];
+    async function fetchData() {
+      response.push(await axios.get(`${API_URL}/authenticated`))
+       
+    }
+  
+    console.log(response)
+
   }, []);
 
   const logout = () => {
@@ -49,8 +64,7 @@ function App() {
   return (
     <>
       <div className="App">
-       
-          <AuthContext.Provider value={{ authState, setAuthState }}>
+          <AuthContext.Provider value={{ authState, setAuthState, permissionState, setPermissionState}}>
             <Router>
               <div>
                 <Toaster />
@@ -128,12 +142,13 @@ function App() {
               {/* ============================ Navbar Section ==============================  */}
 
               <Routes>
+
                 <Route path="/" exact element={<Home />} />
                 <Route path="/auth/signin" exact element={<SignIn />} />
                 <Route path="/signup" exact element={<SignUp />} />
                 <Route path="/checkout/card" exact element={<Card />} />
                 <Route path="/shopping" exact element={<Shopping />} />
-                <Route path="/profile" exact element={<UserProfile />} />
+                <Route path="/profile" exact element={<Profile />} />
                 <Route path="/orders" exact element={<Orders />} />
                 
                 <Route

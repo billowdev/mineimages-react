@@ -23,11 +23,13 @@ import { faEnvelope, faUnlockAlt } from "@fortawesome/free-solid-svg-icons";
 function SignIn() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
   const { setAuthState } = useContext(AuthContext);
+  const { setPermissionState } = useContext(AuthContext);
+
   const API_URL = process.env.REACT_APP_API_URL;
   const navigate = useNavigate();
 
-  const notify = () => toast.error("This didn't work.");
 
   const signin = () => {
     // let status = false;
@@ -39,7 +41,8 @@ function SignIn() {
           if (response.data.error) {
             alert(response.data.error);
           } else {
-            Cookies.set("access-token", response.data, { expires: 30 });
+            Cookies.set("access-token", response.data, { expires: 7 });
+            // console.log("res=",response.data)
             setAuthState(true);
             navigate("/")
           }

@@ -35,7 +35,7 @@ function Home() {
       </div>
 
       <h4 className="text-center font-weight-light text-light mb-3">React Gallery with Bootstrap</h4>
-        <ImagesComponent />
+        {/* <ImagesComponent /> */}
 
     </div>
     </div>
