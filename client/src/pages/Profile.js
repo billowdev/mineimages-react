@@ -187,6 +187,7 @@ function Profile() {
           </Card.Body>
         </Card>
       </div>
+
       <MineimagesComponent />
     </>
   );
