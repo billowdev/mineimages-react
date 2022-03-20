@@ -24,6 +24,13 @@ module.exports = (sequelize, DataTypes) => {
     telephone: {
       type: DataTypes.STRING(10),
     },
+    avartar: {
+      type: DataTypes.STRING(),
+      defaultValue: "https://res.cloudinary.com/dnshsje8a/image/upload/v1647766908/Avatar/user_1_dezkrz.png"
+    },
+    about: {
+      type: DataTypes.STRING(255),
+    },
     permission: {
       type: DataTypes.ENUM(["admin", "user"]),
       allowNull: false,

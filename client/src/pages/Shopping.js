@@ -24,14 +24,14 @@ function Shopping() {
 						src="https://images7.alphacoders.com/730/thumb-1920-730738.png"
 						className="w-100"
 					  />
-					  <a href="#!">
+					  {/* <a href="#!">
 						<div
 						  className="mask"
 						  style={{
 							backgroundColor: "rgba(251, 251, 251, 0.2)",
 						  }}
 						/>
-					  </a>
+					  </a> */}
 					</div>
 					{/* Image */}
 				  </div>
@@ -47,7 +47,7 @@ function Shopping() {
 					  data-mdb-toggle="tooltip"
 					  title="Remove item"
 					>
-					  <i class="bi bi-trash"></i>
+					  <i className="bi bi-trash"></i>
 					</button>
 					{/* Data */}
 				  </div>
@@ -98,7 +98,7 @@ function Shopping() {
 					  data-mdb-toggle="tooltip"
 					  title="Remove item"
 					>
-					  <i class="bi bi-trash"></i>
+					  <i className="bi bi-trash"></i>
 					</button>
 					{/* Data */}
 				  </div>

@@ -2,8 +2,9 @@ import React, { useContext } from "react";
 import { Formik, Form, Field, FieldArray, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import axios from "axios";
-import { AuthContext } from "../helpers/AuthContext";
+
 import { Link, useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
 
 import {
   Col,
@@ -26,7 +27,7 @@ import {
 function Registration() {
   const API_URL = process.env.REACT_APP_API_URL;
   const navigate = useNavigate();
-  const { setAuthState } = useContext(AuthContext);
+  
   const initialValues = {
     username: "",
     password: "",
@@ -49,20 +50,25 @@ function Registration() {
   });
 
   const onSubmit = (data) => {
-    axios.post(`${API_URL}/auth/signup`, data).then((response) => {
+    const register = axios.post(`${API_URL}/auth/signup`, data).then((response) => {
       if (response.data.error) {
         alert(response.data.error);
       } else {
         navigate("/");
       }
     });
+
+    toast.promise(register, {
+      loading: "Loading...",
+      success: "Please verify your email.",
+      error: "sign up failed!! please try again",
+    });
   };
 
   return (
-    <Container>
-      <h1 className="shadow-sm text-success mt-5 p-3 text-center rounded">
-        Sign Up
-      </h1>
+    <Container className="sign-up">
+      
+     
       <Row className="mt-5">
         <div className="col-lg-12"></div>
         <Formik
@@ -76,6 +82,7 @@ function Registration() {
             sm={12}
             className="p-5 m-auto shadow-sm rounded-lg"
           >
+            <h3 className="text-center">Sign Up</h3>
             <Form>
               <div className="form-group">
                 <label>
@@ -169,7 +176,7 @@ function Registration() {
 
               <div className="form-group">
                 <label>
-                 Password confirmation:{" "}
+                  Password confirmation:{" "}
                   <ErrorMessage
                     name="passwordConfirmation"
                     component="span"

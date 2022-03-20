@@ -10,7 +10,7 @@ require('dotenv').config({
 	path: './.env'
 })
 
-// app.use(cors()); 
+
 app.use(cookieParser());
 app.use(express.json({ limit: "50mb" }));
 app.use(express.urlencoded({ limit: "50mb", extended: true }));
@@ -41,6 +41,8 @@ app.use("/order", Orders);
 
 const auth = require("./routes/auth.route");
 app.use("/auth", auth);
+
+
 
 
 

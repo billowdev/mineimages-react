@@ -10,12 +10,12 @@ exports.signupController = (req, res) => {
   const { firstName, lastName, email, password, telephone } = req.body;
   Users.findOne({ where: { email: email } }).then((response) => {
     if (response != null) {
-      res.status(400).json({ success: false, msg: "email has already exists" });
+      res.status(409).json({ success: false, msg: "email has already exists" });
     } else {
       const token = sign(
         { firstName, lastName, email, password, telephone },
         process.env.JWT_ACC_ACTIVATE,
-        { expiresIn: "20m" }
+        { expiresIn: "30m" }
       );
 
       const data = {
@@ -29,9 +29,9 @@ exports.signupController = (req, res) => {
       };
       mg.messages().send(data, function (err, body) {
         if (err) {
-          return res.status(400).json({ success: false, error: err.message });
+          return res.status(400).send({ success: false, error: err.message });
         }
-        return res.json({
+        return res.status(200).send({
           message: "Email has been sent, kindly acctivate your account",
         });
       });
@@ -46,7 +46,7 @@ exports.activateAccount = (req, res) => {
   if (token) {
     verify(token, process.env.JWT_ACC_ACTIVATE, function (err, decodedToken) {
       if (err) {
-        return res.status(400).json({ error: "Incorrect or Expried link." });
+        return res.status(400).send({ error: "Incorrect or Expried link." });
       }
       const { firstName, lastName, email, password, telephone } = decodedToken;
 
@@ -54,7 +54,6 @@ exports.activateAccount = (req, res) => {
 
       Users.findOne({ where: { email: email } }).then((response) => {
         if (response != null) {
-          
           res
             .status(400)
             .json({ success: false, msg: "email has already exists" });
@@ -89,7 +88,7 @@ exports.activateAccount = (req, res) => {
                   UserId: data.id,
                 });
 
-                return res.json("USER REGISTER SUCCESSFULY");
+                return res.status(200).send("USER REGISTER SUCCESSFULY");
               })
               .catch((err) => {
                 if (err) {
@@ -106,37 +105,45 @@ exports.activateAccount = (req, res) => {
       // ========================================================================
     });
   } else {
-    return res.status(422).json({ error: "Something went wrong !!!!" });
+    return res.status(500).json({ error: "Something went wrong !!!!" });
   }
 };
 
 exports.signinController = async (req, res) => {
+  try{
   const { email, password } = req.body;
-  const user = await Users.findOne({ where: { email: email } });
-
-  if (user) {
-    const dbPassword = user.password;
-    bcrypt
-      .compare(password, dbPassword)
-      .then((math) => {
-        if (!math) {
-          return res
-            .status(400)
-            .json({ error: "wrong email & password combination!" });
-        } else {
-          const accessToken = createTokens(user);
-
-          res.cookie("access-token", accessToken, {
-            maxAge: 60 * 60 * 24 * 30 * 1000,
-            httpOnly: true,
-          });
-          res.json("LOGGED IN SUCCESSFULY");
-        }
-      })
-      .catch((err) => {
-        return res.status(400).json({ error: err });
-      });
-  } else {
-    return res.status(400).json({ error: "user doesn't Exist" });
+  // validate user input
+  if (!(email && password)) {
+    res.status(400).send("All input is required");
   }
+
+  const user = await Users.findOne({ where: { email } });
+
+  if (user && (await bcrypt.compare(password, user.password))) {
+    // create token
+    const accessToken = sign(
+      {id: user.id, email: email},
+      process.env.JWT_SECRET,
+      {
+        expiresIn: "168h",
+      }
+    );
+
+    res.cookie("access-token", accessToken, {
+      maxAge: 60 * 60 * 24 * 7 * 1000,
+      httpOnly: true,
+    });
+    // save user token
+
+    user.accessToken = accessToken;
+    // res.status(200).json(accessToken);
+    return res.status(200).json({token:accessToken, firstName:user.firstName});
+  }else {
+		return res.status(400).send("Invalid Credentials");
+	}
+  }catch (err) {
+    console.log(`Error auth.controllers - ERROR: ${err}`)
+  }
+
 };
+

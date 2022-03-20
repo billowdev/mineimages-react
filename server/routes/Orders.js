@@ -79,7 +79,7 @@ router.post("/", validateToken, async (req, res) => {
         })
         .catch((err) => {
           if (err) {
-            res.status(400).json({ error: err });
+            res.status(500).json({ error: err });
           }
         });
     } else {
@@ -130,7 +130,7 @@ router.post("/checkout", validateToken, async (req, res) => {
       const transaction = await Transactions.create({ UserId: UserId });
 
       if (!transaction) {
-        res.status(400).json("something wrong");
+        res.status(500).json("something wrong");
       } else {
         await Orders.update(
           {
