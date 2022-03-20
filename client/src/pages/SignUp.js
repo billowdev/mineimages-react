@@ -68,9 +68,7 @@ function Registration() {
   return (
     <Container className="sign-up">
       
-      <h1 className="shadow-sm text-success mt-5 p-3 text-center rounded">
-        Sign Up
-      </h1>
+     
       <Row className="mt-5">
         <div className="col-lg-12"></div>
         <Formik
@@ -84,6 +82,7 @@ function Registration() {
             sm={12}
             className="p-5 m-auto shadow-sm rounded-lg"
           >
+            <h3 className="text-center">Sign Up</h3>
             <Form>
               <div className="form-group">
                 <label>

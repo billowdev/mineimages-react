@@ -11,5 +11,6 @@ router.get("/authenticated", validateToken, (req,res) =>{
 	res.json(req.user)
 });
 
+
 router.post("/email-activate", activateAccount)
 module.exports = router;

@@ -12,6 +12,30 @@ import { AuthContext } from "../helpers/AuthContext";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEdit, faSignOut } from "@fortawesome/free-solid-svg-icons";
 
+/** upload image code
+
+const { value: file } = await Swal.fire({
+  title: 'Select image',
+  input: 'file',
+  inputAttributes: {
+    'accept': 'image/*',
+    'aria-label': 'Upload your profile picture'
+  }
+})
+
+if (file) {
+  const reader = new FileReader()
+  reader.onload = (e) => {
+    Swal.fire({
+      title: 'Your uploaded picture',
+      imageUrl: e.target.result,
+      imageAlt: 'The uploaded picture'
+    })
+  }
+  reader.readAsDataURL(file)
+}
+
+ */
 import {
   Button,
   Container,
@@ -24,7 +48,7 @@ import {
 function Profile() {
   const { setAuthState } = useContext(AuthContext);
   const MySwal = withReactContent(Swal);
-  // const 
+  // const
   let Navigate = useNavigate();
   const logout = async () => {
     let chk = false;
@@ -45,13 +69,13 @@ function Profile() {
         Swal.fire("Logout!", "", "success");
         Cookies.remove("access-token");
         setAuthState(false);
-        Navigate("/")
-      } else if (result.isDenied) {
-        Swal.fire('Changes are not saved', '', 'info')
+        Navigate("/");
       }
+      // else if (result.isDenied) {
+      //   Swal.fire('Changes are not saved', '', 'info')
+      // }
     });
 
-  
     // toast((t) => (
     //   <span className="text-center">
     //     <p>
@@ -81,8 +105,8 @@ function Profile() {
   const [address, setAddress] = React.useState("");
   const [payment, setPayment] = React.useState("");
 
-  const fetchUser = async () => {
-    await axios
+  const fetchUser = () => {
+     axios
       .get(`${API_URL}/user`, {
         method: "get",
         headers: AccessHeader,

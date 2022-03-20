@@ -200,8 +200,8 @@ img {
 }
 
 .sign-in {
-  margin-top: 1rem;
-  margin-bottom: 18rem;
+  margin-top: 10rem;
+  margin-bottom: 30rem;
 }
 
 /*==================== HOME ====================*/
@@ -386,3 +386,4 @@ img {
 
 /* Large devices */
 @media screen and (min-width: 1024px) {}
+

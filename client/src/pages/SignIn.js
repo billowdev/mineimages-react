@@ -19,6 +19,8 @@ import {
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEnvelope, faUnlockAlt } from "@fortawesome/free-solid-svg-icons";
+import Swal from "sweetalert2";
+import withReactContent from "sweetalert2-react-content";
 
 function SignIn() {
   const [email, setEmail] = useState("");
@@ -29,43 +31,42 @@ function SignIn() {
   const navigate = useNavigate();
 
 
-  const signin = () => {
+  const signin = async () => {
     // let status = false;
     if (email != "" && password != "") {
       const data = { email: email, password: password };
-      const login = axios
+      const login = await axios
         .post(`${API_URL}/auth/signin`, data)
         .then((response) => {
           if (response.data.error) {
             alert(response.data.error);
           } else {
-            Cookies.set("access-token", response.data, { expires: 7 });
-            // console.log("res=",response.data)
+            Cookies.set("access-token", response.data.token, { expires: 7 });
             setAuthState(true);
             navigate("/")
+            Swal.fire({
+              icon: 'success',
+              title: 'Signin success',
+              text: `Welcome ${response.data.firstName}`,
+              // footer: '<a href="/profile">Profile</a>'
+            })
           }
         });
-      toast.promise(login, {
-        loading: "Loading...",
-        success: "Sign in sucessfuly",
-        error: "sign in failed",
-      });
+      // toast.promise(login, {
+      //   loading: "Loading...",
+      //   success: "Sign in sucessfuly",
+      //   error: "sign in failed",
+      // });
     }
-    // if (status) {
-    // toast.success("Sign In Successfully!");
-
-    //   navigate("/");
-    // } else {
-
-    // }
+ 
   };
 
   return (
     <>
       <Container className="sign-in">
-        <h1 className="shadow-sm text-success mt-5 p-3 text-center rounded">
+        {/* <h1 className="shadow-sm text-success mt-5 p-3 text-center rounded">
           Sign in
-        </h1>
+        </h1> */}
         <Row className="mt-5">
           <Col
             lg={5}
@@ -73,6 +74,7 @@ function SignIn() {
             sm={12}
             className="p-5 m-auto shadow-sm rounded-lg"
           >
+              <h3 className="text-center">Sign In</h3>
             <Form>
               <Form.Group controlId="formBasicEmail">
                 <Form.Label>Email address</Form.Label>
@@ -117,14 +119,19 @@ function SignIn() {
               >
                 Login
               </Button>
+              <p className="forgot-password text-right">
+                    Forgot <a href="#">password?</a>
+                </p>
             </Form>
+
           </Col>
         </Row>
-        {/* <h6 className="mt-5 p-5 text-center text-secondary ">
-          Copyright © 2021 Masud Rana. All Rights Reserved.
-        </h6> */}
+        
       </Container>
       {/* <Footer /> */}
+
+     
+
     </>
   );
 }

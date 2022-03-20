@@ -41,10 +41,10 @@ function Footer() {
         </div>
 
         <div className="text-center p-3">
-          © 2021 Copyright :
-          {/* <a className="text-white" href="https://google.com/">
-            MineImage.com
-          </a> */}
+        <h6 >
+          Copyright © 2022 codetopanda. All Rights Reserved.
+        </h6>
+         
         </div>
       </footer>
     </div>

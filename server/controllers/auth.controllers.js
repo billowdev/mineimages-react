@@ -137,7 +137,7 @@ exports.signinController = async (req, res) => {
 
     user.accessToken = accessToken;
     // res.status(200).json(accessToken);
-    return res.status(200).json(accessToken);
+    return res.status(200).json({token:accessToken, firstName:user.firstName});
   }else {
 		return res.status(400).send("Invalid Credentials");
 	}
@@ -146,5 +146,4 @@ exports.signinController = async (req, res) => {
   }
 
 };
-
 
