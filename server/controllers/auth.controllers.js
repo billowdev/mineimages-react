@@ -129,13 +129,13 @@ exports.signinController = async (req, res) => {
       }
     );
 
-    // res.cookie("access-token", accessToken, {
-    //   maxAge: 60 * 60 * 24 * 30 * 1000,
-    //   httpOnly: true,
-    // });
+    res.cookie("access-token", accessToken, {
+      maxAge: 60 * 60 * 24 * 7 * 1000,
+      httpOnly: true,
+    });
     // save user token
-    user.accessToken = accessToken;
 
+    user.accessToken = accessToken;
     // res.status(200).json(accessToken);
     return res.status(200).json(accessToken);
   }else {

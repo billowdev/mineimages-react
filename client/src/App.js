@@ -7,6 +7,7 @@ import {
   useNavigate,
   Navigate,
 } from "react-router-dom";
+
 import { AuthContext } from "./helpers/AuthContext";
 import {
   Button,
@@ -17,12 +18,14 @@ import {
   NavDropdown,
   Div,
 } from "react-bootstrap";
+
 import "./App.css";
 import SignIn from "./pages/SignIn";
 import SignUp from "./pages/SignUp";
 import Home from "./pages/Home";
 import Profile from "./pages/Profile";
 import UserProfile from "./pages/UserProfile";
+import EditProfile from "./pages/EditProfile";
 import Orders from "./pages/Orders";
 import Footer from "./components/Footer/Footer";
 import Cookies from "js-cookie";
@@ -149,7 +152,9 @@ function App() {
                 <Route path="/checkout/card" exact element={<Card />} />
                 <Route path="/shopping" exact element={<Shopping />} />
                 <Route path="/profile" exact element={<Profile />} />
+                <Route path="/profile/edit" exact element={<EditProfile />} />
                 <Route path="/orders" exact element={<Orders />} />
+                
                 
                 <Route
                   path="/authentication/activate/:token"

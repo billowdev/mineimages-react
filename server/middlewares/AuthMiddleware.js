@@ -9,45 +9,45 @@ const createTokens = (user) => {
   return accessToken;
 };
 
-// const validateToken = (req, res, next) => {
-//   const accessToken = req.cookies["access-token"];
-//   console.log(accessToken)
-//   if (!accessToken) {
-//     return res
-//       .status(403)
-//       .send({ sucess: false, error: "user not authenticated !" });
-//   }
-
-//   try {
-//     const validToken = verify(accessToken, process.env.JWT_SECRET);
-
-//     if (validToken) {
-//       req.user = validToken;
-//       req.user.authenticated = true;
-//       req.user.accessToken = accessToken;
-//       return next();
-//     }
-//   } catch (err) {
-//     return res
-//       .status(401)
-//       .send({ sucess: false, error: `Invalid Token - ${err}` });
-//   }
-// };
-
 const validateToken = (req, res, next) => {
-	
-	const token = req.body.token || req.query.token || req.headers['x-access-token'];
-	if (!token) {
-		return res.status(403).send(" A token is required for authentication");
-	}
+  const accessToken = req.body.token || req.query.token || req.headers['x-access-token'] || req.cookies['access-token'];
+  console.log(accessToken)
+  if (!accessToken) {
+    return res
+      .status(403)
+      .send({ sucess: false, error: "user not authenticated !" });
+  }
 
-	try {
-		const decoded = verify(token, process.env.JWT_SECRET);
-		req.user = decoded;
-	} catch (err) {
-		return res.status(401).send(`Invalid Token ${token} ${err}`);
-	}
-	return next();
-}
+  try {
+    const validToken = verify(accessToken, process.env.JWT_SECRET);
+
+    if (validToken) {
+      req.user = validToken;
+      req.user.authenticated = true;
+      req.user.accessToken = accessToken;
+      return next();
+    }
+  } catch (err) {
+    return res
+      .status(401)
+      .send({ sucess: false, error: `Invalid Token - ${err}` });
+  }
+};
+
+// const validateToken = (req, res, next) => {
+	
+// 	const token = req.body.token || req.query.token || req.headers['x-access-token'] || req.cookies['access-token'];
+// 	if (!token) {
+// 		return res.status(403).send(" A token is required for authentication");
+// 	}
+
+// 	try {
+// 		const decoded = verify(token, process.env.JWT_SECRET);
+// 		req.user = decoded;
+// 	} catch (err) {
+// 		return res.status(401).send(`Invalid Token ${token} ${err}`);
+// 	}
+// 	return next();
+// }
 
 module.exports = { createTokens, validateToken };

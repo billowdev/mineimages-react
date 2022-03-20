@@ -23,9 +23,7 @@ import { faEnvelope, faUnlockAlt } from "@fortawesome/free-solid-svg-icons";
 function SignIn() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-
   const { setAuthState } = useContext(AuthContext);
-  const { setPermissionState } = useContext(AuthContext);
 
   const API_URL = process.env.REACT_APP_API_URL;
   const navigate = useNavigate();

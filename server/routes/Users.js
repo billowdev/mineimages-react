@@ -22,19 +22,27 @@ router.get("/lacakp", validateToken, async (req, res) => {
 
 // ----------------- GET DATA USER WHO SIGN IN (RES TO PROFILE PAGE) route ----------------- \\
 router.get("/", validateToken, async (req, res) => {
-  const reqId = req.user.id;
-  const user = await Users.findOne({ where: { id: reqId } });
-  const address = await Addresses.findOne({ where: { UserId: reqId } });
-  const payment = await PaymentUsers.findOne({ where: { UserId: reqId } });
+  console.log(req.user.id);
+
+  const dataUser = await Users.findOne({ where: { id: req.user.id } });
+  const address = await Addresses.findOne({ where: { UserId: req.user.id } });
+  const payment = await PaymentUsers.findOne({
+    where: { UserId: req.user.id },
+  });
   const data = {
     user: [
       {
-        id: user.id,
-        username: user.username,
-        email: user.email,
-        firstName: user.firstName,
-        lastName: user.lastName,
-        telephone: user.telephone,
+        id: dataUser.id,
+        email: dataUser.email,
+        firstName: dataUser.firstName,
+        lastName: dataUser.lastName,
+        telephone: dataUser.telephone,
+        avartart: dataUser.avartar,
+        about: dataUser.about,
+        permission: dataUser.permission,
+        status: dataUser.status,
+        createAt: dataUser.createAt,
+        updateAt: dataUser.updateAt,
       },
     ],
     address: [
@@ -132,10 +140,8 @@ router.get("/images", validateToken, async (req, res) => {
   res.json(allImages);
 });
 
-
-router.post('/welcome', validateToken, (req, res) =>{
-	res.status(200).json("welcome");
-})
-
+router.post("/welcome", validateToken, (req, res) => {
+  res.status(200).json("welcome");
+});
 
 module.exports = router;
