@@ -5,13 +5,21 @@ module.exports = (sequelize, DataTypes) => {
       primaryKey: true,
       defaultValue: DataTypes.UUIDV4,
     },
+    name: {
+      type: DataTypes.STRING(50),
+      allowNull: true,
+    },
+    detail: {
+      type: DataTypes.STRING(255),
+      allowNull: true,
+    },
     pathOrigin: {
       type: DataTypes.STRING,
       allowNull: false,
     },
     pathWatermark: {
       type: DataTypes.STRING,
-      allowNull: false,
+      defaultValue: "https://res.cloudinary.com/dnshsje8a/image/upload/v1647843792/default/5203299_id0fbv.jpg"
     },
     price: {
       type: DataTypes.DECIMAL,
