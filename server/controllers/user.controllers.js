@@ -43,9 +43,14 @@ exports.getDataUserController = async (req, res) => {
 };
 
 exports.getImagesUser = async (req, res) => {
-  const { id } = req.user.id;
+  try{
+  const id = req.user.id;
   const allImages = await Images.findAll({ where: { UserId: id } });
   res.json(allImages);
+  } catch(err) {
+    console.log({Error:err})
+    res.status(400).send({success:false, msg:err})
+  }
 };
 
 // ===================== create (post) section =====================

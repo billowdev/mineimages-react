@@ -23,6 +23,7 @@ exports.signupController = (req, res) => {
         to: email,
         subject: "Account Activation Link",
         html: `
+        <img src="https://res.cloudinary.com/dnshsje8a/image/upload/v1647859640/Avatar/274581688_550847192785777_302344234340709666_n_tu7tgv.png" width="250px" height="250px" />
           <h2>Please click on given link to activate your account</h2>
           <p>${process.env.CLIENT_URL}/authentication/activate/${token}</p>
           `,
@@ -110,40 +111,40 @@ exports.activateAccount = (req, res) => {
 };
 
 exports.signinController = async (req, res) => {
-  try{
-  const { email, password } = req.body;
-  // validate user input
-  if (!(email && password)) {
-    res.status(400).send("All input is required");
+  try {
+    const { email, password } = req.body;
+    // validate user input
+    if (!(email && password)) {
+      res.status(400).send("All input is required");
+    }
+
+    const user = await Users.findOne({ where: { email } });
+
+    if (user && (await bcrypt.compare(password, user.password))) {
+      // create token
+      const accessToken = sign(
+        { id: user.id, email: email },
+        process.env.JWT_SECRET,
+        {
+          expiresIn: "168h",
+        }
+      );
+
+      res.cookie("access-token", accessToken, {
+        maxAge: 60 * 60 * 24 * 7 * 1000,
+        httpOnly: true,
+      });
+      // save user token
+
+      user.accessToken = accessToken;
+      // res.status(200).json(accessToken);
+      return res
+        .status(200)
+        .json({ token: accessToken, firstName: user.firstName });
+    } else {
+      return res.status(400).send("Invalid Credentials");
+    }
+  } catch (err) {
+    console.log(`Error auth.controllers - ERROR: ${err}`);
   }
-
-  const user = await Users.findOne({ where: { email } });
-
-  if (user && (await bcrypt.compare(password, user.password))) {
-    // create token
-    const accessToken = sign(
-      {id: user.id, email: email},
-      process.env.JWT_SECRET,
-      {
-        expiresIn: "168h",
-      }
-    );
-
-    res.cookie("access-token", accessToken, {
-      maxAge: 60 * 60 * 24 * 7 * 1000,
-      httpOnly: true,
-    });
-    // save user token
-
-    user.accessToken = accessToken;
-    // res.status(200).json(accessToken);
-    return res.status(200).json({token:accessToken, firstName:user.firstName});
-  }else {
-		return res.status(400).send("Invalid Credentials");
-	}
-  }catch (err) {
-    console.log(`Error auth.controllers - ERROR: ${err}`)
-  }
-
 };
-
