@@ -1,4 +1,4 @@
-const { Orders, Transactions, Images } = require("../models");
+const { Orders, Transactions, Images, Users } = require("../models");
 const Sequelize = require("sequelize");
 const Op = Sequelize.Op;
 
@@ -42,6 +42,7 @@ exports.getAllOrders = async (req, res) => {
             },
           ],
         },
+        raw: true,
       });
     } else if (search) {
       order = await Orders.findAll({
@@ -66,6 +67,7 @@ exports.getAllOrders = async (req, res) => {
             },
           ],
         },
+        raw: true,
       });
     } else if (sortColumn) {
       order = await Orders.findAll({
@@ -73,16 +75,17 @@ exports.getAllOrders = async (req, res) => {
         limit: perPage,
         order: [[sortColumn, sortDirection]],
         where: { UserId: reqUserId },
+        raw: true,
       });
     } else {
       order = await Orders.findAll({
         offset: startIndex,
         limit: perPage,
         where: { UserId: reqUserId },
-        raw:true
+        raw: true,
       });
-      let imageList = [];
 
+      let imageList = [];
       order.forEach((element) => {
         imageList.push(element.ImageId);
       });
@@ -93,40 +96,37 @@ exports.getAllOrders = async (req, res) => {
             [Op.in]: imageList,
           },
         },
-        raw:true,
+        raw: true,
+      });
+
+      let OwnerImageList = [];
+      image.forEach((element) => {
+        OwnerImageList.push(element.UserId);
       });
     }
+    
 
+    // ================= destructuring new format for response to order user page
     let orders = [];
-    let imageorder = {};
-
-    order.forEach((odr) => {
-      let newOrderObj = odr
-      // let newObj
-      image.forEach((el) => {
-        let newObj = {
-          ImgId: el.id,
-          Imgname: el.name,
-          ImgpathOrigin: el.pathOrigin,
-          ImgpathWatermark: el.pathWatermark,
-          Imgprice: el.price,
-          ImgOwnerId: el.UserId,
-        };
-        let rawObj = {...newOrderObj, ...newObj}
-        orders.push(rawObj);
+    for (var i = 0; i <= order.length - 1; i++) {
+      orders.push({
+        ...order[i],
+        ...{
+          ImgId: image[i].id,
+          ImgName: image[i].name,
+          ImgPathOrigin: image[i].pathOrigin,
+          ImgPathWatermark: image[i].pathWatermark,
+          ImgPrice: image[i].price,
+          ImgOwner: image[i].UserId,
+        },
       });
-    });
-
-
-
-
+    }
 
     res.json({
       page: page,
       per_page: perPage,
       total_pages: totalPages,
       total: total,
-      // order:{order:order, image:image}
       orders,
     });
   } catch (err) {

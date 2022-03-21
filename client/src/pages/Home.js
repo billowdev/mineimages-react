@@ -54,7 +54,7 @@ function Home() {
           <div class="row justify-content-center">
             <section class="col-12 col-md-8">
               <img
-                src={require("../assets/images/img3.jpg")}
+                src={require("../assets/images/mineimageslogo.png")}
                 class="avatar"
                 alt=""
               />
