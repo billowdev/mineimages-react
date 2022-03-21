@@ -1,7 +1,7 @@
 import React, { useContext, useState, useEffect } from "react";
 import { Container } from "react-bootstrap";
 import axios from "axios";
-import { AccessHeader, API_URL } from "../helpers/API";
+import { AccessHeader, API_URL } from "../../helpers/API";
 import { Link } from "react-router-dom";
 function EditProfile() {
   const [user, setUser] = React.useState("");

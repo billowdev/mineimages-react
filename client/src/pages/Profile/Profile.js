@@ -1,14 +1,14 @@
-import MineimagesComponent from "../components/Profile/MineimagesComponent";
+import MineimagesComponent from "../../components/Profile/MineimagesComponent";
 import React, { useEffect, useContext } from "react";
 import axios from "axios";
 import toast from "react-hot-toast";
 import { Card } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
-import { AccessHeader, API_URL } from "../helpers/API";
+import { AccessHeader, API_URL } from "../../helpers/API";
 import Cookies from "js-cookie";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
-import { AuthContext } from "../helpers/AuthContext";
+import { AuthContext } from "../../helpers/AuthContext";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEdit, faSignOut } from "@fortawesome/free-solid-svg-icons";
 
@@ -106,7 +106,7 @@ function Profile() {
   const [payment, setPayment] = React.useState("");
 
   const fetchUser = () => {
-     axios
+    axios
       .get(`${API_URL}/user`, {
         method: "get",
         headers: AccessHeader,
@@ -157,10 +157,16 @@ function Profile() {
                 </div>
               </div>
               <div className="button mt-2 d-flex flex-row align-items-center">
-                <button className="btn btn-sm btn-outline-primary w-100">
-                  MineImage
-                </button>
-                <button class="btn btn-sm btn-primary w-100 ml-2">Order</button>
+                <Link to="/profile/images">
+                  <button className="btn btn-sm btn-outline-success w-100">
+                    Images
+                  </button>
+                </Link>
+                <Link to="/profile/orders">
+                  <button class="btn btn-sm btn-success w-100 ml-2">
+                    Order
+                  </button>
+                </Link>
               </div>
             </div>
           </div>

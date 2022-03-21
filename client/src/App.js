@@ -22,9 +22,9 @@ import "./App.css";
 import SignIn from "./pages/SignIn";
 import SignUp from "./pages/SignUp";
 import Home from "./pages/Home";
-import Profile from "./pages/Profile";
-import UserProfile from "./pages/UserProfile";
-import EditProfile from "./pages/EditProfile";
+import Profile from "./pages/Profile/Profile";
+import UserProfile from "./pages/Profile/UserProfile";
+import EditProfile from "./pages/Profile/EditProfile";
 import Orders from "./pages/Orders";
 import Footer from "./components/Footer/Footer";
 import Cookies from "js-cookie";
@@ -34,6 +34,8 @@ import Authentication from "./pages/Authentication";
 import toast, { Toaster } from "react-hot-toast";
 import axios from "axios";
 import Swal from "sweetalert2";
+import UserOrders from "./pages/Profile/UserOrders";
+import UserImages from "./pages/Profile/UserImages";
 
 function App() {
   const API_URL = process.env.REACT_APP_API_URL;
@@ -53,11 +55,10 @@ function App() {
         <AuthContext.Provider
           value={{
             authState,
-            setAuthState
+            setAuthState,
           }}
         >
           <Router>
-           
             <div>
               <Toaster />
             </div>
@@ -100,7 +101,6 @@ function App() {
                       <>
                         <Link to="/auth/signin" className="Nav-link">
                           <Nav.Link href="/">SignIn</Nav.Link>
-                    
                         </Link>
 
                         <Link to="/signup" className="Nav-link">
@@ -121,7 +121,7 @@ function App() {
               </Container>
             </Navbar>
             {/* ============================ Navbar Section ==============================  */}
-
+          
             <Routes>
               <Route path="/" replace element={<Home />} />
               <Route path="/auth/signin" exact element={<SignIn />} />
@@ -129,6 +129,8 @@ function App() {
               <Route path="/checkout/card" replace element={<Card />} />
               <Route path="/shopping" replace element={<Shopping />} />
               <Route path="/profile" replace element={<Profile />} />
+              <Route path="/profile/orders" replace element={<UserOrders />} />
+              <Route path="/profile/images" replace element={<UserImages />} />
               <Route path="/profile/edit" exact element={<EditProfile />} />
               <Route path="/orders" replace element={<Orders />} />
 
