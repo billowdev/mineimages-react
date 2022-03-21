@@ -10,13 +10,9 @@ require('dotenv').config({
 	path: './.env'
 })
 
-
 app.use(cookieParser());
 app.use(express.json({ limit: "50mb" }));
 app.use(express.urlencoded({ limit: "50mb", extended: true }));
-
-
-
 
 //config for only development
 if (process.env.NODE_ENV === 'development') {
@@ -30,20 +26,20 @@ if (process.env.NODE_ENV === 'development') {
 }
 
 // Routers
-const Images = require("./routes/Images");
-app.use("/images", Images);
+const imagesRoute = require("./routes/images.route");
+app.use("/images", imagesRoute);
 
-const Users = require("./routes/Users");
-app.use("/user", Users);
+const usersRoute = require("./routes/users.route");
+app.use("/user", usersRoute);
 
-const Orders = require("./routes/Orders");
-app.use("/order", Orders);
+const adminRoute = require("./routes/admin.route");
+app.use("/admin", adminRoute);
 
-const auth = require("./routes/auth.route");
-app.use("/auth", auth);
+const ordersRoute = require("./routes/orders.route");
+app.use("/order", ordersRoute);
 
-
-
+const authRoute = require("./routes/auth.route");
+app.use("/auth", authRoute);
 
 
 app.use((req,res, next)=>{

@@ -4,22 +4,9 @@ const { Orders, Transactions, Images } = require("../models");
 const { validateToken } = require("../middlewares/AuthMiddleware");
 const { Op } = require("sequelize");
 
-router.get("/", validateToken, async (req, res) => {
-  const UserId = req.user.id;
-  const listOrderOncart = await Orders.findAll({
-    where: { UserId: UserId, status: "oncart" },
-  });
+const { getAllOrders } = require("../controllers/orders.controllers");
 
-  const listOrderComplete = await Orders.findAll({
-    where: { UserId: UserId, status: "complete" },
-  });
-
-  const listOrderTransaction = await Orders.findAll({
-    where: { UserId: UserId, status: "transaction" },
-  });
-
-  res.json({ oncart: listOrderOncart, complete: listOrderComplete, transaction:listOrderTransaction });
-});
+router.get("/", validateToken, getAllOrders);
 
 router.post("/", validateToken, async (req, res) => {
   const ImageId = req.body.ImageId;
@@ -83,7 +70,9 @@ router.post("/", validateToken, async (req, res) => {
           }
         });
     } else {
-      res.json("this image has already oncart or image already on transaction ");
+      res.json(
+        "this image has already oncart or image already on transaction "
+      );
     }
   } else {
     res.json({
@@ -135,12 +124,12 @@ router.post("/checkout", validateToken, async (req, res) => {
         await Orders.update(
           {
             status: "transaction",
-            TransactionId: transaction.id
+            TransactionId: transaction.id,
           },
           {
             where: {
               UserId: UserId,
-              ImageId: ImageIdList
+              ImageId: ImageIdList,
             },
           }
         ).then((response) => {
