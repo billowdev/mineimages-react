@@ -1,6 +1,7 @@
 import DataTable from "react-data-table-component";
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+
 import {
   Col,
   Row,
@@ -16,37 +17,7 @@ import { AccessHeader, API_URL } from "../../utils/API";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-const columns = [
-  {
-    name: "ID",
-    selector: (row) => row.id,
-    sortable: true,
-    width: "260px",
-  },
-  {
-    name: "image",
-    selector: (row) => row.pathOrigin,
-    cell: (row) => <img src={row.pathOrigin} width={200} height={200} alt={row.name} />,
-  },
-  {
-    name: "Name",
-    selector: (row) => row.name,
-    sortable: true,
-  },
-  {
-    name: "Detail",
-    selector: (row) => row.detail,
-    sortable: true,
-    cell: (row) => <p>{row.detail}</p>,
-    // width: "300px",
-  },
-  {
-    name: "price",
-    selector: (row) => row.price,
-    sortable: true,
-    // width: "200px",
-  }
-];
+import Toggle from "react-toggle";
 
 function UserImages() {
   const [data, setData] = useState([]);
@@ -78,7 +49,6 @@ function UserImages() {
         return response;
       })
       .then((resp) => {
-        // console.log(resp.data.total);
         setData(resp.data.data);
         setTotalRows(resp.data.total);
         setLoading(false);
@@ -106,6 +76,50 @@ function UserImages() {
     event.preventDefault();
     fetchData();
   };
+
+  const [checkState, setCheckState] = useState(true)
+  const columns = [
+    {
+      name: "ID",
+      selector: (row) => row.autoId,
+      sortable: true,
+      width: "260px",
+    },
+    {
+      name: "image",
+      selector: (row) => row.pathOrigin,
+      cell: (row) => (
+        <img src={row.pathOrigin} width={200} height={200} alt={row.name} />
+      ),
+    },
+    {
+      name: "Name",
+      selector: (row) => row.name,
+      sortable: true,
+    },
+    {
+      name: "Detail",
+      selector: (row) => row.detail,
+      sortable: true,
+      cell: (row) => <p>{row.detail}</p>,
+      // width: "300px",
+    },
+    {
+      name: "price",
+      selector: (row) => row.price,
+      sortable: true,
+      // width: "200px",
+    },
+    {
+      name: "status",
+      selector: (row) => row.status,
+      cell: (row) => (
+        <div>
+            <span>{row.status}</span>
+        </div>
+      ),
+    },
+  ];
 
   useEffect(() => {
     fetchData();

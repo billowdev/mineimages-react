@@ -12,30 +12,6 @@ import { AuthContext } from "../../helpers/AuthContext";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEdit, faSignOut } from "@fortawesome/free-solid-svg-icons";
 
-/** upload image code
-
-const { value: file } = await Swal.fire({
-  title: 'Select image',
-  input: 'file',
-  inputAttributes: {
-    'accept': 'image/*',
-    'aria-label': 'Upload your profile picture'
-  }
-})
-
-if (file) {
-  const reader = new FileReader()
-  reader.onload = (e) => {
-    Swal.fire({
-      title: 'Your uploaded picture',
-      imageUrl: e.target.result,
-      imageAlt: 'The uploaded picture'
-    })
-  }
-  reader.readAsDataURL(file)
-}
-
- */
 import {
   Button,
   Container,
@@ -68,7 +44,7 @@ function Profile() {
       if (result.isConfirmed) {
         Swal.fire("Logout!", "", "success");
         Cookies.remove("access-token");
-        setAuthState({status:false});
+        setAuthState({ status: false });
         Navigate("/");
       }
     });
@@ -78,8 +54,10 @@ function Profile() {
   const [address, setAddress] = useState("");
   const [payment, setPayment] = useState("");
 
+  
+
   const fetchUser = () => {
-    console.log(AccessHeader)
+    console.log(AccessHeader);
     axios
       .get(`${API_URL}/user`, {
         method: "get",

@@ -266,6 +266,11 @@ img {
   margin-right: var(--mb-0-25);
 }
 
+.btn-change-image {
+  margin-bottom: 1rem;
+
+}
+
 /* .btn__search {
 
 } */

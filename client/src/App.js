@@ -15,7 +15,6 @@ import {
   Navbar,
   Nav,
   NavDropdown,
-  Div,
 } from "react-bootstrap";
 
 import "./App.css";

@@ -3,10 +3,22 @@ import { Container } from "react-bootstrap";
 import axios from "axios";
 import { AccessHeader, API_URL } from "../../utils/API";
 import { Link } from "react-router-dom";
+import Swal from "sweetalert2";
+
+import { Modal, Button } from "react-bootstrap";
+
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faEdit, faSignOut } from "@fortawesome/free-solid-svg-icons";
+
 function EditProfile() {
   const [user, setUser] = React.useState("");
   const [address, setAddress] = React.useState("");
   const [payment, setPayment] = React.useState("");
+
+  // Modal BS REACT
+  const [show, setShow] = useState(false);
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
 
   const handleUpdate = (event) => {};
 
@@ -27,6 +39,33 @@ function EditProfile() {
       });
   };
 
+  // upload image code
+  const handleUploadAvartar = async () => {
+    const { value: file } = await Swal.fire({
+      title: "Select image",
+      input: "file",
+      imageUrl: `${user.avartar}`,
+      imageHeight: 300,
+      imageAlt: `avartar ${user.name}`,
+      inputAttributes: {
+        accept: "image/*",
+        "aria-label": "Upload your profile picture",
+      },
+    });
+
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        Swal.fire({
+          title: "Your uploaded picture",
+          imageUrl: e.target.result,
+          imageAlt: "The uploaded picture",
+        });
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
   useEffect(() => {
     fetchUser();
   }, []);
@@ -42,6 +81,12 @@ function EditProfile() {
                   <div className="user-profile">
                     <div className="user-avatar">
                       <img src={user.avartar} alt="Maxwell Admin" />
+                    </div>
+
+                    <div>
+                      <Button className="btn-change-image" variant="btn btn-outline-success btn-sm" onClick={handleUploadAvartar}>
+                        เปลี่ยนรูปภาพ <FontAwesomeIcon icon={faEdit} />
+                      </Button>
                     </div>
                     <h5 className="user-name">
                       {user.firstName} {user.lastName}
