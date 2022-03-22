@@ -1,8 +1,8 @@
 import React, { useContext, useState, useEffect } from "react";
 import { Container } from "react-bootstrap";
 import axios from "axios";
-import { AccessHeader, API_URL } from "../../utils/API";
-import { Link } from "react-router-dom";
+import { AccessHeader, API_URL, token } from "../../utils/API";
+import { Link, Navigate } from "react-router-dom";
 import Swal from "sweetalert2";
 
 import { Modal, Button } from "react-bootstrap";
@@ -39,6 +39,22 @@ function EditProfile() {
       });
   };
 
+  const uploadImage = async (image) => {
+    try {
+      await fetch(`${API_URL}/user/avartar/upload`, {
+        method: "PUT",
+        body: JSON.stringify({ data: image }),
+        headers: {
+          "Content-Type": "application/json",
+          "access-token": token,
+        },
+      })
+      Navigate("/profile")
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   // upload image code
   const handleUploadAvartar = async () => {
     const { value: file } = await Swal.fire({
@@ -61,6 +77,7 @@ function EditProfile() {
           imageUrl: e.target.result,
           imageAlt: "The uploaded picture",
         });
+        uploadImage(e.target.result)
       };
       reader.readAsDataURL(file);
     }

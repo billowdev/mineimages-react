@@ -12,6 +12,7 @@ const {
   getImagesUser,
   createImageUser,
   updateImageUser,
+  uploadImageAvartar
 } = require("../controllers/images.controllers");
 
 // ----------------- USER route ----------------- \\
@@ -33,6 +34,10 @@ router.post("/image", validateToken, createImageUser);
 
 // ----------------- POST TO Update Image ----------------- \\
 router.post("/image/:imgId", validateToken, updateImageUser);
+
+// ----------------- PUT TO Update Image ----------------- \\
+router.put("/avartar/upload", validateToken, uploadImageAvartar);
+
 
 
 module.exports = router;

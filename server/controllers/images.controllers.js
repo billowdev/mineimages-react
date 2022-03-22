@@ -1,5 +1,5 @@
 const { cloudinary } = require("../utils/cloudinary");
-const { Images } = require("../models");
+const { Images, Users } = require("../models");
 const Op = require("sequelize").Op;
 
 // =================== FOR USER ROUTE ==========================
@@ -152,6 +152,23 @@ exports.uploadImageByUser = async (req, res) => {
     // console.log(uploadWatermarkResponse);
 
     res.json({ msg: "File uploaded sucessfuly" });
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ err: "somthing went wrong" });
+  }
+};
+
+exports.uploadImageAvartar = async (req, res) => {
+  try {
+    const id = req.user.id;
+    const fileStr = req.body.data;
+    const uploadResponse = await cloudinary.uploader.upload(fileStr, {
+      upload_preset: "mineimages_profiles",
+    });
+
+    await Users.update({ avartar: uploadResponse.secure_url }, { where: {id:id} });
+
+    res.json({ success: true, msg: "File uploaded sucessfuly" });
   } catch (err) {
     console.log(err);
     res.status(500).json({ err: "somthing went wrong" });
