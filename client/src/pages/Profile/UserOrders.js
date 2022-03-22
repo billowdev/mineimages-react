@@ -1,7 +1,7 @@
 import DataTable from "react-data-table-component";
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { AccessHeader, API_URL } from "../../helpers/API";
+import { AccessHeader, API_URL } from "../../utils/API";
 import { Link, useNavigate } from "react-router-dom";
 
 import {
@@ -19,7 +19,6 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 function UserOrders() {
   const [data, setData] = useState([]);
-  const [image, setImage] = useState([]);
   const [loading, setLoading] = useState(false);
   const [totalRows, setTotalRows] = useState(0);
   const [perPage, setPerPage] = useState(10);
@@ -141,10 +140,10 @@ function UserOrders() {
     },
     {
       name: "seller",
-      selector: (row) => row.ImgOwner,
+      selector: (row) => row.Image.UserId,
       cell: (row) => (
         <div>
-          <Link to={`user/${row.ImgOwner}`}>
+          <Link to={`user/${row.Image.UserId}`}>
             <Button className="btn-success">owner</Button>
           </Link>
         </div>

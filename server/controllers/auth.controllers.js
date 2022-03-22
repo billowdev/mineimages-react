@@ -140,11 +140,13 @@ exports.signinController = async (req, res) => {
       // res.status(200).json(accessToken);
       return res
         .status(200)
-        .json({ token: accessToken, firstName: user.firstName });
-    } else {
-      return res.status(400).send("Invalid Credentials");
+        .json({ id:user.id, token: accessToken, firstName: user.firstName });
+       
+      } else {
+        return res.status(400).send("Invalid Credentials");
+      }
+    } catch (err) {
+      console.log(`Error auth.controllers - ERROR: ${err}`);
     }
-  } catch (err) {
-    console.log(`Error auth.controllers - ERROR: ${err}`);
-  }
+    
 };

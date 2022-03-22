@@ -1,10 +1,10 @@
 import MineimagesComponent from "../../components/Profile/MineimagesComponent";
-import React, { useEffect, useContext } from "react";
+import React, { useEffect, useContext, useState } from "react";
 import axios from "axios";
 import toast from "react-hot-toast";
 import { Card } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
-import { AccessHeader, API_URL } from "../../helpers/API";
+import { AccessHeader, API_URL } from "../../utils/API";
 import Cookies from "js-cookie";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
@@ -68,44 +68,18 @@ function Profile() {
       if (result.isConfirmed) {
         Swal.fire("Logout!", "", "success");
         Cookies.remove("access-token");
-        setAuthState(false);
+        setAuthState({status:false});
         Navigate("/");
       }
-      // else if (result.isDenied) {
-      //   Swal.fire('Changes are not saved', '', 'info')
-      // }
     });
-
-    // toast((t) => (
-    //   <span className="text-center">
-    //     <p>
-    //       You want to Logout ? <br />
-    //     </p>
-    //     <Button
-    //       variant="success"
-    //       style={{ marginRight: "10px" }}
-    //       onClick={() => {
-    //         Cookies.remove("access-token");
-    //         Navigate("/");
-    //         // setAuthState(false);
-    //         toast.dismiss();
-    //         toast.success("Logout");
-    //       }}
-    //     >
-    //       Yes
-    //     </Button>
-    //     <Button variant="secondary" onClick={() => toast.dismiss(t.id)}>
-    //       No
-    //     </Button>
-    //   </span>
-    // ));
   };
 
-  const [user, setUser] = React.useState("");
-  const [address, setAddress] = React.useState("");
-  const [payment, setPayment] = React.useState("");
+  const [user, setUser] = useState("");
+  const [address, setAddress] = useState("");
+  const [payment, setPayment] = useState("");
 
   const fetchUser = () => {
+    console.log(AccessHeader)
     axios
       .get(`${API_URL}/user`, {
         method: "get",

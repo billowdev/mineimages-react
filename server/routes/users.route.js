@@ -3,12 +3,16 @@ const express = require("express");
 const router = express.Router();
 const {
   getDataUserController,
-  getImagesUser,
   createAddressUser,
   createPaymentUser,
-  createImageUser,
-  updateImageUSer,
 } = require("../controllers/user.controllers");
+
+
+const {
+  getImagesUser,
+  createImageUser,
+  updateImageUser,
+} = require("../controllers/images.controllers");
 
 // ----------------- USER route ----------------- \\
 
@@ -28,7 +32,7 @@ router.post("/address", validateToken, createAddressUser);
 router.post("/image", validateToken, createImageUser);
 
 // ----------------- POST TO Update Image ----------------- \\
-router.post("/image/:imgId", validateToken, updateImageUSer);
+router.post("/image/:imgId", validateToken, updateImageUser);
 
 
 module.exports = router;

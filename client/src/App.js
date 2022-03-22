@@ -36,18 +36,38 @@ import axios from "axios";
 import Swal from "sweetalert2";
 import UserOrders from "./pages/Profile/UserOrders";
 import UserImages from "./pages/Profile/UserImages";
+import { AccessHeader } from "./utils/API";
 
 function App() {
   const API_URL = process.env.REACT_APP_API_URL;
-  const [authState, setAuthState] = useState(false);
+  const [authState, setAuthState] = useState({
+    id: "",
+    name: "",
+    status: false,
+  });
 
-  if (authState == false) {
-    if (Cookies.get("access-token")) {
-      setAuthState(true);
-    }
-  }
+  const fetchIsLogin = () => {
+    var url = `${API_URL}/auth/authenticated`;
+    axios
+      .get(url, {
+        method: "get",
+        headers: AccessHeader,
+      })
+      .then((response) => {
+        return response;
+      })
+      .then((data) => {
+        setAuthState({
+          id: data.id,
+          name: data.firstName,
+          status: true,
+        });
+      });
+  };
 
-  useEffect(() => {}, []);
+  useEffect(() => {
+    fetchIsLogin();
+  }, []);
 
   return (
     <>
@@ -75,10 +95,10 @@ function App() {
                     style={{ maxHeight: "100px" }}
                     navbarScroll
                   >
-                    {authState && (
+                    {authState.status && (
                       <>
                         <Link to="/shopping" className="Nav-link">
-                          <Nav.Link href="#action3">Cart</Nav.Link>
+                          <Nav.Link href="#action3">Cart </Nav.Link>
                         </Link>
                         <Link to="/orders" className="Nav-link">
                           <Nav.Link href="#action3">orders</Nav.Link>
@@ -86,10 +106,10 @@ function App() {
                       </>
                     )}
 
-                    {authState && (
+                    {authState.status && (
                       <>
                         <Link to="/card" className="Nav-link">
-                          <Nav.Link href="/">New</Nav.Link>
+                          <Nav.Link href="/"> New </Nav.Link>
                         </Link>
                       </>
                     )}
@@ -97,7 +117,7 @@ function App() {
                     <Nav.Link href="#" disabled></Nav.Link>
                   </Nav>
                   <Nav>
-                    {!authState && (
+                    {!authState.status && (
                       <>
                         <Link to="/auth/signin" className="Nav-link">
                           <Nav.Link href="/">SignIn</Nav.Link>
@@ -109,7 +129,7 @@ function App() {
                         </Link>
                       </>
                     )}
-                    {authState && (
+                    {authState.status && (
                       <>
                         <Link to="/profile" replace>
                           <Button variant="outline-success btn">Profile</Button>
@@ -121,14 +141,14 @@ function App() {
               </Container>
             </Navbar>
             {/* ============================ Navbar Section ==============================  */}
-          
+
             <Routes>
               <Route path="/" replace element={<Home />} />
               <Route path="/auth/signin" exact element={<SignIn />} />
               <Route path="/signup" exact element={<SignUp />} />
               <Route path="/checkout/card" replace element={<Card />} />
               <Route path="/shopping" replace element={<Shopping />} />
-              <Route path="/profile" replace element={<Profile />} />
+              <Route path="/profile" exact element={<Profile />} />
               <Route path="/profile/orders" replace element={<UserOrders />} />
               <Route path="/profile/images" replace element={<UserImages />} />
               <Route path="/profile/edit" exact element={<EditProfile />} />

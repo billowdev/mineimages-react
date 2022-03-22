@@ -1,16 +1,25 @@
 module.exports = (sequelize, DataTypes) => {
   const Orders = sequelize.define("Orders", {
-    id: {
+    autoId: {
       type: DataTypes.INTEGER,
-      primaryKey: true,
       autoIncrement: true,
-      allowNull: false,
+      primaryKey: true,
+    },
+    id: {
+      type: DataTypes.UUID,
+      primaryKey: true,
+      defaultValue: DataTypes.UUIDV1,
     },
     status: {
       type: DataTypes.ENUM(["oncart", "complete", "transaction"]),
       allowNull: false,
       defaultValue: "oncart",
-    }
+    },
+    price: {
+      type: DataTypes.DECIMAL,
+      allowNull: true,
+      defaultValue: 0,
+    },
   });
 
   // this stack help me alot :)

@@ -86,6 +86,7 @@ exports.getAllOrders = async (req, res, next) => {
     console.log("Error at get order user controllers", err);
     res.status(401).send("Error can't get order");
   }
+};
 
   // ===========================================================
 
@@ -109,4 +110,3 @@ exports.getAllOrders = async (req, res, next) => {
   //   },
   // }
   // res.json(response);
-};

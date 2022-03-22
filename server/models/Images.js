@@ -1,5 +1,10 @@
 module.exports = (sequelize, DataTypes) => {
   const Images = sequelize.define("Images", {
+    autoId: {
+      type: DataTypes.INTEGER,
+      autoIncrement: true,
+      primaryKey: true,
+    },
     id: {
       type: DataTypes.UUID,
       primaryKey: true,
@@ -41,7 +46,7 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.ENUM(["YES", "NO"]),
       allowNull: false,
       defaultValue: "NO",
-    }
+    },
   });
 
   Images.associate = (models) => {
