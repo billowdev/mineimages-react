@@ -59,7 +59,7 @@ function UserOrders() {
     setPage(page);
   };
 
-  const handlePerRowsChange = async (newPerPage, page) => {
+  const handlePerRowsChange = async (newPerPage) => {
     setPerPage(newPerPage);
   };
 
@@ -105,26 +105,27 @@ function UserOrders() {
     },
     {
       name: "Name",
-      selector: (row) => row.ImgName,
+      selector: (row) => row.Image.name,
+      sortable: true,
       width: "120px",
     },
     {
       name: "Detail",
-      selector: (row) => row.ImgName,
+      selector: (row) => row.Image.detail,
       sortable: true,
       // width: "180px",
     },
     {
       name: "Price",
-      selector: (row) => row.ImgPrice,
-      // sortable: true,
+      selector: (row) => row.Image.price,
+      sortable: true,
       width: "120px",
     },
     {
       name: "Status",
       selector: (row) => row.status,
       sortable: true,
-      width: "120px",
+      // width: "120px",
     },
     {
       name: "createAt",
@@ -135,8 +136,8 @@ function UserOrders() {
           19
         )}`}</span>
       ),
-      // sortable: true,
-      width: "180px",
+      sortable: true,
+      // width: "180px",
     },
     {
       name: "seller",
@@ -149,7 +150,7 @@ function UserOrders() {
         </div>
       ),
       // sortable: true,
-      width: "110px",
+      // width: "110px",
     },
     {
       name: "Download",
@@ -162,7 +163,7 @@ function UserOrders() {
         </div>
       ),
       // sortable: true,
-      width: "140px",
+      // width: "140px",
     },
   ];
 

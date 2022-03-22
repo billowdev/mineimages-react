@@ -10,7 +10,7 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.ENUM(["oncart", "complete", "transaction"]),
       allowNull: false,
       defaultValue: "oncart",
-    },
+    }
   });
 
   // this stack help me alot :)
@@ -20,7 +20,10 @@ module.exports = (sequelize, DataTypes) => {
     Orders.belongsTo(models.Images, { foreignKey: "ImageId" });
     Orders.belongsTo(models.Users, { foreignKey: "UserId" });
 
-    Orders.belongsTo(models.Transactions, { foreignKey: "TransactionId", allowNull:true});
+    Orders.belongsTo(models.Transactions, {
+      foreignKey: "TransactionId",
+      allowNull: true,
+    });
   };
   return Orders;
 };
