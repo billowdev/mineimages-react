@@ -1,3 +1,4 @@
+const { validateToken } = require("../middlewares/AuthMiddleware");
 const { Users, Addresses, PaymentUsers, Images } = require("../models");
 
 exports.getAllUserData = async (req, res) => {

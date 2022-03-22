@@ -36,6 +36,7 @@ import Swal from "sweetalert2";
 import UserOrders from "./pages/Profile/UserOrders";
 import UserImages from "./pages/Profile/UserImages";
 import { AccessHeader } from "./utils/API";
+import Upload from "./pages/Upload";
 
 function App() {
   const API_URL = process.env.REACT_APP_API_URL;
@@ -151,6 +152,7 @@ function App() {
               <Route path="/profile/orders" replace element={<UserOrders />} />
               <Route path="/profile/images" replace element={<UserImages />} />
               <Route path="/profile/edit" exact element={<EditProfile />} />
+              <Route path="/profile/images/upload" exact element={<Upload />} />
               <Route path="/orders" replace element={<Orders />} />
 
               <Route

@@ -1,7 +1,7 @@
+const { validateToken } = require("../middlewares/AuthMiddleware");
 const express = require("express");
 const router = express.Router();
 const { Orders, Transactions, Images } = require("../models");
-const { validateToken } = require("../middlewares/AuthMiddleware");
 const { Op } = require("sequelize");
 
 const { getAllOrders } = require("../controllers/orders.controllers");
