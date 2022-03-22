@@ -12,6 +12,9 @@ const {
 
 // ----------------- USER route ----------------- \\
 
+// ----------------- GET OWN IMAGES DATA ----------------- \\
+router.get("/images", validateToken, getImagesUser);
+
 // ----------------- GET DATA USER WHO SIGN IN (RES TO PROFILE PAGE) route ----------------- \\
 router.get("/", validateToken, getDataUserController);
 
@@ -26,9 +29,6 @@ router.post("/image", validateToken, createImageUser);
 
 // ----------------- POST TO Update Image ----------------- \\
 router.post("/image/:imgId", validateToken, updateImageUSer);
-
-// ----------------- GET OWN IMAGES DATA ----------------- \\
-router.get("/images", validateToken, getImagesUser);
 
 
 module.exports = router;

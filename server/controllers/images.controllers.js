@@ -1,14 +1,5 @@
 const { Images } = require("../models");
 
-exports.getAllImagesUserOwned = async (req, res) => {
-  try{
-    const listOfImages = await Images.findAll({ where: { UserId: req.user.id } });
-    res.json(listOfImages);
-  } catch (err) {
-    console.log(err)
-    res.status(401).send("Error")
-  }
-};
 
 exports.getImageById = async (req, res) => {
   const id = req.params.id;

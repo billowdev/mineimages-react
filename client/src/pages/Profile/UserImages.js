@@ -12,6 +12,8 @@ import {
   InputGroup,
 } from "react-bootstrap";
 
+import { AccessHeader, API_URL } from "../../helpers/API";
+
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 const columns = [
@@ -67,7 +69,7 @@ function UserImages() {
 
   const fetchData = async () => {
     setLoading(true);
-    var url = `http://localhost:3002/api/attractions?page=${page}&per_page=${perPage}&delay=1`;
+    var url = `${API_URL}/user/images?page=${page}&per_page=${perPage}&delay=1`;
 
     if (sortColumn) {
       url += `&sort_column=${sortColumn}&sort_direction=${sortColumnDirection}`;
@@ -75,11 +77,20 @@ function UserImages() {
     if (search) {
       url += `&search=${search}`;
     }
-
-    const response = await axios.get(url);
-    setData(response.data.data);
-    setTotalRows(response.data.total);
-    setLoading(false);
+    await axios
+      .get(url, {
+        method: "get",
+        headers: AccessHeader,
+      })
+      .then((response) => {
+        return response;
+      })
+      .then((resp) => {
+        console.log(resp.data.orders);
+        setData(resp.data.orders);
+        setTotalRows(resp.data.total);
+        setLoading(false);
+      });
   };
 
   const handlePageChange = (page) => {

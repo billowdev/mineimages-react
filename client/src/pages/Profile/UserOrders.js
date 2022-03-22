@@ -48,8 +48,8 @@ function UserOrders() {
         return response;
       })
       .then((resp) => {
-        console.log(resp.data.orders);
-        setData(resp.data.orders);
+        console.log(resp.data);
+        setData(resp.data.data);
         setTotalRows(resp.data.total);
         setLoading(false);
       });
@@ -91,12 +91,11 @@ function UserOrders() {
       width: "100px",
     },
     {
-      name: "รูปภาพ",
-      selector: (row) => row.ImgPathWatermark,
-      sortable: true,
+      name: "Image",
+      selector: (row) => row.Image.pathWatermark,
       cell: (row) => (
         <img
-          src={row.ImgPathWatermark}
+          src={row.Image.pathWatermark}
           width={150}
           height={150}
           alt={row.name}
@@ -105,31 +104,30 @@ function UserOrders() {
       width: "180px",
     },
     {
-      name: "ชื่อรูปภาพ",
+      name: "Name",
       selector: (row) => row.ImgName,
-      sortable: true,
-      width: "100px",
-    },
-    {
-      name: "รายละเอียด",
-      selector: (row) => row.ImgName,
-      sortable: true,
-      width: "180px",
-    },
-    {
-      name: "ราคา",
-      selector: (row) => row.ImgPrice,
-      sortable: true,
       width: "120px",
     },
     {
-      name: "สถานะ",
+      name: "Detail",
+      selector: (row) => row.ImgName,
+      sortable: true,
+      // width: "180px",
+    },
+    {
+      name: "Price",
+      selector: (row) => row.ImgPrice,
+      // sortable: true,
+      width: "120px",
+    },
+    {
+      name: "Status",
       selector: (row) => row.status,
       sortable: true,
       width: "120px",
     },
     {
-      name: "วันที่สั่งซื้อ",
+      name: "createAt",
       selector: (row) => row.createdAt,
       cell: (row) => (
         <span>{`${row.createdAt.slice(0, 10)}  ${row.createdAt.slice(
@@ -137,11 +135,11 @@ function UserOrders() {
           19
         )}`}</span>
       ),
-      sortable: true,
+      // sortable: true,
       width: "180px",
     },
     {
-      name: "ผู้ขาย",
+      name: "seller",
       selector: (row) => row.ImgOwner,
       cell: (row) => (
         <div>
@@ -150,11 +148,11 @@ function UserOrders() {
           </Link>
         </div>
       ),
-      sortable: true,
+      // sortable: true,
       width: "110px",
     },
     {
-      name: "ดาวน์โหลด",
+      name: "Download",
       selector: (row) => row.ImgPathOrigin,
       cell: (row) => (
         <div>
@@ -163,7 +161,7 @@ function UserOrders() {
           <Button className="btn-success" href={row.ImgPathOrigin} download={row.ImgName}>ดาวน์โหลด</Button>
         </div>
       ),
-      sortable: true,
+      // sortable: true,
       width: "140px",
     },
   ];

@@ -9,11 +9,11 @@ const {
   createImageUser,
 } = require("../controllers/images.controllers");
 
-router.get("/", getAllImagesUserOwned);
+
+
 
 router.get("/byId/:id", getImageById);
 
 router.post("/", createImageUser);
-
 
 module.exports = router;

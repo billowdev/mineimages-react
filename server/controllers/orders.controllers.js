@@ -1,6 +1,6 @@
 const { Orders, Transactions, Images, Users } = require("../models");
-const Sequelize = require("sequelize");
-const Op = Sequelize.Op;
+const Op = require("sequelize").Op;
+const { conn } = require("../config/rawQueryConfig");
 
 exports.getAllOrders = async (req, res) => {
   try {
@@ -70,64 +70,79 @@ exports.getAllOrders = async (req, res) => {
         raw: true,
       });
     } else if (sortColumn) {
-      order = await Orders.findAll({
+      data = await Orders.findAll({
         offset: startIndex,
         limit: perPage,
         order: [[sortColumn, sortDirection]],
-        where: { UserId: reqUserId },
-        raw: true,
-      });
+        where: {UserId:reqUserId},
+        include: [{
+          model: Images,
+          require: true,
+        }]
+      })
+
     } else {
-      order = await Orders.findAll({
-        offset: startIndex,
-        limit: perPage,
-        where: { UserId: reqUserId },
-        raw: true,
-      });
+      // order = await Orders.findAll({
+      //   offset: startIndex,
+      //   limit: perPage,
+      //   where: { UserId: reqUserId },
+      //   raw: true,
+      // });
 
-      let imageList = [];
-      order.forEach((element) => {
-        imageList.push(element.ImageId);
-      });
+      // let imageList = [];
+      // order.forEach((element) => {
+      //   imageList.push(element.ImageId);
+      // });
 
-      image = await Images.findAll({
-        where: {
-          id: {
-            [Op.in]: imageList,
-          },
-        },
-        raw: true,
-      });
 
-      let OwnerImageList = [];
-      image.forEach((element) => {
-        OwnerImageList.push(element.UserId);
-      });
+      data = await Orders.findAll({
+        where: {UserId:reqUserId},
+        include: [{
+          model: Images,
+          require: true,
+        }]
+      })
+      console.log(data)
+
+   
+
+      // image = await Images.findAll({
+      //   where: {
+      //     id: {
+      //       [Op.in]: imageList,
+      //     },
+      //   },
+      //   raw: true,
+      // });
+
+      // let OwnerImageList = [];
+      // image.forEach((element) => {
+      //   OwnerImageList.push(element.UserId);
+      // });
     }
-    
 
     // ================= destructuring new format for response to order user page
-    let orders = [];
-    for (var i = 0; i <= order.length - 1; i++) {
-      orders.push({
-        ...order[i],
-        ...{
-          ImgId: image[i].id,
-          ImgName: image[i].name,
-          ImgPathOrigin: image[i].pathOrigin,
-          ImgPathWatermark: image[i].pathWatermark,
-          ImgPrice: image[i].price,
-          ImgOwner: image[i].UserId,
-        },
-      });
-    }
-
+    // let orders = [];
+    // for (var i = 0; i <= order.length - 1; i++) {
+    //   orders.push({
+    //     ...order[i],
+    //     ...{
+    //       ImgId: image[i].id,
+    //       ImgName: image[i].name,
+    //       ImgPathOrigin: image[i].pathOrigin,
+    //       ImgPathWatermark: image[i].pathWatermark,
+    //       ImgPrice: image[i].price,
+    //       ImgOwner: image[i].UserId,
+    //     },
+    //   });
+    // }
+    console.log(data);
     res.json({
       page: page,
       per_page: perPage,
       total_pages: totalPages,
       total: total,
-      orders,
+      data,
     });
   } catch (err) {
     console.log("Error at get order user controllers", err);
