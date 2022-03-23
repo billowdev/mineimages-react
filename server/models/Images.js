@@ -1,10 +1,5 @@
 module.exports = (sequelize, DataTypes) => {
   const Images = sequelize.define("Images", {
-    autoId: {
-      type: DataTypes.INTEGER,
-      autoIncrement: true,
-      primaryKey: true,
-    },
     id: {
       type: DataTypes.UUID,
       primaryKey: true,

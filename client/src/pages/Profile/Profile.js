@@ -50,11 +50,9 @@ function Profile() {
     });
   };
 
-  const [user, setUser] = useState("");
-  const [address, setAddress] = useState("");
-  const [payment, setPayment] = useState("");
-
-  
+  const [user, setUser] = useState([]);
+  const [address, setAddress] = useState([]);
+  const [payment, setPayment] = useState([]);
 
   const fetchUser = () => {
     console.log(AccessHeader);

@@ -81,7 +81,7 @@ function UserImages() {
   const columns = [
     {
       name: "ID",
-      selector: (row) => row.autoId,
+      selector: (row) => row.id,
       sortable: true,
       width: "260px",
     },

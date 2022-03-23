@@ -1,10 +1,5 @@
 module.exports = (sequelize, DataTypes) => {
   const Transactions = sequelize.define("Transactions", {
-    autoId: {
-      type: DataTypes.INTEGER,
-      autoIncrement: true,
-      primaryKey: true,
-    },
     id: {
       type: DataTypes.UUID,
       primaryKey: true,

@@ -16,8 +16,9 @@ exports.getDataUserController = async (req, res) => {
     createAt,
     updateAt,
   } = await Users.findOne({ where: { id: req.user.id } });
-  const {addressLine1, addressLine2, city, postalCode, country} = await Addresses.findOne({ where: { UserId: req.user.id } });
-  const {provider} = await PaymentUsers.findOne({
+  const { addressLine1, addressLine2, city, postalCode, country } =
+    await Addresses.findOne({ where: { UserId: req.user.id } });
+  const { provider } = await PaymentUsers.findOne({
     where: { UserId: req.user.id },
   });
   const data = {
@@ -54,7 +55,6 @@ exports.getDataUserController = async (req, res) => {
   res.status(200).send(data);
 };
 
-
 // ===================== create (post) section =====================
 
 exports.createPaymentUser = async (req, res) => {
@@ -71,9 +71,16 @@ exports.createAddressUser = async (req, res) => {
   res.json(addressReq);
 };
 
-
-exports.updateProfile = async (req, res)=>{
-  const data = req.body;
-  console.log(data)
-  
-}
+exports.updateProfile = async (req, res) => {
+  try {
+    const data = req.body;
+    await Users.update(data.updateUserData, { where: { id: req.user.id } });
+    await Addresses.update(data.updateUserAddress, {
+      where: { UserId: req.user.id },
+    });
+    res.status(200).json({ success: true, msg: "Update profile successfuly" });
+  } catch (err) {
+    console.log({ success: false, msg: err });
+    res.status(400).json({ success: false, msg: err });
+  }
+};

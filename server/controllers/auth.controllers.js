@@ -123,7 +123,7 @@ exports.signinController = async (req, res) => {
     if (user && (await bcrypt.compare(password, user.password))) {
       // create token
       const accessToken = sign(
-        { id: user.id, email: email },
+        { id: user.id},
         process.env.JWT_SECRET,
         {
           expiresIn: "168h",
