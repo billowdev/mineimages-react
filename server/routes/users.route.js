@@ -5,6 +5,7 @@ const {
   getDataUserController,
   createAddressUser,
   createPaymentUser,
+  updateProfile
 } = require("../controllers/user.controllers");
 
 
@@ -36,8 +37,10 @@ router.post("/image", validateToken, createImageUser);
 router.post("/image/:imgId", validateToken, updateImageUser);
 
 // ----------------- PUT TO Update Image ----------------- \\
-router.put("/avartar/upload", validateToken, uploadImageAvartar);
+router.patch("/avartar/upload", validateToken, uploadImageAvartar);
 
+// ----------------- PUT TO Update Image ----------------- \\
+router.patch("/profile", validateToken, updateProfile);
 
 
 module.exports = router;

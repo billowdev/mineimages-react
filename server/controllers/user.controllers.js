@@ -70,3 +70,10 @@ exports.createAddressUser = async (req, res) => {
   await Addresses.update(addressReq, { where: { UserId: UserId } });
   res.json(addressReq);
 };
+
+
+exports.updateProfile = async (req, res)=>{
+  const data = req.body;
+  console.log(data)
+  
+}

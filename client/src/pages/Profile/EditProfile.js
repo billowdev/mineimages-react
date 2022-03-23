@@ -15,13 +15,25 @@ function EditProfile() {
   const [address, setAddress] = React.useState("");
   const [payment, setPayment] = React.useState("");
 
+  const [firstName, setFirstName] = useState(user.firstName);
+  // const [updateProfile, setUpdateProfile] = useState({
+  //   firstName: user.firstName,
+  //   lastName:user.lastName,
+  //   email:user.email,
+  //   telephone:user.telephone,
+  //   about:user.about,
+  // });
+
+  const refreshPage = () => {
+    window.location.reload();
+  };
+
   // Modal BS REACT
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
-  const handleUpdate = (event) => {};
-
+  // fetch user data who signin
   const fetchUser = async () => {
     await axios
       .get(`${API_URL}/user`, {
@@ -42,14 +54,13 @@ function EditProfile() {
   const uploadImage = async (image) => {
     try {
       await fetch(`${API_URL}/user/avartar/upload`, {
-        method: "PUT",
+        method: "PATCH",
         body: JSON.stringify({ data: image }),
         headers: {
           "Content-Type": "application/json",
           "access-token": token,
         },
-      })
-      Navigate("/profile")
+      });
     } catch (err) {
       console.log(err);
     }
@@ -77,9 +88,34 @@ function EditProfile() {
           imageUrl: e.target.result,
           imageAlt: "The uploaded picture",
         });
-        uploadImage(e.target.result)
+        uploadImage(e.target.result).then(() => {
+          refreshPage();
+        });
       };
       reader.readAsDataURL(file);
+    }
+  };
+
+  const handleUpdateProfile = async (event) => {
+   
+    try {
+      // await axios.patch(`${API_URL}/user/avartar/upload`, {
+      //   method: "PATCH",
+      //   headers: {
+      //     "Content-Type": "application/json",
+      //     "access-token": token,
+      //   },
+      // }).then(resp=>{
+      //     Swal.fire(
+      //       'Good job!',
+      //       'You clicked the button!',
+      //       'success'
+      //     )
+      // });
+
+      
+    } catch (err) {
+      console.log(err);
     }
   };
 
@@ -101,7 +137,11 @@ function EditProfile() {
                     </div>
 
                     <div>
-                      <Button className="btn-change-image" variant="btn btn-outline-success btn-sm" onClick={handleUploadAvartar}>
+                      <Button
+                        className="btn-change-image"
+                        variant="btn btn-outline-success btn-sm"
+                        onClick={handleUploadAvartar}
+                      >
                         เปลี่ยนรูปภาพ <FontAwesomeIcon icon={faEdit} />
                       </Button>
                     </div>
@@ -281,7 +321,7 @@ function EditProfile() {
                       <button
                         type="button"
                         id="submit"
-                        onClick={handleUpdate()}
+                        onClick={handleUpdateProfile()}
                         name="submit"
                         className="btn btn-primary"
                       >
