@@ -13,7 +13,7 @@ import {
   Col,
 } from "react-bootstrap";
 
-function User() {
+function PublicProfile() {
   return (
     <>
       <Container fluid>
@@ -157,7 +157,7 @@ function User() {
                 <img
                   alt="..."
                   src={
-                    require("../assets/images/img2.jpg")
+                    require("../../assets/images/img3.jpg")
                       .default
                   }
                 ></img>
@@ -168,7 +168,7 @@ function User() {
                     <img
                       alt="..."
                       className="avatar border-gray"
-                      src={require("../assets/images/img3.jpg").default}
+                      src={require("../../assets/images/img3.jpg").default}
                     ></img>
                     <h5 className="title">Mike Andrew</h5>
                   </a>
@@ -215,4 +215,4 @@ function User() {
   );
 }
 
-export default User;
+export default PublicProfile;

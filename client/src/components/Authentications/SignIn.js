@@ -1,10 +1,8 @@
 import React, { useState, useContext } from "react";
 import axios from "axios";
 import Cookies from "js-cookie";
-import { AuthContext } from "../helpers/AuthContext";
+import { AuthContext } from "../../helpers/AuthContext";
 import { Link, useNavigate } from "react-router-dom";
-import Footer from "../components/Footer/Footer";
-import toast from "react-hot-toast";
 
 import {
   Col,
@@ -20,45 +18,39 @@ import {
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEnvelope, faUnlockAlt } from "@fortawesome/free-solid-svg-icons";
 import Swal from "sweetalert2";
-import withReactContent from "sweetalert2-react-content";
+// import withReactContent from "sweetalert2-react-content";
 
 function SignIn() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const { setAuthState } = useContext(AuthContext);
+  const { authState, setAuthState } = useContext(AuthContext);
 
   const API_URL = process.env.REACT_APP_API_URL;
   const navigate = useNavigate();
 
-
-  const signin = async () => {
-    // let status = false;
+  const signin = () => {
     if (email != "" && password != "") {
       const data = { email: email, password: password };
-      const login = await axios
-        .post(`${API_URL}/auth/signin`, data)
-        .then((response) => {
-          if (response.data.error) {
-            alert(response.data.error);
-          } else {
-            Cookies.set("access-token", response.data.token, { expires: 7 });
-            setAuthState(true);
-            navigate("/")
-            Swal.fire({
-              icon: 'success',
-              title: 'Signin success',
-              text: `Welcome ${response.data.firstName}`,
-              // footer: '<a href="/profile">Profile</a>'
-            })
-          }
-        });
-      // toast.promise(login, {
-      //   loading: "Loading...",
-      //   success: "Sign in sucessfuly",
-      //   error: "sign in failed",
-      // });
+      axios.post(`${API_URL}/auth/signin`, data).then((response) => {
+        if (response.data.error) {
+          alert(response.data.error);
+        } else {
+          Cookies.set("access-token", response.data.token, { expires: 7 });
+          setAuthState({
+            id: response.data.id,
+            firstName: response.data.id,
+            status: true,
+          });
+          navigate("/");
+          Swal.fire({
+            icon: "success",
+            title: "Signin success",
+            text: `Welcome ${response.data.firstName}`,
+            // footer: '<a href="/profile">Profile</a>'
+          });
+        }
+      });
     }
- 
   };
 
   return (
@@ -74,7 +66,7 @@ function SignIn() {
             sm={12}
             className="p-5 m-auto shadow-sm rounded-lg"
           >
-              <h3 className="text-center">Sign In</h3>
+            <h3 className="text-center">Sign In</h3>
             <Form>
               <Form.Group controlId="formBasicEmail">
                 <Form.Label>Email address</Form.Label>
@@ -120,18 +112,13 @@ function SignIn() {
                 Login
               </Button>
               <p className="forgot-password text-right">
-                    Forgot <a href="#">password?</a>
-                </p>
+                Forgot <a href="#">password?</a>
+              </p>
             </Form>
-
           </Col>
         </Row>
-        
       </Container>
       {/* <Footer /> */}
-
-     
-
     </>
   );
 }

@@ -5,6 +5,10 @@ module.exports = (sequelize, DataTypes) => {
       primaryKey: true,
       defaultValue: DataTypes.UUIDV4,
     },
+    publicId:{
+      type: DataTypes.STRING(),
+      allowNull: false
+    },
     name: {
       type: DataTypes.STRING(50),
       allowNull: true,
@@ -19,7 +23,8 @@ module.exports = (sequelize, DataTypes) => {
     },
     pathWatermark: {
       type: DataTypes.STRING,
-      defaultValue: "https://res.cloudinary.com/dnshsje8a/image/upload/v1647843792/default/5203299_id0fbv.jpg"
+      defaultValue:
+        "https://res.cloudinary.com/dnshsje8a/image/upload/v1647843792/default/5203299_id0fbv.jpg",
     },
     price: {
       type: DataTypes.DECIMAL,
@@ -37,24 +42,24 @@ module.exports = (sequelize, DataTypes) => {
       defaultValue: "inactive",
     },
     remove: {
-      type: DataTypes.ENUM(["YES","NO"]),
+      type: DataTypes.ENUM(["YES", "NO"]),
       allowNull: false,
-      defaultValue: "NO"
-    }
+      defaultValue: "NO",
+    },
   });
 
   Images.associate = (models) => {
     Images.belongsTo(models.Users, {
-      foreignKey: "UserId"
+      foreignKey: "UserId",
     });
 
     Images.hasMany(models.Orders, {
-      onDelete: "cascade"
-    })
+      onDelete: "cascade",
+    });
 
     Images.hasMany(models.Likes, {
-      onDelete: "cascade"
-    }) 
+      onDelete: "cascade",
+    });
   };
   return Images;
 };

@@ -10,8 +10,7 @@ const createTokens = (user) => {
 };
 
 const validateToken = (req, res, next) => {
-  const accessToken = req.body.token || req.query.token || req.headers['x-access-token'] || req.cookies['access-token'];
-  console.log(accessToken)
+  const accessToken =  req.header('access-token') || req.cookies['access-token'];
   if (!accessToken) {
     return res
       .status(403)
@@ -21,10 +20,9 @@ const validateToken = (req, res, next) => {
   try {
     const validToken = verify(accessToken, process.env.JWT_SECRET);
 
+    req.user = validToken;
     if (validToken) {
-      req.user = validToken;
       req.user.authenticated = true;
-      req.user.accessToken = accessToken;
       return next();
     }
   } catch (err) {

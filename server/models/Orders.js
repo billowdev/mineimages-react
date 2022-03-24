@@ -1,15 +1,19 @@
 module.exports = (sequelize, DataTypes) => {
   const Orders = sequelize.define("Orders", {
     id: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.UUID,
       primaryKey: true,
-      autoIncrement: true,
-      allowNull: false,
+      defaultValue: DataTypes.UUIDV1,
     },
     status: {
       type: DataTypes.ENUM(["oncart", "complete", "transaction"]),
       allowNull: false,
       defaultValue: "oncart",
+    },
+    price: {
+      type: DataTypes.DECIMAL,
+      allowNull: true,
+      defaultValue: 0,
     },
   });
 
@@ -20,7 +24,10 @@ module.exports = (sequelize, DataTypes) => {
     Orders.belongsTo(models.Images, { foreignKey: "ImageId" });
     Orders.belongsTo(models.Users, { foreignKey: "UserId" });
 
-    Orders.belongsTo(models.Transactions, { foreignKey: "TransactionId", allowNull:true});
+    Orders.belongsTo(models.Transactions, {
+      foreignKey: "TransactionId",
+      allowNull: true,
+    });
   };
   return Orders;
 };

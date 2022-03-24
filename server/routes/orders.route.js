@@ -1,7 +1,7 @@
+const { validateToken } = require("../middlewares/AuthMiddleware");
 const express = require("express");
 const router = express.Router();
 const { Orders, Transactions, Images } = require("../models");
-const { validateToken } = require("../middlewares/AuthMiddleware");
 const { Op } = require("sequelize");
 
 const { getAllOrders } = require("../controllers/orders.controllers");
@@ -9,8 +9,10 @@ const { getAllOrders } = require("../controllers/orders.controllers");
 router.get("/", validateToken, getAllOrders);
 
 router.post("/", validateToken, async (req, res) => {
-  const ImageId = req.body.ImageId;
+  console.log(req.body);
+  const ImageId = req.body.dataImage.id;
   const UserId = req.user.id;
+  const price = req.body.dataImage.price;
 
   // solution handle turorial
   /*
@@ -59,6 +61,7 @@ router.post("/", validateToken, async (req, res) => {
     if (!orderIsExist) {
       Orders.create({
         ImageId: ImageId,
+        price: price,
         UserId: UserId,
       })
         .then((response) => {

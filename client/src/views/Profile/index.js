@@ -1,41 +1,17 @@
-import MineimagesComponent from "../components/Profile/MineimagesComponent";
-import React, { useEffect, useContext } from "react";
+import MineimagesComponent from "./components/MineimagesComponent";
+import React, { useEffect, useContext, useState } from "react";
 import axios from "axios";
 import toast from "react-hot-toast";
 import { Card } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
-import { AccessHeader, API_URL } from "../helpers/API";
+import { AccessHeader, API_URL } from "../../utils/API";
 import Cookies from "js-cookie";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
-import { AuthContext } from "../helpers/AuthContext";
+import { AuthContext } from "../../helpers/AuthContext";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEdit, faSignOut } from "@fortawesome/free-solid-svg-icons";
 
-/** upload image code
-
-const { value: file } = await Swal.fire({
-  title: 'Select image',
-  input: 'file',
-  inputAttributes: {
-    'accept': 'image/*',
-    'aria-label': 'Upload your profile picture'
-  }
-})
-
-if (file) {
-  const reader = new FileReader()
-  reader.onload = (e) => {
-    Swal.fire({
-      title: 'Your uploaded picture',
-      imageUrl: e.target.result,
-      imageAlt: 'The uploaded picture'
-    })
-  }
-  reader.readAsDataURL(file)
-}
-
- */
 import {
   Button,
   Container,
@@ -68,45 +44,18 @@ function Profile() {
       if (result.isConfirmed) {
         Swal.fire("Logout!", "", "success");
         Cookies.remove("access-token");
-        setAuthState(false);
+        setAuthState({ status: false });
         Navigate("/");
       }
-      // else if (result.isDenied) {
-      //   Swal.fire('Changes are not saved', '', 'info')
-      // }
     });
-
-    // toast((t) => (
-    //   <span className="text-center">
-    //     <p>
-    //       You want to Logout ? <br />
-    //     </p>
-    //     <Button
-    //       variant="success"
-    //       style={{ marginRight: "10px" }}
-    //       onClick={() => {
-    //         Cookies.remove("access-token");
-    //         Navigate("/");
-    //         // setAuthState(false);
-    //         toast.dismiss();
-    //         toast.success("Logout");
-    //       }}
-    //     >
-    //       Yes
-    //     </Button>
-    //     <Button variant="secondary" onClick={() => toast.dismiss(t.id)}>
-    //       No
-    //     </Button>
-    //   </span>
-    // ));
   };
 
-  const [user, setUser] = React.useState("");
-  const [address, setAddress] = React.useState("");
-  const [payment, setPayment] = React.useState("");
+  const [user, setUser] = useState([]);
+  const [address, setAddress] = useState([]);
+  const [payment, setPayment] = useState([]);
 
   const fetchUser = () => {
-     axios
+    axios
       .get(`${API_URL}/user`, {
         method: "get",
         headers: AccessHeader,
@@ -157,10 +106,16 @@ function Profile() {
                 </div>
               </div>
               <div className="button mt-2 d-flex flex-row align-items-center">
-                <button className="btn btn-sm btn-outline-primary w-100">
-                  MineImage
-                </button>
-                <button class="btn btn-sm btn-primary w-100 ml-2">Order</button>
+                <Link to="/profile/images">
+                  <button className="btn btn-sm btn-outline-success w-100">
+                    Images
+                  </button>
+                </Link>
+                <Link to="/profile/orders">
+                  <button class="btn btn-sm btn-success w-100 ml-2">
+                    Order
+                  </button>
+                </Link>
               </div>
             </div>
           </div>

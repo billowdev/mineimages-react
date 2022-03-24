@@ -3,17 +3,28 @@ const express = require("express");
 const router = express.Router();
 const {
   getDataUserController,
-  getImagesUser,
   createAddressUser,
   createPaymentUser,
-  createImageUser,
-  updateImageUSer,
+  updateProfile,
+  getTestApi
 } = require("../controllers/user.controllers");
+
+
+const {
+  getImagesUser,
+  createImageUser,
+  updateImageUser,
+  uploadImageAvartar
+} = require("../controllers/images.controllers");
 
 // ----------------- USER route ----------------- \\
 
+// ----------------- GET OWN IMAGES DATA ----------------- \\
+router.get("/images", validateToken, getImagesUser);
+
 // ----------------- GET DATA USER WHO SIGN IN (RES TO PROFILE PAGE) route ----------------- \\
 router.get("/", validateToken, getDataUserController);
+// router.get("/", getTestApi);
 
 // ----------------- POST TO update payment route  ----------------- \\
 router.post("/payment", validateToken, createPaymentUser);
@@ -25,10 +36,13 @@ router.post("/address", validateToken, createAddressUser);
 router.post("/image", validateToken, createImageUser);
 
 // ----------------- POST TO Update Image ----------------- \\
-router.post("/image/:imgId", validateToken, updateImageUSer);
+router.post("/image/:imgId", validateToken, updateImageUser);
 
-// ----------------- GET OWN IMAGES DATA ----------------- \\
-router.get("/images", validateToken, getImagesUser);
+// ----------------- PUT TO Update Image ----------------- \\
+router.patch("/avartar/upload", validateToken, uploadImageAvartar);
+
+// ----------------- PUT TO Update Image ----------------- \\
+router.patch("/profile", validateToken, updateProfile);
 
 
 module.exports = router;

@@ -1,51 +1,61 @@
 import { useState, useEffect } from "react";
-import {
-  BrowserRouter as Router,
-  Route,
-  Routes,
-  Link,
-  useNavigate,
-} from "react-router-dom";
+import { BrowserRouter as Router, Route, Routes, Link } from "react-router-dom";
+import { AuthContext } from "../helpers/AuthContext";
+import { AccessHeader } from "../utils/API";
 
-import { AuthContext } from "./helpers/AuthContext";
-import {
-  Button,
-  Container,
-  Row,
-  Navbar,
-  Nav,
-  NavDropdown,
-  Div,
-} from "react-bootstrap";
-
-import "./App.css";
-import SignIn from "./pages/SignIn";
-import SignUp from "./pages/SignUp";
-import Home from "./pages/Home";
-import Profile from "./pages/Profile";
-import UserProfile from "./pages/UserProfile";
-import EditProfile from "./pages/EditProfile";
-import Orders from "./pages/Orders";
-import Footer from "./components/Footer/Footer";
-import Cookies from "js-cookie";
-import Card from "./pages/Card";
-import Shopping from "./pages/Shopping";
-import Authentication from "./pages/Authentication";
+import { Button, Container, Row, Navbar, Nav } from "react-bootstrap";
 import toast, { Toaster } from "react-hot-toast";
 import axios from "axios";
 import Swal from "sweetalert2";
 
+import "../assets/css/style.css";
+import SignIn from "../components/Authentications/SignIn";
+import SignUp from "../components/Authentications/SignUp";
+import Authentication from "../components/Authentications/Authentication";
+import Footer from "../components/Footer/Footer";
+
+import Home from "./Home";
+import Profile from "./Profile";
+import PublicProfile from "./PublicProfile";
+import EditProfile from "./Profile/components/EditProfile";
+import Orders from "./Order/Orders";
+import Card from "./Cart/Card";
+import Cart from "./Cart/Cart";
+import OrderHistory from "./OrderHistory";
+import ImagesHistory from "./ImageHistory";
+import UploadImage from "./UploadImage/"
+
 function App() {
   const API_URL = process.env.REACT_APP_API_URL;
-  const [authState, setAuthState] = useState(false);
+  const [authState, setAuthState] = useState({
+    id: "",
+    name: "",
+    status: false,
+  });
+  
+  const fetchIsLogin = () => {
+    var url = `${API_URL}/auth/authenticated`;
+    axios
+      .get(url, {
+        method: "get",
+        headers: AccessHeader,
+      })
+      .then((response) => {
+        return response;
+      })
+      .then((data) => {
+        setAuthState({
+          id: data.id,
+          name: data.firstName,
+          status: true,
+        });
+      });
+  };
 
-  if (authState == false) {
-    if (Cookies.get("access-token")) {
-      setAuthState(true);
-    }
-  }
 
-  useEffect(() => {}, []);
+  useEffect(() => {
+    fetchIsLogin();
+  }, []);
 
   return (
     <>
@@ -53,11 +63,10 @@ function App() {
         <AuthContext.Provider
           value={{
             authState,
-            setAuthState
+            setAuthState,
           }}
         >
           <Router>
-           
             <div>
               <Toaster />
             </div>
@@ -74,10 +83,10 @@ function App() {
                     style={{ maxHeight: "100px" }}
                     navbarScroll
                   >
-                    {authState && (
+                    {authState.status && (
                       <>
-                        <Link to="/shopping" className="Nav-link">
-                          <Nav.Link href="#action3">Cart</Nav.Link>
+                        <Link to="/cart" className="Nav-link">
+                          <Nav.Link href="#action3">Cart </Nav.Link>
                         </Link>
                         <Link to="/orders" className="Nav-link">
                           <Nav.Link href="#action3">orders</Nav.Link>
@@ -85,10 +94,10 @@ function App() {
                       </>
                     )}
 
-                    {authState && (
+                    {authState.status && (
                       <>
                         <Link to="/card" className="Nav-link">
-                          <Nav.Link href="/">New</Nav.Link>
+                          <Nav.Link href="/"> New </Nav.Link>
                         </Link>
                       </>
                     )}
@@ -96,11 +105,10 @@ function App() {
                     <Nav.Link href="#" disabled></Nav.Link>
                   </Nav>
                   <Nav>
-                    {!authState && (
+                    {!authState.status && (
                       <>
                         <Link to="/auth/signin" className="Nav-link">
                           <Nav.Link href="/">SignIn</Nav.Link>
-                    
                         </Link>
 
                         <Link to="/signup" className="Nav-link">
@@ -109,7 +117,7 @@ function App() {
                         </Link>
                       </>
                     )}
-                    {authState && (
+                    {authState.status && (
                       <>
                         <Link to="/profile" replace>
                           <Button variant="outline-success btn">Profile</Button>
@@ -127,10 +135,15 @@ function App() {
               <Route path="/auth/signin" exact element={<SignIn />} />
               <Route path="/signup" exact element={<SignUp />} />
               <Route path="/checkout/card" replace element={<Card />} />
-              <Route path="/shopping" replace element={<Shopping />} />
-              <Route path="/profile" replace element={<Profile />} />
+              <Route path="/cart" replace element={<Cart />} />
+              <Route path="/profile" exact element={<Profile />} />
+              <Route path="/profile/orders" replace element={<OrderHistory />} />
+              <Route path="/profile/images" replace element={<ImagesHistory />} />
               <Route path="/profile/edit" exact element={<EditProfile />} />
+              <Route path="/profile/images/upload" exact element={<UploadImage />} />
               <Route path="/orders" replace element={<Orders />} />
+
+              <Route path="/PublicProfile/:id" replace element={<PublicProfile />} />
 
               <Route
                 path="/authentication/activate/:token"
