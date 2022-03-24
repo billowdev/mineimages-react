@@ -1,7 +1,7 @@
 import React, { useState, useContext } from "react";
 import axios from "axios";
 import Cookies from "js-cookie";
-import { AuthContext } from "../helpers/AuthContext";
+import { AuthContext } from "../../helpers/AuthContext";
 import { Link, useNavigate } from "react-router-dom";
 
 import {

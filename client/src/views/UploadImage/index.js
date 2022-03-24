@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import { API_URL, token } from "../utils/API";
+import { API_URL, token } from "../../utils/API";
 
-function Upload() {
+function UploadImage() {
   const [fileInputState, setFileInputState] = useState("");
   const [PreviewSource, setPreviewSource] = useState("");
 
@@ -75,4 +75,4 @@ function Upload() {
   );
 }
 
-export default Upload;
+export default UploadImage;

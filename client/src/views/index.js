@@ -1,42 +1,29 @@
 import { useState, useEffect } from "react";
-import {
-  BrowserRouter as Router,
-  Route,
-  Routes,
-  Link,
-  useNavigate,
-} from "react-router-dom";
+import { BrowserRouter as Router, Route, Routes, Link } from "react-router-dom";
+import { AuthContext } from "../helpers/AuthContext";
+import { AccessHeader } from "../utils/API";
 
-import { AuthContext } from "./helpers/AuthContext";
-import {
-  Button,
-  Container,
-  Row,
-  Navbar,
-  Nav,
-  NavDropdown,
-} from "react-bootstrap";
-
-import "./App.css";
-import SignIn from "./pages/SignIn";
-import SignUp from "./pages/SignUp";
-import Home from "./pages/Home";
-import Profile from "./pages/Profile/Profile";
-import UserProfile from "./pages/Profile/UserProfile";
-import EditProfile from "./pages/Profile/EditProfile";
-import Orders from "./pages/Orders";
-import Footer from "./components/Footer/Footer";
-import Cookies from "js-cookie";
-import Card from "./pages/Card";
-import Shopping from "./pages/Shopping";
-import Authentication from "./pages/Authentication";
+import { Button, Container, Row, Navbar, Nav } from "react-bootstrap";
 import toast, { Toaster } from "react-hot-toast";
 import axios from "axios";
 import Swal from "sweetalert2";
-import UserOrders from "./pages/Profile/UserOrders";
-import UserImages from "./pages/Profile/UserImages";
-import { AccessHeader } from "./utils/API";
-import Upload from "./pages/Upload";
+
+import "../assets/css/style.css";
+import SignIn from "../components/Authentications/SignIn";
+import SignUp from "../components/Authentications/SignUp";
+import Authentication from "../components/Authentications/Authentication";
+import Footer from "../components/Footer/Footer";
+
+import Home from "./Home";
+import Profile from "./Profile";
+import PublicProfile from "./PublicProfile";
+import EditProfile from "./Profile/components/EditProfile";
+import Orders from "./Order/Orders";
+import Card from "./Cart/Card";
+import Cart from "./Cart/Cart";
+import OrderHistory from "./OrderHistory";
+import ImagesHistory from "./ImageHistory";
+import UploadImage from "./UploadImage/"
 
 function App() {
   const API_URL = process.env.REACT_APP_API_URL;
@@ -45,7 +32,7 @@ function App() {
     name: "",
     status: false,
   });
-
+  
   const fetchIsLogin = () => {
     var url = `${API_URL}/auth/authenticated`;
     axios
@@ -64,6 +51,7 @@ function App() {
         });
       });
   };
+
 
   useEffect(() => {
     fetchIsLogin();
@@ -97,7 +85,7 @@ function App() {
                   >
                     {authState.status && (
                       <>
-                        <Link to="/shopping" className="Nav-link">
+                        <Link to="/cart" className="Nav-link">
                           <Nav.Link href="#action3">Cart </Nav.Link>
                         </Link>
                         <Link to="/orders" className="Nav-link">
@@ -147,13 +135,15 @@ function App() {
               <Route path="/auth/signin" exact element={<SignIn />} />
               <Route path="/signup" exact element={<SignUp />} />
               <Route path="/checkout/card" replace element={<Card />} />
-              <Route path="/shopping" replace element={<Shopping />} />
+              <Route path="/cart" replace element={<Cart />} />
               <Route path="/profile" exact element={<Profile />} />
-              <Route path="/profile/orders" replace element={<UserOrders />} />
-              <Route path="/profile/images" replace element={<UserImages />} />
+              <Route path="/profile/orders" replace element={<OrderHistory />} />
+              <Route path="/profile/images" replace element={<ImagesHistory />} />
               <Route path="/profile/edit" exact element={<EditProfile />} />
-              <Route path="/profile/images/upload" exact element={<Upload />} />
+              <Route path="/profile/images/upload" exact element={<UploadImage />} />
               <Route path="/orders" replace element={<Orders />} />
+
+              <Route path="/PublicProfile/:id" replace element={<PublicProfile />} />
 
               <Route
                 path="/authentication/activate/:token"

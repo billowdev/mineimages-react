@@ -1,6 +1,8 @@
 import DataTable from "react-data-table-component";
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import { AccessHeader, API_URL } from "../../utils/API";
+import { Link, useNavigate } from "react-router-dom";
 
 import {
   Col,
@@ -13,13 +15,9 @@ import {
   InputGroup,
 } from "react-bootstrap";
 
-import { AccessHeader, API_URL } from "../../utils/API";
-
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-import Toggle from "react-toggle";
-
-function UserImages() {
+function UserOrders() {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
   const [totalRows, setTotalRows] = useState(0);
@@ -32,7 +30,7 @@ function UserImages() {
 
   const fetchData = async () => {
     setLoading(true);
-    var url = `${API_URL}/user/images?page=${page}&per_page=${perPage}&delay=1`;
+    var url = `${API_URL}/order?page=${page}&per_page=${perPage}&delay=1`;
 
     if (sortColumn) {
       url += `&sort_column=${sortColumn}&sort_direction=${sortColumnDirection}`;
@@ -49,6 +47,7 @@ function UserImages() {
         return response;
       })
       .then((resp) => {
+        console.log(resp.data);
         setData(resp.data.data);
         setTotalRows(resp.data.total);
         setLoading(false);
@@ -59,7 +58,7 @@ function UserImages() {
     setPage(page);
   };
 
-  const handlePerRowsChange = async (newPerPage, page) => {
+  const handlePerRowsChange = async (newPerPage) => {
     setPerPage(newPerPage);
   };
 
@@ -77,58 +76,101 @@ function UserImages() {
     fetchData();
   };
 
-  const [checkState, setCheckState] = useState(true)
-  const columns = [
-    {
-      name: "ID",
-      selector: (row) => row.id,
-      sortable: true,
-      width: "260px",
-    },
-    {
-      name: "image",
-      selector: (row) => row.pathOrigin,
-      cell: (row) => (
-        <img src={row.pathOrigin} width={200} height={200} alt={row.name} />
-      ),
-    },
-    {
-      name: "Name",
-      selector: (row) => row.name,
-      sortable: true,
-    },
-    {
-      name: "Detail",
-      selector: (row) => row.detail,
-      sortable: true,
-      cell: (row) => <p>{row.detail}</p>,
-      // width: "300px",
-    },
-    {
-      name: "price",
-      selector: (row) => row.price,
-      sortable: true,
-      // width: "200px",
-    },
-    {
-      name: "status",
-      selector: (row) => row.status,
-      cell: (row) => (
-        <div>
-            <span>{row.status}</span>
-        </div>
-      ),
-    },
-  ];
+
 
   useEffect(() => {
     fetchData();
   }, [page, sortColumn, sortColumnDirection]);
 
+  const columns = [
+    {
+      name: "ID",
+      selector: (row) => row.id,
+      sortable: true,
+      width: "100px",
+    },
+    {
+      name: "Image",
+      selector: (row) => row.Image.pathWatermark,
+      cell: (row) => (
+        <img
+          src={row.Image.pathWatermark}
+          width={150}
+          height={150}
+          alt={row.name}
+        />
+      ),
+      width: "180px",
+    },
+    {
+      name: "Name",
+      selector: (row) => row.Image.name,
+      sortable: true,
+      width: "120px",
+    },
+    {
+      name: "Detail",
+      selector: (row) => row.Image.detail,
+      sortable: true,
+      // width: "180px",
+    },
+    {
+      name: "Price",
+      selector: (row) => row.Image.price,
+      sortable: true,
+      width: "120px",
+    },
+    {
+      name: "Status",
+      selector: (row) => row.status,
+      sortable: true,
+      // width: "120px",
+    },
+    {
+      name: "createAt",
+      selector: (row) => row.createdAt,
+      cell: (row) => (
+        <span>{`${row.createdAt.slice(0, 10)}  ${row.createdAt.slice(
+          11,
+          19
+        )}`}</span>
+      ),
+      sortable: true,
+      // width: "180px",
+    },
+    {
+      name: "seller",
+      selector: (row) => row.Image.UserId,
+      cell: (row) => (
+        <div>
+          <Link to={`/PublicProfile/${row.Image.UserId}`}>
+            <Button className="btn-success">owner</Button>
+          </Link>
+        </div>
+      ),
+      // sortable: true,
+      // width: "110px",
+    },
+    {
+      name: "Download",
+      selector: (row) => row.ImgPathOrigin,
+      cell: (row) => (
+        <div>
+          {/* https://stackoverflow.com/questions/57056741/how-to-download-image-in-reactjs */}
+          {/* <Button className="btn-success" onClick={hadleDownloadImage(row.ImgPathOrigin, row.ImgName)}>ดาวน์โหลด</Button> */}
+          <Button className="btn-success" href={row.ImgPathOrigin} download={row.ImgName}>ดาวน์โหลด</Button>
+        </div>
+      ),
+      // sortable: true,
+      // width: "140px",
+    },
+  ];
+
   return (
     <Container className="user-images">
       <Row>
-        <h3 className="text-align-center">MineImages</h3>
+        {/* <img src={fetchImage("3b22a1ad-1aba-4cf3-a9e0-bc128098faa2")}></img> */}
+        <h3 className="text-align-center">ประวัติการสั่งซื้อ</h3>
         <form onSubmit={handleSearchSubmit}>
           <div class="input-group">
             <input
@@ -162,4 +204,4 @@ function UserImages() {
   );
 }
 
-export default UserImages;
+export default UserOrders;

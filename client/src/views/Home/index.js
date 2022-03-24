@@ -1,47 +1,10 @@
 import React from "react";
-import "../App.css";
-import ImagesComponent from "../components/Home/ImagesComponent";
+import "../../assets/css/style.css";
+import ImagesComponent from "./components/ImagesComponent";
 import { Button, Form, FormControl } from "react-bootstrap";
 
 function Home() {
   return (
-    // <div className="home-body">
-    //   <div className="MainComponent">
-    //     <div className="hero-image">
-    //       <img src={require("../assets/images/bg.jpg")}></img>
-    //     </div>
-
-    //     <div className="home-text">
-    //       <h1 className="title">MineImages</h1>
-    //       <p>Welcome to our website</p>
-
-    //       <Form className="d-flex search__form">
-    //         <FormControl
-    //           type="search"
-    //           placeholder="Search"
-    //           className="me-2"
-    //           aria-label="Search"
-    //         />
-    //         <Button variant="outline-success" className="btn__search">
-    //           Search
-    //         </Button>
-    //       </Form>
-    //     </div>
-
-    //     <div id="myBtnContainer">
-    //       <button className="btn active"> Show all</button>
-    //       <button className="btn"> Nature</button>
-    //       <button className="btn"> Cars</button>
-    //       <button className="btn"> People</button>
-    //     </div>
-
-    //     <h4 className="text-center font-weight-light text-light mb-3">
-    //       React Gallery with Bootstrap
-    //     </h4>
-    //     {/* <ImagesComponent /> */}
-    //   </div>
-    // </div>
-
     <>
       <div className="home-body">
         <header class="page-header d-flex align-items-center">
@@ -54,7 +17,7 @@ function Home() {
           <div class="row justify-content-center">
             <section class="col-12 col-md-8">
               <img
-                src={require("../assets/images/mineimageslogo.png")}
+                src={require("../../assets/images/mineimageslogo.png")}
                 class="avatar"
                 alt=""
               />

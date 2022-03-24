@@ -187,16 +187,6 @@ exports.uploadImageAvartar = async (req, res) => {
 };
 
 exports.getAllImage = async (req, res) => {
-
-  // const { resources } = await cloudinary.search
-  //   .expression("folder=mineimages/watermark")
-  //   .sort_by("public_id", "desc")
-  //   // .max_results(30)
-  //   .execute();
-  // const publicIds = resources.map((file) => file.public_id);
-
-  // res.send(publicIds);
-
   const image = await Images.findAll({
     where: { visible: "public", status: "active" },
     raw: true,
@@ -205,11 +195,23 @@ exports.getAllImage = async (req, res) => {
   image.forEach(element => {
     publicIds.push(element.publicId)
   });
-  console.log(publicIds);
+  // console.log(publicIds);
   
   return res.send(publicIds);
 };
 
+exports.getImageDetail = async (req, res) =>{
+  const {imgid} = req.body
+  console.log(imgid)
+  const {id, publicId, name, detail, pathWatermark, price, UserId} = await Images.findOne({
+    where:{publicId:imgid}
+  })
+  const {firstName} = await Users.findOne({where:{id:UserId}})
+
+  return res.status(200).send({id, publicId, name, detail, pathWatermark, price, owner:firstName})
+
+}
+ 
 exports.getSearchImages = async (req, res) => {
   const response = await axios.get(BASE_URL + "/resources/search", {
     auth,

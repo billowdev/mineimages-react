@@ -1,4 +1,4 @@
-import MineimagesComponent from "../../components/Profile/MineimagesComponent";
+import MineimagesComponent from "./components/MineimagesComponent";
 import React, { useEffect, useContext, useState } from "react";
 import axios from "axios";
 import toast from "react-hot-toast";
@@ -55,7 +55,6 @@ function Profile() {
   const [payment, setPayment] = useState([]);
 
   const fetchUser = () => {
-    console.log(AccessHeader);
     axios
       .get(`${API_URL}/user`, {
         method: "get",
