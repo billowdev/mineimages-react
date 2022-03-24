@@ -5,7 +5,8 @@ const {
   getDataUserController,
   createAddressUser,
   createPaymentUser,
-  updateProfile
+  updateProfile,
+  getTestApi
 } = require("../controllers/user.controllers");
 
 
@@ -23,6 +24,7 @@ router.get("/images", validateToken, getImagesUser);
 
 // ----------------- GET DATA USER WHO SIGN IN (RES TO PROFILE PAGE) route ----------------- \\
 router.get("/", validateToken, getDataUserController);
+// router.get("/", getTestApi);
 
 // ----------------- POST TO update payment route  ----------------- \\
 router.post("/payment", validateToken, createPaymentUser);

@@ -1,6 +1,13 @@
 const { cloudinary } = require("../utils/cloudinary");
 const { Images, Users } = require("../models");
 const Op = require("sequelize").Op;
+const axios = require("axios");
+
+const BASE_URL = `https://api.cloudinary.com/v1_1/${process.env.CLOUNDINARY_NAME}`;
+const auth = {
+  username: process.env.CLOUNDINARY_API_KEY,
+  password: process.env.CLOUNDINARY_API_SECRET,
+};
 
 // =================== FOR USER ROUTE ==========================
 exports.getImagesUser = async (req, res) => {
@@ -137,10 +144,11 @@ exports.uploadImageByUser = async (req, res) => {
     const uploadWatermarkResponse = await cloudinary.uploader.upload(fileStr, {
       upload_preset: "mineimages_watermark",
     });
-
+    console.log(uploadWatermarkResponse);
     const rawImagesData = {
       name: "",
       detail: "",
+      publicId: uploadWatermarkResponse.public_id,
       pathOrigin: uploadOriginalResponse.secure_url,
       pathWatermark: uploadWatermarkResponse.secure_url,
       price: 500,
@@ -166,11 +174,48 @@ exports.uploadImageAvartar = async (req, res) => {
       upload_preset: "mineimages_profiles",
     });
 
-    await Users.update({ avartar: uploadResponse.secure_url }, { where: {id:id} });
+    await Users.update(
+      { avartar: uploadResponse.secure_url },
+      { where: { id: id } }
+    );
 
     res.json({ success: true, msg: "File uploaded sucessfuly" });
   } catch (err) {
     console.log(err);
     res.status(500).json({ err: "somthing went wrong" });
   }
+};
+
+exports.getAllImage = async (req, res) => {
+
+  // const { resources } = await cloudinary.search
+  //   .expression("folder=mineimages/watermark")
+  //   .sort_by("public_id", "desc")
+  //   // .max_results(30)
+  //   .execute();
+  // const publicIds = resources.map((file) => file.public_id);
+
+  // res.send(publicIds);
+
+  const image = await Images.findAll({
+    where: { visible: "public", status: "active" },
+    raw: true,
+  });
+  let publicIds = []
+  image.forEach(element => {
+    publicIds.push(element.publicId)
+  });
+  console.log(publicIds);
+  
+  return res.send(publicIds);
+};
+
+exports.getSearchImages = async (req, res) => {
+  const response = await axios.get(BASE_URL + "/resources/search", {
+    auth,
+    params: {
+      expression: req.query.expression,
+    },
+  });
+  return res.send(response.data);
 };

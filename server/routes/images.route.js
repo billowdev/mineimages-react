@@ -8,9 +8,13 @@ const {
   getAllImagesUserOwned,
   getImageById,
   createImageUser,
-  uploadImageByUser
+  uploadImageByUser,
+  getAllImage
 } = require("../controllers/images.controllers");
 
+
+router.get("/", getAllImage);
+router.get("/search", getAllImage);
 
 
 router.get("/byId/:id", getImageById);

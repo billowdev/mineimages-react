@@ -1,6 +1,11 @@
 const { Users, Addresses, PaymentUsers, Images } = require("../models");
 
 // ===================== get section =====================
+exports.getTestApi = async (req, res) =>{
+  const response = await Users.findAll();
+  res.json(response)
+}
+
 
 exports.getDataUserController = async (req, res) => {
   const {

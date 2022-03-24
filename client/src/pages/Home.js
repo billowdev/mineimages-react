@@ -78,7 +78,7 @@ function Home() {
             <section class="col-12 pb-3 text-center">
               <h3>รูปภาพ</h3>
             </section>
-            {/* <blog-component v-for="blog in blogs" ></blog-component> */}
+           <ImagesComponent></ImagesComponent>
           </div>
         </section>
       </div>
