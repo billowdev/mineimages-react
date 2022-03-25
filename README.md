@@ -4,11 +4,11 @@ project_mineimages Web Programming for Local Community
 
 this project is web application e commerce concept is selling the images
 
-client side :
+client side : move to => [react-redux] https://github.com/lacakp/mineimages-client
   - html
   - css
   - react
-sever side:
+sever side: move to => [split repo for server to] https://github.com/lacakp/mineimages-server
   nodejs
     - express
     - sequelize
