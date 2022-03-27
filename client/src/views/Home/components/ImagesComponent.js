@@ -102,7 +102,7 @@ function ImagesComponent() {
         </Modal.Header>
         <Modal.Body>
           {`${dataImage.detail}`}
-          <img src={dataImage.pathWatermark}></img>
+          <img src={dataImage.pathWatermark} width="200px" height="200px" />
           <h6>
             เจ้าของภาพ : <span>{dataImage.owner}</span>
           </h6>
