@@ -13,6 +13,7 @@
   - BUTTONS
   - Profile
 	- EditProfile Section
+  - ImageHistory
 
 */
 
@@ -238,7 +239,6 @@ img {
 }
 
 
-
 /* Section Header */
 .page-header{
   height: 400px;
@@ -402,7 +402,10 @@ img {
   margin-bottom: 1rem;
 }
 
-
+/*====================ImageHistory ====================*/
+.image-history {
+  
+}
 
 /*==================== MEDIA QUERIES ====================*/
 

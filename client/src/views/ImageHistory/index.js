@@ -1,23 +1,11 @@
 import DataTable from "react-data-table-component";
 import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import axios from "axios";
 
-import {
-  Col,
-  Row,
-  Form,
-  Card,
-  Button,
-  FormCheck,
-  Container,
-  InputGroup,
-} from "react-bootstrap";
+import { Row, Container } from "react-bootstrap";
 
 import { AccessHeader, API_URL } from "../../utils/API";
-
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-
-import Toggle from "react-toggle";
 
 function ImagesHistory() {
   const [data, setData] = useState([]);
@@ -30,10 +18,10 @@ function ImagesHistory() {
 
   const [search, setSearch] = useState("");
 
-  const fetchData = async () => {
+  const fetchImageData = async () => {
     setLoading(true);
-    var url = `${API_URL}/user/images?page=${page}&per_page=${perPage}&delay=1`;
 
+    var url = `${API_URL}/user/images?page=${page}&per_page=${perPage}&delay=1`;
     if (sortColumn) {
       url += `&sort_column=${sortColumn}&sort_direction=${sortColumnDirection}`;
     }
@@ -49,7 +37,8 @@ function ImagesHistory() {
         return response;
       })
       .then((resp) => {
-        setData(resp.data.data);
+        // console.log(resp.data.data.images)
+        setData(resp.data.data.images);
         setTotalRows(resp.data.total);
         setLoading(false);
       });
@@ -74,10 +63,10 @@ function ImagesHistory() {
 
   const handleSearchSubmit = (event) => {
     event.preventDefault();
-    fetchData();
+    fetchImageData();
   };
 
-  const [checkState, setCheckState] = useState(true)
+  const [checkState, setCheckState] = useState(true);
   const columns = [
     {
       name: "ID",
@@ -115,20 +104,28 @@ function ImagesHistory() {
       selector: (row) => row.status,
       cell: (row) => (
         <div>
-            <span>{row.status}</span>
+          <span>{row.status}</span>
         </div>
       ),
     },
   ];
 
   useEffect(() => {
-    fetchData();
+    fetchImageData();
   }, [page, sortColumn, sortColumnDirection]);
 
   return (
     <Container className="user-images">
       <Row>
-        <h3 className="text-align-center">MineImages</h3>
+        <div className="image-history">
+          <h3 className="text-align-center">MineImages</h3>
+          <Link to="/profile/images/upload"> 
+          <button class="btn btn-outline-primary" href="/">
+            Upload Image
+          </button>
+          </Link>
+        </div>
+
         <form onSubmit={handleSearchSubmit}>
           <div class="input-group">
             <input

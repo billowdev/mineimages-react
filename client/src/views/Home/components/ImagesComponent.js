@@ -4,6 +4,7 @@ import "./ImagesComponent.css";
 import { API_URL, CLOUDINARY_NAME, AccessHeader } from "../../../utils/API";
 import axios from "axios";
 import { Modal, Button } from "react-bootstrap";
+import Swal from "sweetalert2";
 
 import Cookies from "js-cookie";
 function ImagesComponent() {
@@ -28,10 +29,21 @@ function ImagesComponent() {
       })
       .then((data) => {
         const resp = data.data;
+        if(resp.success) {
+          Swal.fire({
+            icon: "success",
+            title: "Order success",
+            text: `${resp.msg}`,
+          });
+        } else{
+          Swal.fire({
+            icon: "error",
+            title: `ไม่สามารถซื้อรูปภาพนี้ได้`,
+            text: `${resp.msg}`,
+          });
+        }
         setShow(false)
-      });
-
-    console.log(dataImage);
+      })
   };
 
   const [dataImage, setDataImage] = useState("");

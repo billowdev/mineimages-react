@@ -3,7 +3,6 @@ import ReactDOM from 'react-dom';
 import './assets/css/index.css';
 
 import App from './views';
-import './assets/css/adminlte.min.css';
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.min.js";
 
