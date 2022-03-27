@@ -1,7 +1,7 @@
 import axios from "axios";
+import { AccessHeader, API_URL } from "../../utils/API";
 import React, { useState, useEffect } from "react";
 import {Navigate, useNavigate} from "react-router-dom";
-import { AccessHeader, API_URL } from "../../utils/API";
 import { Card, Col, Button } from "react-bootstrap";
 import Swal from "sweetalert2";
 
