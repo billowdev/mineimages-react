@@ -81,6 +81,7 @@ function ImagesComponent() {
   return (
     <>
       <div className="gallery">
+       
         {imagePublicId &&
           imagePublicId.map((imageId, index) => (
             <Image
@@ -93,24 +94,20 @@ function ImagesComponent() {
               crop="scale"
               onClick={handleOnImageClick}
             />
-          ))}
+          ))} 
       </div>
 
       <Modal show={show} onHide={handleClose} animation={false}>
         <Modal.Header closeButton>
-          <Modal.Title>Modal heading </Modal.Title>
+          <Modal.Title>ภาพ: {dataImage.name}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          {`${dataImage.detail}`}
           <img src={dataImage.pathWatermark} width="200px" height="200px" />
           <h6>
             เจ้าของภาพ : <span>{dataImage.owner}</span>
           </h6>
           <h6>
             ราคา : <span>{dataImage.price}</span>
-          </h6>
-          <h6>
-            ชื่อภาพ : <span>{dataImage.name}</span>
           </h6>
           <h6>
             รายละเอียด : <span>{dataImage.detail}</span>

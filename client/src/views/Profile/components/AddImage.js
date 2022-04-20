@@ -1,6 +1,6 @@
 import React from "react";
 
-function AddImage() {
+export default function AddImage() {
   return (
     <div>
       <Modal.Dialog>
@@ -20,5 +20,3 @@ function AddImage() {
     </div>
   );
 }
-
-export default AddImage;

@@ -9,12 +9,8 @@ import toast from "react-hot-toast";
 import {
   Col,
   Row,
-  Card,
-  Button,
-  FormCheck,
   Container,
-  InputGroup,
-} from "@themesberg/react-bootstrap";
+} from "react-bootstrap";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {

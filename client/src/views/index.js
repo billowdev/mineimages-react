@@ -18,7 +18,6 @@ import Home from "./Home";
 import Profile from "./Profile";
 import PublicProfile from "./PublicProfile";
 import EditProfile from "./Profile/components/EditProfile";
-import Orders from "./Order/Orders";
 import Card from "./Cart/Card";
 import Cart from "./Cart/Cart";
 import OrderHistory from "./OrderHistory";
@@ -88,9 +87,6 @@ function App() {
                         <Link to="/cart" className="Nav-link">
                           <Nav.Link href="#action3">Cart </Nav.Link>
                         </Link>
-                        <Link to="/orders" className="Nav-link">
-                          <Nav.Link href="#action3">orders</Nav.Link>
-                        </Link>
                       </>
                     )}
 
@@ -119,7 +115,7 @@ function App() {
                     )}
                     {authState.status && (
                       <>
-                        <Link to="/profile" replace>
+                        <Link to="/profile">
                           <Button variant="outline-success btn">Profile</Button>
                         </Link>
                       </>
@@ -131,19 +127,18 @@ function App() {
             {/* ============================ Navbar Section ==============================  */}
 
             <Routes>
-              <Route path="/" replace element={<Home />} />
-              <Route path="/auth/signin" exact element={<SignIn />} />
-              <Route path="/signup" exact element={<SignUp />} />
-              <Route path="/checkout/card" replace element={<Card />} />
-              <Route path="/cart" replace element={<Cart />} />
-              <Route path="/profile" exact element={<Profile />} />
-              <Route path="/profile/orders" replace element={<OrderHistory />} />
-              <Route path="/profile/images" replace element={<ImagesHistory />} />
-              <Route path="/profile/edit" exact element={<EditProfile />} />
-              <Route path="/profile/images/upload" exact element={<UploadImage />} />
-              <Route path="/orders" replace element={<Orders />} />
+              <Route path="/" element={<Home />} />
+              <Route path="/auth/signin" element={<SignIn />} />
+              <Route path="/signup" element={<SignUp />} />
+              <Route path="/checkout/card" element={<Card />} />
+              <Route path="/cart" element={<Cart />} />
+              <Route path="/profile"  element={<Profile />} />
+              <Route path="/profile/orders" element={<OrderHistory />} />
+              <Route path="/profile/images" element={<ImagesHistory />} />
+              <Route path="/profile/edit" element={<EditProfile />} />
+              <Route path="/profile/images/upload" element={<UploadImage />} />
 
-              <Route path="/PublicProfile/:id" replace element={<PublicProfile />} />
+              <Route path="/PublicProfile/:id" element={<PublicProfile />} />
 
               <Route
                 path="/authentication/activate/:token"

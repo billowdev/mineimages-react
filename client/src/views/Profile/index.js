@@ -4,7 +4,7 @@ import axios from "axios";
 import toast from "react-hot-toast";
 import { Card } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
-import { AccessHeader, API_URL } from "../../utils/API";
+import { token, API_URL } from "../../utils/API";
 import Cookies from "js-cookie";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
@@ -12,18 +12,26 @@ import { AuthContext } from "../../helpers/AuthContext";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEdit, faSignOut } from "@fortawesome/free-solid-svg-icons";
 
-import {
-  Button,
-  Container,
-  Row,
-  Navbar,
-  Nav,
-  NavDropdown,
-} from "react-bootstrap";
+import { Button } from "react-bootstrap";
+
 
 function Profile() {
   const { setAuthState } = useContext(AuthContext);
-  const MySwal = withReactContent(Swal);
+  const [user, setUser] = useState([]);
+  const [address, setAddress] = useState([]);
+  const [payment, setPayment] = useState([]);
+
+  function deleteAllCookies() {
+    var cookies = document.cookie.split(";");
+
+    for (var i = 0; i < cookies.length; i++) {
+        var cookie = cookies[i];
+        var eqPos = cookie.indexOf("=");
+        var name = eqPos > -1 ? cookie.substr(0, eqPos) : cookie;
+        document.cookie = name + "=;expires=Thu, 01 Jan 1970 00:00:00 GMT";
+    }
+}
+
   // const
   let Navigate = useNavigate();
   const logout = async () => {
@@ -43,6 +51,7 @@ function Profile() {
     }).then((result) => {
       if (result.isConfirmed) {
         Swal.fire("Logout!", "", "success");
+        // document.cookie = "access-token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
         Cookies.remove("access-token");
         setAuthState({ status: false });
         Navigate("/");
@@ -50,15 +59,13 @@ function Profile() {
     });
   };
 
-  const [user, setUser] = useState([]);
-  const [address, setAddress] = useState([]);
-  const [payment, setPayment] = useState([]);
 
   const fetchUser = () => {
     axios
       .get(`${API_URL}/user`, {
-        method: "get",
-        headers: AccessHeader,
+        headers: {
+          "access-token": token,
+        }
       })
       .then((response) => {
         return response;

@@ -77,6 +77,7 @@ function EditProfile() {
           imageUrl: e.target.result,
           imageAlt: "The uploaded picture",
         });
+        
         uploadImage(e.target.result).then(() => {
           refreshPage();
         });
